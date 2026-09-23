@@ -3,19 +3,17 @@ project:
   output-dir: docs
 
 website:
-title: "Lucia Mata"
-navbar:
-left:
-- href: index.qmd
-text: Home
-- href: project.qmd
-text: Project
+  title: "Lucia Mata"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: project.qmd
+        text: Project
 
 format:
   html:
-    theme:
-      - cosmo
-      - brand
+    theme: cosmo
     css: styles.css
     toc: true
 
