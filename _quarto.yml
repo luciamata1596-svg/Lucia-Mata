@@ -3,12 +3,13 @@ project:
   output-dir: docs
 
 website:
-  title: "test"
-  navbar:
-    left:
-      - href: index.qmd
-        text: Home
-      - about.qmd
+title: "Lucia Mata"
+navbar:
+left:
+- href: index.qmd
+text: Home
+- href: project.qmd
+text: Project
 
 format:
   html:
