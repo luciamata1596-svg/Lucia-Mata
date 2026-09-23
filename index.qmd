@@ -9,3 +9,16 @@ I am a graduate student in Economics at UTEP, studying
 **Education**
 - M.S. Economics, The University of Texas at El Paso (expected December 2026)
 - B.A. International Business, Minor in Marketing [The University of Texas at El Paso] (2021)
+**Experience**
+- [Role], [Organization], [Dates]
+## Research interests
+My research interests center on [topic area], particularly
+[specific question or method].
+## Skills
+- Python (pandas, statsmodels)
+- R / Stata
+- Time series forecasting
+## Contact
+**Email:** ldmatasanch@miners.utep.edu
+**LinkedIn:** [linkedin.com/in/yourname](https://www.linkedin.com/in/lucia-denisse-mata-/) ·
+**GitHub:** [github.com/luciamata1596-svg](https://github.com/luciamata1596-svg)
