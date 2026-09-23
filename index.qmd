@@ -1,7 +1,11 @@
 ---
-title: "test"
+title: "Lucia Mata"
 ---
-
-This is a Quarto website.
-
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+![](images/headshot.jpg){width=200px}
+I am a graduate student in Economics at UTEP, studying
+[your focus area].
+## CV
+[**Download full CV (PDF)**](files/cv.pdf)
+**Education**
+- M.S. Economics, The University of Texas at El Paso (expected December 2026)
+- B.A. International Business, Minor in Marketing [The University of Texas at El Paso] (2021)
