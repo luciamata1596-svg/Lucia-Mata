@@ -11,6 +11,14 @@ I am a graduate student in Economics at UTEP, studying
 - B.A. International Business, Minor in Marketing [The University of Texas at El Paso] (2021)
 **Experience**
 - [Role], [Organization], [Dates]
+- [Master's Teaching Assistant], [The University of Texas at El Paso], [January 2025 – May 2025]
+- [Content Creator Specialist], [Aventus], [February 2024 – October 2024]
+- [Marketing Manager], [El Bodegón], [June 2020 – February 2024]
+- [Marketing Director], [The Oscar Arrieta Agency], [March 2022 – July 2022]
+- [Marketing Director] , [Rapid Cash],  March 2022 – July 2022
+- [Content Marketing Specialist], [The Oscar Arrieta Agency], [October 2021 – July 2022]
+- [Content Marketing Specialist], [Rapid Cash], [October 2021 – July 2022]
+
 ## Research interests
 My research interests center on [topic area], particularly
 [specific question or method].
@@ -20,5 +28,5 @@ My research interests center on [topic area], particularly
 - Time series forecasting
 ## Contact
 **Email:** ldmatasanch@miners.utep.edu
-**LinkedIn:** [linkedin.com/in/yourname](https://www.linkedin.com/in/lucia-denisse-mata-/) ·
+**LinkedIn:** [linkedin.com/in/lucia-denisse-mata-/](https://www.linkedin.com/in/lucia-denisse-mata-/) ·
 **GitHub:** [github.com/luciamata1596-svg](https://github.com/luciamata1596-svg)
