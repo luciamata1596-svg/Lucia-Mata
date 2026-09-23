@@ -2,8 +2,7 @@
 title: "Lucia Mata"
 ---
 ![](images/headshot.jpg){width=200px}
-I am a graduate student in Economics at UTEP, studying
-[your focus area].
+I am a graduate student in Economics at UTEP, studying macroeconomics, econometrics, and time-series forecasting.
 ## CV
 [**Download full CV (PDF)**](files/cv.pdf)
 **Education**
@@ -23,6 +22,13 @@ I am a graduate student in Economics at UTEP, studying
 My research interests center on [topic area], particularly
 [specific question or method].
 ## Skills
+-  Advanced knowledge in Canva.
+Proficient in French. 
+-  Bilingual in English and Spanish.
+-  Proficient in Adobe Illustrator, Adobe Photoshop, Adobe After Effects, Adobe Premiere Pro, Adobe Creative Cloud, Adobe
+Express, Monday, CapCut, Slack, Mailchimp, Microsoft Word, PowerPoint, Publisher, Excel (Macros, pivot tables, VLOOKUP,
+and Solver), Google Docs, Google Drive, and Dropbox.
+-  Proficient in social media management and advertisement: X, LinkedIn, Snapchat, Facebook, TikTok, and Instagram.
 - Python (pandas, statsmodels)
 - R / Stata
 - Time series forecasting
