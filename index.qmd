@@ -1,7 +1,7 @@
 ---
 title: "Lucia Mata"
 ---
-![](images/headshot.jpg){width=200px}
+![](images/headshot.jpeg){width=200px}
 I am a graduate student in Economics at UTEP, studying macroeconomics, econometrics, and time-series forecasting.
 ## CV
 [**Download full CV (PDF)**](files/cv.pdf)
