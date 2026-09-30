@@ -1,38 +1,49 @@
 ---
 title: "Lucia Mata"
 ---
-![](images/headshot.jpeg){width=200px}
-I am a graduate student in Economics at UTEP, studying macroeconomics, econometrics, and time-series forecasting.
+
+![Professional headshot](images/headshot.jpeg){width=200px}
+
+I am a graduate student in Economics at UTEP, with a focus on on macroeconomics, econometrics, and time-series forecasting.
+
 ## CV
+
 [**Download full CV (PDF)**](files/cv.pdf)
-**Education**
-- M.S. Economics, The University of Texas at El Paso (expected December 2026)
-- B.A. International Business, Minor in Marketing [The University of Texas at El Paso] (2021)
-**Experience**
-- [Role], [Organization], [Dates]
-- [Master's Teaching Assistant], [The University of Texas at El Paso], [January 2025 – May 2025]
-- [Content Creator Specialist], [Aventus], [February 2024 – October 2024]
-- [Marketing Manager], [El Bodegón], [June 2020 – February 2024]
-- [Marketing Director], [The Oscar Arrieta Agency], [March 2022 – July 2022]
-- [Marketing Director] , [Rapid Cash],  March 2022 – July 2022
-- [Content Marketing Specialist], [The Oscar Arrieta Agency], [October 2021 – July 2022]
-- [Content Marketing Specialist], [Rapid Cash], [October 2021 – July 2022]
+
+### Education
+
+- M.S. in Economics, The University of Texas at El Paso (expected December 2026)
+- B.B.A. in International Business with a Minor in Marketing, The University of Texas at El Paso (2021)
+
+### Experience
+
+- Master’s Teaching Assistant, The University of Texas at El Paso, January 2025–May 2025
+- Content Creator Specialist, Aventus, February 2024–October 2024
+- Marketing Manager, El Bodegón, June 2020–February 2024
+- Marketing Director, The Oscar Arrieta Agency, March 2022–July 2022
+- Marketing Director, Rapid Cash, March 2022–July 2022
+- Content Marketing Specialist, The Oscar Arrieta Agency, October 2021–July 2022
+- Content Marketing Specialist, Rapid Cash, October 2021–July 2022
 
 ## Research interests
-My research interests center on [topic area], particularly
-[specific question or method].
+
+My research interests include marketing analytics, applied economics, time-series forecasting, and using data to support strategic business decisions.
+
 ## Skills
--  Advanced knowledge in Canva.
--  Proficient in French. 
--  Bilingual in English and Spanish.
--  Proficient in Adobe Illustrator, Adobe Photoshop, Adobe After Effects, Adobe Premiere Pro, Adobe Creative Cloud, Adobe
-Express, Monday, CapCut, Slack, Mailchimp, Microsoft Word, PowerPoint, Publisher, Excel (Macros, pivot tables, VLOOKUP,
-and Solver), Google Docs, Google Drive, and Dropbox.
--  Proficient in social media management and advertisement: X, LinkedIn, Snapchat, Facebook, TikTok, and Instagram.
-- Python (pandas, statsmodels)
-- R / Stata
-- Time series forecasting
+
+- Python, including pandas and statsmodels
+- R and Stata
+- Time-series forecasting and econometric analysis
+- Excel, including macros, PivotTables, VLOOKUP, and Solver
+- Adobe Creative Cloud and Canva
+- Social media management, content creation, and digital advertising
+- Bilingual in English and Spanish
+- Professional working proficiency in French
+
 ## Contact
-**Email:** ldmatasanch@miners.utep.edu
-**LinkedIn:** [linkedin.com/in/lucia-denisse-mata-/](https://www.linkedin.com/in/lucia-denisse-mata-/) ·
+
+**Email:** [ldmatasanch@miners.utep.edu](mailto:ldmatasanch@miners.utep.edu)
+
+**LinkedIn:** [linkedin.com/in/lucia-denisse-mata](https://www.linkedin.com/in/lucia-denisse-mata-/)
+
 **GitHub:** [github.com/luciamata1596-svg](https://github.com/luciamata1596-svg)
