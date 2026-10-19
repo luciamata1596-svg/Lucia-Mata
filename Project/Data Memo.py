@@ -118,74 +118,160 @@ fig.savefig(
 )
 
 plt.show()
-
 # %%
 # =============================================================================
-# 7. Plotting Mexico's quarterly Log Real GDP and Real GDP growth rate 
+# 7. Plot log real GDP and quarterly real GDP growth
 # =============================================================================
+
 EO_COPPER = "#B87333"
 EO_SAGE = "#8A9A5B"
-EO_TERRACOTTA= "#E2725B"
+EO_TERRACOTTA = "#E2725B"
 EO_CHARCOAL = "#36454F"
-fig, axes = plt.subplots(2, 1, figsize=(6, 9))
 
-ax = axes[0]
-ax.plot(analysis_data["Date"],
-    analysis_data["Log_Real_GDP"], color=EO_COPPER, linewidth=1.2)
-ax.set_title("Log Real GDP — Level")
-ax.set_ylabel("Log Millions of pesos at 2018 prices")
-ax = axes[1]
-gdp_g = analysis_data["GDP_Growth"].dropna()
-ax.fill_between(gdp_g.index, gdp_g, 0,
-                where=gdp_g >= 0, color=EO_SAGE, alpha=0.7, label="Positive")
-ax.fill_between(gdp_g.index, gdp_g, 0,
-                where=gdp_g < 0, color=EO_TERRACOTTA, alpha=0.7, label="Negative")
-ax.axhline(0, color=EO_CHARCOAL, linewidth=0.6, linestyle="--")
-ax.set_title("Real GDP — QoQ Growth Rate (%)")
-ax.set_ylabel("Percent")
-ax.legend(fontsize=6)
+fig, axes = plt.subplots(2, 1, figsize=(7, 9))
+
+# Log real GDP
+axes[0].plot(
+    analysis_data["Date"],
+    analysis_data["Log_Real_GDP"],
+    color=EO_COPPER,
+    linewidth=1.2
+)
+
+axes[0].set_title("Mexico’s Log Real GDP — Level")
+axes[0].set_ylabel("Log millions of pesos at 2018 prices")
+axes[0].set_xlabel("Year")
+
+# Quarterly GDP growth
+growth_plot = analysis_data.dropna(
+    subset=["GDP_Growth"]
+)
+
+axes[1].fill_between(
+    growth_plot["Date"],
+    growth_plot["GDP_Growth"],
+    0,
+    where=growth_plot["GDP_Growth"] >= 0,
+    color=EO_SAGE,
+    alpha=0.7,
+    label="Positive"
+)
+
+axes[1].fill_between(
+    growth_plot["Date"],
+    growth_plot["GDP_Growth"],
+    0,
+    where=growth_plot["GDP_Growth"] < 0,
+    color=EO_TERRACOTTA,
+    alpha=0.7,
+    label="Negative"
+)
+
+axes[1].axhline(
+    0,
+    color=EO_CHARCOAL,
+    linewidth=0.6,
+    linestyle="--"
+)
+
+axes[1].set_title("Mexico’s Real GDP — Quarterly Growth Rate")
+axes[1].set_xlabel("Year")
+axes[1].set_ylabel("Percent")
+axes[1].legend(fontsize=8)
+
 fig.tight_layout()
 plt.show()
 # %%
 # =============================================================================
-# 8. ACF and PACF of Mexico's quarterly real GDP growth
+# 8. Divide the data into estimation and evaluation samples
 # =============================================================================
-from statsmodels.graphics.tsaplots import plot_acf, plot_pacf 
-import matplotlib.pyplot as plt
 
-fig, axes = plt.subplots(4, 1, figsize=(6, 9))
+estimation_sample = analysis_data[
+    analysis_data["Quarter"] <= pd.Period("2018Q4", freq="Q")
+].copy()
 
-plot_acf(analysis_data["Log_Real_GDP"].dropna(), lags=20, ax=axes[0],
-         color=EO_COPPER, vlines_kwargs={"colors": EO_COPPER},
-         title="ACF — Log Real GDP (Level)", zero=False, alpha=0.05)
+evaluation_sample = analysis_data[
+    analysis_data["Quarter"] >= pd.Period("2019Q1", freq="Q")
+].copy()
 
-plot_pacf(analysis_data["Log_Real_GDP"].dropna(), lags=20, ax=axes[1],
-          color=EO_COPPER, vlines_kwargs={"colors": EO_COPPER},
-          method="ywm", title="PACF — Log Real GDP (Level)",
-          zero=False, alpha=0.05)
+print(
+    "Estimation sample:",
+    estimation_sample["Quarter"].min(),
+    "to",
+    estimation_sample["Quarter"].max()
+)
 
-plot_acf(analysis_data["GDP_Growth"].dropna(), lags=20, ax=axes[2],
-         color=EO_SAGE, vlines_kwargs={"colors": EO_SAGE},
-         title="ACF — GDP Growth Rate", zero=False, alpha=0.05)
+print(
+    "Evaluation sample:",
+    evaluation_sample["Quarter"].min(),
+    "to",
+    evaluation_sample["Quarter"].max()
+)
+# %%
+# =============================================================================
+# 9. ACF and PACF
+# =============================================================================
 
-plot_pacf(analysis_data["GDP_Growth"].dropna(), lags=20, ax=axes[3],
-          color=EO_SAGE, vlines_kwargs={"colors": EO_SAGE},
-          method="ywm", title="PACF — GDP Growth Rate",
-          zero=False, alpha=0.05)
+from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
+
+fig, axes = plt.subplots(4, 1, figsize=(7, 10))
+
+plot_acf(
+    estimation_sample["Log_Real_GDP"].dropna(),
+    lags=20,
+    ax=axes[0],
+    color=EO_COPPER,
+    vlines_kwargs={"colors": EO_COPPER},
+    title="ACF — Log Real GDP Level",
+    zero=False,
+    alpha=0.05
+)
+
+plot_pacf(
+    estimation_sample["Log_Real_GDP"].dropna(),
+    lags=20,
+    ax=axes[1],
+    color=EO_COPPER,
+    vlines_kwargs={"colors": EO_COPPER},
+    method="ywm",
+    title="PACF — Log Real GDP Level",
+    zero=False,
+    alpha=0.05
+)
+
+plot_acf(
+    estimation_sample["GDP_Growth"].dropna(),
+    lags=20,
+    ax=axes[2],
+    color=EO_SAGE,
+    vlines_kwargs={"colors": EO_SAGE},
+    title="ACF — Quarterly Real GDP Growth",
+    zero=False,
+    alpha=0.05
+)
+
+plot_pacf(
+    estimation_sample["GDP_Growth"].dropna(),
+    lags=20,
+    ax=axes[3],
+    color=EO_SAGE,
+    vlines_kwargs={"colors": EO_SAGE},
+    method="ywm",
+    title="PACF — Quarterly Real GDP Growth",
+    zero=False,
+    alpha=0.05
+)
 
 for ax in axes:
-    ax.set_xlabel("Lag")
+    ax.set_xlabel("Lag (quarters)")
     ax.set_ylabel("Correlation")
-    eo_style_ax(ax)
-    for line in ax.lines:
-        if line.get_linestyle() == "--":
-            line.set_color(EO_TERRACOTTA)
-            line.set_linewidth(0.7)
+    ax.grid(alpha=0.20)
+
 fig.tight_layout()
 plt.show()
 # %%
 # =============================================================================
-# 8.ADF and KPSS tests
+# 10.ADF and KPSS tests
 # =============================================================================
 from statsmodels.tsa.stattools import adfuller, kpss
 def _run_adf(series, regression):
@@ -228,6 +314,160 @@ def print_side_by_side(s1, n1, r1_adf, r1_kpss, s2, n2, r2_adf, r2_kpss, title):
     print(f"  {'\u2500'*54}")
 
 print_side_by_side(
-    analysis_data["Log_Real_GDP"],     "Log Real GDP",    "ct", "ct",
-    analysis_data["GDP_Growth"], "GDP Growth (%)",  "c",  "c",
-    title="Mexico's Real GDP")
+    estimation_sample["Log_Real_GDP"],
+    "Log Real GDP",
+    "ct",
+    "ct",
+
+    estimation_sample["GDP_Growth"],
+    "GDP Growth (%)",
+    "c",
+    "c",
+
+    title="Mexico's Real GDP — Estimation Sample"
+)
+
+# %%
+# =============================================================================
+# 11. ARIMA model selection using AIC and BIC
+# =============================================================================
+from statsmodels.tsa.arima.model import ARIMA
+import pandas as pd
+import warnings
+
+growth = estimation_sample["GDP_Growth"].dropna()
+
+model_results = []
+
+for p in range(4):
+    for q in range(4):
+
+        try:
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore")
+
+                model = ARIMA(
+                    growth,
+                    order=(p, 0, q),
+                    trend="c",
+                    enforce_stationarity=True,
+                    enforce_invertibility=True
+                ).fit()
+
+            converged = model.mle_retvals.get(
+                "converged",
+                True
+            )
+
+            if converged:
+                model_results.append({
+                    "Model": f"ARIMA({p},0,{q})",
+                    "p": p,
+                    "q": q,
+                    "AIC": model.aic,
+                    "BIC": model.bic,
+                    "Converged": converged
+                })
+
+            else:
+                print(
+                    f"ARIMA({p},0,{q}) did not converge "
+                    "and was excluded."
+                )
+
+        except Exception as error:
+            print(
+                f"ARIMA({p},0,{q}) could not be estimated: "
+                f"{error}"
+            )
+
+ic_table = (
+    pd.DataFrame(model_results)
+    .sort_values("BIC")
+    .reset_index(drop=True)
+)
+
+print(ic_table.round(3))
+best_aic = ic_table.loc[
+    ic_table["AIC"].idxmin()
+]
+
+best_bic = ic_table.loc[
+    ic_table["BIC"].idxmin()
+]
+
+print("\nModel selected by AIC:")
+print(best_aic)
+
+print("\nModel selected by BIC:")
+print(best_bic)
+# %%
+# =============================================================================
+# 12. Residual diagnostics for the AIC-selected ARIMA(3,0,1) 
+# and BIC-selected ARIMA(0,0,1)
+# =============================================================================
+#AIC selected model
+model_aic = ARIMA(growth, order=(3,0,1), trend="c").fit()
+#BIC selected model
+model_bic = ARIMA(growth, order=(0,0,1), trend="c").fit()
+print(model_aic.summary())
+print(model_bic.summary())
+from statsmodels.graphics.tsaplots import plot_acf
+from statsmodels.stats.diagnostic import acorr_ljungbox
+resid_aic = model_aic.resid.dropna()
+resid_bic = model_bic.resid.dropna()
+
+fig, axes = plt.subplots(2, 2, figsize=(10, 7))
+
+# AIC model residuals
+axes[0, 0].plot(resid_aic, color=EO_COPPER)
+axes[0, 0].axhline(0, color=EO_CHARCOAL, linestyle="--")
+axes[0, 0].set_title("ARIMA(3,0,1) Residuals")
+plot_acf(resid_aic, lags=20, ax=axes[0,1], zero=False, alpha=0.05, title="ACF-ARIMA(3,0,1) Residuals")
+# BIC model residuals
+axes[1, 0].plot(resid_bic, color=EO_SAGE)
+axes[1, 0].axhline(0, color=EO_CHARCOAL, linestyle="--")
+axes[1, 0].set_title("ARIMA(0,0,1) Residuals")
+plot_acf(resid_bic, lags=20, ax=axes[1,1], zero=False, alpha=0.05, title="ACF-ARIMA(0,0,1) Residuals")
+fig.tight_layout()
+plt.show()
+
+#Ljung–Box tests
+print("ARIMA(3,0,1):")
+print(
+    acorr_ljungbox(
+        resid_aic,
+        lags=[8, 12],
+        model_df=4,
+        return_df=True
+    )
+)
+
+print("\nARIMA(0,0,1):")
+print(
+    acorr_ljungbox(
+        resid_bic,
+        lags=[4, 8, 12],
+        model_df=1,
+        return_df=True
+    )
+)
+# %%
+# =============================================================================
+# 13. Expanding-window out-of-sample forecast evaluation
+# =============================================================================
+import warnings
+import numpy as np
+import pandas as pd
+from statsmodels.tsa.arima.model import ARIMA
+
+# Complete quarterly GDP growth series
+y=(analysis_data.set.index("Quarter")["GDP_Growth"].dropna())
+# Last observation in the initial estimation sample
+initial_end= y.index.get_loc(pd.Period("2018Q4", freq="Q"))
+horizons= [1,4]
+errors_arima= {1: [], 4: []}
+errors_mean= {1:[], 4:[]}
+forecasts_arima = {1:[], 4:[]}
+forecasts_mean = {1:[], 4:[]}
+forecast_dates= {1:[], 4:[]}
