@@ -462,7 +462,11 @@ import pandas as pd
 from statsmodels.tsa.arima.model import ARIMA
 
 # Complete quarterly GDP growth series
-y=(analysis_data.set.index("Quarter")["GDP_Growth"].dropna())
+y = (
+    analysis_data
+    .set_index("Quarter")["GDP_Growth"]
+    .dropna()
+)
 # Last observation in the initial estimation sample
 initial_end= y.index.get_loc(pd.Period("2018Q4", freq="Q"))
 horizons= [1,4]
@@ -471,3 +475,25 @@ errors_mean= {1:[], 4:[]}
 forecasts_arima = {1:[], 4:[]}
 forecasts_mean = {1:[], 4:[]}
 forecast_dates= {1:[], 4:[]}
+for h in horizons:
+    for origin in range(initial_end, len(y)- h):
+        train = y.iloc[:origin +1]
+        actual = y.iloc[origin + h]
+    try:     
+       with warnings.catch_warnings():
+                warnings.simplefilter("ignore")
+
+                fitted_model = ARIMA(
+                    train,
+                    order=(0, 0, 1),
+                    trend="c",
+                    enforce_stationarity=True,
+                    enforce_invertibility=True
+                ).fit()
+       arima_forecast = fitted_model.forecast(
+                  steps=h
+            ).iloc[-1]
+    except Exception:
+            arima_forecast = np.nan
+# Historical-mean benchmark
+    mean_forecast
