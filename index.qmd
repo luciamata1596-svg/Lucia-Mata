@@ -47,3 +47,13 @@ My research interests include marketing analytics, applied economics, time-serie
 **LinkedIn:** [linkedin.com/in/lucia-denisse-mata](https://www.linkedin.com/in/lucia-denisse-mata-/)
 
 **GitHub:** [github.com/luciamata1596-svg](https://github.com/luciamata1596-svg)
+
+---
+title: "Research Project"
+---
+## Overview
+I am developing a time series forecasting project on
+Forecasting Mexico’s Quarterly Real GDP Growth, as part of ECON-5371. A full description,
+methodology, and results will be posted here as the project develops.
+## Status
+*Proposal stage — details forthcoming.*
