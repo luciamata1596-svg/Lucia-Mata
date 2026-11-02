@@ -16,7 +16,7 @@ I am a graduate student in Economics at UTEP, with a focus on on macroeconomics,
 - B.B.A. in International Business with a Minor in Marketing, The University of Texas at El Paso (2021)
 
 ### Experience
-
+- Master’s Teaching Assistant, The University of Texas at El Paso, September 2026–Current
 - Master’s Teaching Assistant, The University of Texas at El Paso, January 2025–May 2025
 - Content Creator Specialist, Aventus, February 2024–October 2024
 - Marketing Manager, El Bodegón, June 2020–February 2024
@@ -31,14 +31,14 @@ My research interests include marketing analytics, applied economics, time-serie
 
 ## Skills
 
-- Python, including pandas and statsmodels
-- R and Stata
-- Time-series forecasting and econometric analysis
-- Excel, including macros, PivotTables, VLOOKUP, and Solver
-- Adobe Creative Cloud and Canva
-- Social media management, content creation, and digital advertising
-- Bilingual in English and Spanish
-- Professional working proficiency in French
+- Python, including pandas and statsmodels.
+- R and Stata programming.
+- Time-series forecasting and econometric analysis.
+- Excel, including macros, PivotTables, VLOOKUP, and Solver.
+- Adobe Creative Cloud and Canva.
+- Social media management, content creation, and digital advertising.
+- Bilingual in English and Spanish.
+- Professional working proficiency in French.
 
 ## Contact
 
