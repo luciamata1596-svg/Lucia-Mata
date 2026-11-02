@@ -265,10 +265,289 @@ plot_pacf(
 for ax in axes:
     ax.set_xlabel("Lag (quarters)")
     ax.set_ylabel("Correlation")
-    ax.grid(alpha=0.20)
 
 fig.tight_layout()
 plt.show()
+
+# %%
+# =============================================================================
+# Chow tests for the 2008–2009 Global Financial Crisis
+# =============================================================================
+
+import numpy as np
+import pandas as pd
+from scipy import stats
+from statsmodels.api import OLS
+
+# Prepare Mexico's quarterly GDP-growth data
+df = analysis_data[
+    ["Quarter", "GDP_Growth"]
+].copy()
+
+# Create AR(2) lags
+df["GDP_Growth_lag1"] = (
+    df["GDP_Growth"].shift(1)
+)
+
+df["GDP_Growth_lag2"] = (
+    df["GDP_Growth"].shift(2)
+)
+
+df = df.dropna().reset_index(drop=True)
+
+
+def chow_test_ar2(data, break_period):
+
+    # Dependent variable
+    y = data["GDP_Growth"].to_numpy()
+
+    # Constant and two growth lags
+    X = np.column_stack([
+        np.ones(len(data)),
+        data["GDP_Growth_lag1"].to_numpy(),
+        data["GDP_Growth_lag2"].to_numpy()
+    ])
+
+    # Break dummy
+    D = (
+        data["Quarter"] >= break_period
+    ).astype(float).to_numpy()
+
+    # Allow every coefficient to change after the break
+    X_unrestricted = np.column_stack([
+        X,
+        D[:, None] * X
+    ])
+
+    # Estimate restricted and unrestricted models
+    restricted = OLS(y, X).fit()
+    unrestricted = OLS(y, X_unrestricted).fit()
+
+    RSS_restricted = restricted.ssr
+    RSS_unrestricted = unrestricted.ssr
+
+    T = len(y)
+    k = X.shape[1]  # Constant plus two lags
+
+    # Chow F-statistic
+    F_statistic = (
+        ((RSS_restricted - RSS_unrestricted) / k)
+        / (RSS_unrestricted / (T - 2 * k))
+    )
+
+    p_value = stats.f.sf(
+        F_statistic,
+        k,
+        T - 2 * k
+    )
+
+    return {
+        "Break": str(break_period),
+        "F-statistic": F_statistic,
+        "p-value": p_value,
+        "Conclusion": (
+            "Structural break"
+            if p_value < 0.10
+            else "No significant break"
+        )
+    }
+
+
+# Test two possible crisis dates
+break_dates = [
+    pd.Period("2008Q4", freq="Q"),
+    pd.Period("2009Q1", freq="Q")
+]
+
+chow_results = pd.DataFrame([
+    chow_test_ar2(df, break_date)
+    for break_date in break_dates
+])
+
+print(
+    chow_results.round({
+        "F-statistic": 3,
+        "p-value": 4
+    })
+)
+# %%
+# Structural-break test: Chow test at 2020 Q2
+# =============================================================================
+
+from statsmodels.api import OLS, add_constant
+from scipy import stats
+import pandas as pd
+import numpy as np
+
+# Prepare Mexico's quarterly GDP-growth series
+df = analysis_data[["Quarter", "GDP_Growth"]].copy()
+
+# Create two GDP-growth lags
+df["GDP_Growth_lag1"] = df["GDP_Growth"].shift(1)
+df["GDP_Growth_lag2"] = df["GDP_Growth"].shift(2)
+
+df = df.dropna().reset_index(drop=True)
+
+# Suspected COVID-19 break
+BREAK = pd.Period("2020Q2", freq="Q")
+
+# Intercept plus two AR lags
+k = 3
+
+# Dummy equals 1 beginning in 2020 Q2
+D = (
+    df["Quarter"] >= BREAK
+).astype(float).to_numpy()
+
+# Restricted AR(2) model
+X_full = np.column_stack([
+    np.ones(len(df)),
+    df["GDP_Growth_lag1"].to_numpy(),
+    df["GDP_Growth_lag2"].to_numpy()
+])
+
+# Unrestricted model allows every coefficient to change after 2020 Q2
+X_unrestricted = np.column_stack([
+    X_full,
+    D[:, None] * X_full
+])
+
+y_vec = df["GDP_Growth"].to_numpy()
+
+restricted_model = OLS(y_vec, X_full).fit()
+unrestricted_model = OLS(y_vec, X_unrestricted).fit()
+
+RSS_restricted = restricted_model.ssr
+RSS_unrestricted = unrestricted_model.ssr
+T = len(y_vec)
+
+# Chow-test statistic
+F_chow = (
+    ((RSS_restricted - RSS_unrestricted) / k)
+    / (RSS_unrestricted / (T - 2 * k))
+)
+
+p_value = 1 - stats.f.cdf(
+    F_chow,
+    k,
+    T - 2 * k
+)
+
+print("Chow Test — AR(2) Model for Mexico's Quarterly GDP Growth")
+print("Break date: 2020 Q2")
+print(f"F-statistic: {F_chow:.3f}")
+print(f"p-value: {p_value:.4f}")
+
+if p_value < 0.10:
+    print(
+        "Reject H0 at the 10% level: "
+        "evidence of a structural break."
+    )
+else:
+    print(
+        "Fail to reject H0 at the 10% level: "
+        "insufficient evidence of a structural break."
+    )# %%
+# =============================================================================
+# Chow tests for the 2008–2009 Global Financial Crisis
+# =============================================================================
+
+import numpy as np
+import pandas as pd
+from scipy import stats
+from statsmodels.api import OLS
+
+# Prepare Mexico's quarterly GDP-growth data
+df = analysis_data[
+    ["Quarter", "GDP_Growth"]
+].copy()
+
+# Create AR(2) lags
+df["GDP_Growth_lag1"] = (
+    df["GDP_Growth"].shift(1)
+)
+
+df["GDP_Growth_lag2"] = (
+    df["GDP_Growth"].shift(2)
+)
+
+df = df.dropna().reset_index(drop=True)
+
+
+def chow_test_ar2(data, break_period):
+
+    # Dependent variable
+    y = data["GDP_Growth"].to_numpy()
+
+    # Constant and two growth lags
+    X = np.column_stack([
+        np.ones(len(data)),
+        data["GDP_Growth_lag1"].to_numpy(),
+        data["GDP_Growth_lag2"].to_numpy()
+    ])
+
+    # Break dummy
+    D = (
+        data["Quarter"] >= break_period
+    ).astype(float).to_numpy()
+
+    # Allow every coefficient to change after the break
+    X_unrestricted = np.column_stack([
+        X,
+        D[:, None] * X
+    ])
+
+    # Estimate restricted and unrestricted models
+    restricted = OLS(y, X).fit()
+    unrestricted = OLS(y, X_unrestricted).fit()
+
+    RSS_restricted = restricted.ssr
+    RSS_unrestricted = unrestricted.ssr
+
+    T = len(y)
+    k = X.shape[1]  # Constant plus two lags
+
+    # Chow F-statistic
+    F_statistic = (
+        ((RSS_restricted - RSS_unrestricted) / k)
+        / (RSS_unrestricted / (T - 2 * k))
+    )
+
+    p_value = stats.f.sf(
+        F_statistic,
+        k,
+        T - 2 * k
+    )
+
+    return {
+        "Break": str(break_period),
+        "F-statistic": F_statistic,
+        "p-value": p_value,
+        "Conclusion": (
+            "Structural break"
+            if p_value < 0.10
+            else "No significant break"
+        )
+    }
+
+
+# Test two possible crisis dates
+break_dates = [
+    pd.Period("2008Q4", freq="Q"),
+    pd.Period("2009Q1", freq="Q")
+]
+
+chow_results = pd.DataFrame([
+    chow_test_ar2(df, break_date)
+    for break_date in break_dates
+])
+
+print(
+    chow_results.round({
+        "F-statistic": 3,
+        "p-value": 4
+    })
+)
 # %%
 # =============================================================================
 # 10.ADF and KPSS tests
@@ -454,33 +733,42 @@ print(
 )
 # %%
 # =============================================================================
-# 13. Expanding-window out-of-sample forecast evaluation
+# 13. Expanding-window out-of-sample forecasts
 # =============================================================================
+
 import warnings
 import numpy as np
 import pandas as pd
 from statsmodels.tsa.arima.model import ARIMA
 
-# Complete quarterly GDP growth series
+# Quarterly GDP growth with Quarter as the index
 y = (
     analysis_data
     .set_index("Quarter")["GDP_Growth"]
     .dropna()
 )
-# Last observation in the initial estimation sample
-initial_end= y.index.get_loc(pd.Period("2018Q4", freq="Q"))
-horizons= [1,4]
-errors_arima= {1: [], 4: []}
-errors_mean= {1:[], 4:[]}
-forecasts_arima = {1:[], 4:[]}
-forecasts_mean = {1:[], 4:[]}
-forecast_dates= {1:[], 4:[]}
+
+# Position of 2018Q4 in the growth series
+initial_end = y.index.get_loc(
+    pd.Period("2018Q4", freq="Q")
+)
+
+horizons = [1, 4]
+forecast_results = []
+
 for h in horizons:
-    for origin in range(initial_end, len(y)- h):
-        train = y.iloc[:origin +1]
+
+    for origin in range(initial_end, len(y) - h):
+
+        # Expanding estimation window
+        train = y.iloc[:origin + 1]
+
+        forecast_origin = y.index[origin]
+        target_date = y.index[origin + h]
         actual = y.iloc[origin + h]
-    try:     
-       with warnings.catch_warnings():
+
+        try:
+            with warnings.catch_warnings():
                 warnings.simplefilter("ignore")
 
                 fitted_model = ARIMA(
@@ -490,10 +778,132 @@ for h in horizons:
                     enforce_stationarity=True,
                     enforce_invertibility=True
                 ).fit()
-       arima_forecast = fitted_model.forecast(
-                  steps=h
-            ).iloc[-1]
-    except Exception:
+
+            arima_forecast = (
+                fitted_model
+                .forecast(steps=h)
+                .iloc[-1]
+            )
+
+        except Exception as error:
+            print(
+                f"Forecast failed at {forecast_origin}, "
+                f"h={h}: {error}"
+            )
+
             arima_forecast = np.nan
-# Historical-mean benchmark
-    mean_forecast
+
+        # Historical-mean benchmark
+        mean_forecast = train.mean()
+
+        # Store one row for every forecast
+        forecast_results.append({
+            "Horizon": h,
+            "Origin": forecast_origin,
+            "Target": target_date,
+            "Actual": actual,
+            "ARIMA_Forecast": arima_forecast,
+            "Mean_Forecast": mean_forecast,
+            "ARIMA_Error": actual - arima_forecast,
+            "Mean_Error": actual - mean_forecast
+        })
+
+forecast_results = pd.DataFrame(
+    forecast_results
+).dropna()
+
+print(forecast_results.head())
+# %%
+# Check the evaluation sample
+for h in horizons:
+
+    results_h = forecast_results[
+        forecast_results["Horizon"] == h
+    ]
+
+    print(f"\nHorizon h={h}")
+    print("Number of forecasts:", len(results_h))
+    print("First target:", results_h["Target"].min())
+    print("Last target:", results_h["Target"].max())
+# %%
+# =============================================================================
+# 14. Forecast accuracy: RMSE and MAE
+# =============================================================================
+
+def rmse(errors):
+    return np.sqrt(
+        np.mean(np.asarray(errors) ** 2)
+    )
+
+
+def mae(errors):
+    return np.mean(
+        np.abs(np.asarray(errors))
+    )
+
+
+# Accuracy table
+accuracy_rows = []
+
+for h in horizons:
+
+    results_h = forecast_results[
+        forecast_results["Horizon"] == h
+    ]
+
+    accuracy_rows.append({
+        "Model": "ARIMA(0,0,1)",
+        "Horizon": h,
+        "RMSE": rmse(results_h["ARIMA_Error"]),
+        "MAE": mae(results_h["ARIMA_Error"])
+    })
+
+    accuracy_rows.append({
+        "Model": "Historical Mean",
+        "Horizon": h,
+        "RMSE": rmse(results_h["Mean_Error"]),
+        "MAE": mae(results_h["Mean_Error"])
+    })
+
+accuracy_table = pd.DataFrame(accuracy_rows)
+
+print("Forecast accuracy:")
+print(accuracy_table.round(3))
+
+
+# Accuracy-ratio table
+ratio_rows = []
+
+for h in horizons:
+
+    results_h = forecast_results[
+        forecast_results["Horizon"] == h
+    ]
+
+    ratio_rows.append({
+        "Horizon": f"h={h}",
+
+        "RMSE Ratio": (
+            rmse(results_h["ARIMA_Error"])
+            / rmse(results_h["Mean_Error"])
+        ),
+
+        "MAE Ratio": (
+            mae(results_h["ARIMA_Error"])
+            / mae(results_h["Mean_Error"])
+        )
+    })
+
+ratio_table = pd.DataFrame(ratio_rows)
+
+print("\nAccuracy ratios: ARIMA / Historical Mean")
+print(ratio_table.round(3))
+print(
+    forecast_results
+    .groupby("Horizon")
+    .agg(
+        Observations=("Target", "count"),
+        First_Target=("Target", "min"),
+        Last_Target=("Target", "max")
+    )
+)
