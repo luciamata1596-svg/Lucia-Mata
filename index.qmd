@@ -51,6 +51,7 @@ My research interests include marketing analytics, applied economics, time-serie
 ---
 title: "Research Project"
 ---
+
 ## Overview
 I am developing a time series forecasting project on
 Forecasting Mexico’s Quarterly Real GDP Growth, as part of ECON-5371. A full description,
