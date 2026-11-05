@@ -2,7 +2,7 @@
 title: "Lucia Mata"
 ---
 
-![Professional headshot](images/headshot.jpeg){width=200px}
+![](images/headshot.jpg){width=250px fig-alt="Professional headshot"}
 
 I am a graduate student in Economics at UTEP, with a focus on on macroeconomics, econometrics, and time-series forecasting.
 
