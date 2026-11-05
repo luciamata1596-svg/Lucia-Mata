@@ -23,3 +23,13 @@
   fill: white !important;
   color: white !important;
 }
+/* Burgundy page and section titles */
+.quarto-title-block .quarto-title .title,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #800020 !important;
+}

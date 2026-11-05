@@ -3,7 +3,7 @@ title: "Lucia Mata"
 ---
 
 ::: {.text-center}
-![](images/headshot.jpeg){width=320px fig-alt="Professional headshot"}
+![](images/headshot.jpg){width=320px fig-alt="Professional headshot"}
 :::
 
 I am a graduate student in Economics at UTEP, with a focus on macroeconomics, econometrics, and time-series forecasting.
@@ -50,9 +50,8 @@ My research interests include marketing analytics, applied economics, time-serie
 
 **GitHub:** [github.com/luciamata1596-svg](https://github.com/luciamata1596-svg)
 
----
-title: "Research Project"
----
+
+ ## Research Project
 
 ## Overview
 I am developing a time series forecasting project on
