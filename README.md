@@ -1,7 +1,7 @@
 # Lucia Mata — Personal Website
 Source code for my personal website, built with Quarto and
 deployed via GitHub Pages.
-**Live site:** https://yourusername.github.io
+**Live site:** https://luciamata1596-svg.github.io/Lucia-Mata/
 ## Built with
 - [Quarto](https://quarto.org)
 - GitHub Pages
