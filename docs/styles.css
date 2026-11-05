@@ -33,3 +33,22 @@ h5,
 h6 {
   color: #800020 !important;
 }
+/* Burgundy “On this page” menu */
+#toc-title,
+.sidebar nav[role="doc-toc"] a,
+#TOC .nav-link {
+  color: #800020 !important;
+}
+
+/* Burgundy active item and vertical line */
+.sidebar nav[role="doc-toc"] a.active,
+#TOC .nav-link.active {
+  color: #800020 !important;
+  border-left-color: #800020 !important;
+}
+
+/* Slightly lighter burgundy on hover */
+.sidebar nav[role="doc-toc"] a:hover,
+#TOC .nav-link:hover {
+  color: #a51c3a !important;
+}
