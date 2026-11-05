@@ -50,8 +50,7 @@ My research interests include marketing analytics, applied economics, time-serie
 
 **GitHub:** [github.com/luciamata1596-svg](https://github.com/luciamata1596-svg)
 
-
- ## Research Project
+## Research Project
 
 ## Overview
 I am developing a time series forecasting project on
