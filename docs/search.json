@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "Research Project",
     "section": "",
-    "text": "I am a graduate student in Economics at UTEP, with a focus on on macroeconomics, econometrics, and time-series forecasting."
+    "text": "I am a graduate student in Economics at UTEP, with a focus on macroeconomics, econometrics, and time-series forecasting."
   },
   {
     "objectID": "about.html",
@@ -53,7 +53,7 @@
     "href": "index.html#overview",
     "title": "Research Project",
     "section": "Overview",
-    "text": "Overview\nI am developing a time series forecasting project on Forecasting Mexico’s Quarterly Real GDP Growth, as part of ECON-5371. A full description, methodology, and results will be posted here as the project develops. ## Status Proposal stage — details forthcoming."
+    "text": "Overview\nI am developing a time series forecasting project on Forecasting Mexico’s Quarterly Real GDP Growth, as part of ECON-5371. A full description, methodology, and results will be posted here as the project develops."
   },
   {
     "objectID": "index.html#overview-1",
@@ -61,5 +61,12 @@
     "title": "Research Project",
     "section": "Overview",
     "text": "Overview\nI am developing a time series forecasting project on Forecasting Mexico’s Quarterly Real GDP Growth, as part of ECON-5371. A full description, methodology, and results will be posted here as the project develops. ## Status Proposal stage — details forthcoming."
+  },
+  {
+    "objectID": "index.html#status",
+    "href": "index.html#status",
+    "title": "Research Project",
+    "section": "Status",
+    "text": "Status\nProposal stage — details forthcoming."
   }
 ]
