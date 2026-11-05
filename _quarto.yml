@@ -10,6 +10,9 @@ website:
         text: Home
       - href: project.qmd
         text: Project
+project:
+type: website
+output-dir: docs
 
 format:
   html:
