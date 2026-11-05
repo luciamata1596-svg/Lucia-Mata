@@ -1,16 +1,25 @@
-/* css styles */
-/* Burgundy titles and headings */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  color: #800020;
+/* Burgundy navigation bar */
+#quarto-header .navbar {
+  background-color: #800020 !important;
 }
 
-/* Website name in the navigation bar */
-.navbar-brand,
-.navbar-title {
-  color: #800020 !important;
+/* White navigation text */
+#quarto-header .navbar-brand,
+#quarto-header .navbar-title,
+#quarto-header .navbar-nav .nav-link,
+#quarto-header .navbar-nav .nav-link.active,
+#quarto-header #quarto-search {
+  color: white !important;
+}
+
+/* Lighter color when hovering */
+#quarto-header .navbar-nav .nav-link:hover,
+#quarto-header .navbar-brand:hover {
+  color: #f3d9df !important;
+}
+
+/* White search icon */
+#quarto-header #quarto-search svg {
+  fill: white !important;
+  color: white !important;
 }
