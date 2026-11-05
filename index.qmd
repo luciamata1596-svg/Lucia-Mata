@@ -1,7 +1,6 @@
 ---
 title: "Lucia Mata"
 ---
-favicon: images/favicon.ico
 ::: {.text-center}
 ![](images/headshot.jpeg){width=320px fig-alt="Professional headshot"}
 :::

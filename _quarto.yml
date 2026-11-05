@@ -4,6 +4,7 @@ project:
 
 website:
   title: "Lucia Mata"
+  favicon: images/favicon.ico
   navbar:
     left:
       - href: index.qmd
