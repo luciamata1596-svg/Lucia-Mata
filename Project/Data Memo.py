@@ -907,3 +907,58 @@ print(
         Last_Target=("Target", "max")
     )
 )
+# %%
+# =============================================================================
+# Forecast accuracy with and without the COVID-19 period
+# =============================================================================
+# Ensure Target is stared as a quaterly period 
+forecast_results["Target"] = pd.PeriodIndex(
+    forecast_results["Target"].astype(str),
+    freq="Q"
+)
+# COVID-19 evaluation quarters 2020 Q2–2021 Q1
+covid19_start = pd.Period("2020Q2", freq="Q")
+covid19_end= pd.Period("2021Q1", freq="Q")
+covid_mask= ((forecast_results["Target"]>=covid19_start) & (forecast_results["Target"]<= covid19_end))
+#Two Evaluation samples
+full_results = forecast_results.copy()
+
+no_covid_results = forecast_results[
+    ~covid_mask
+].copy()
+
+
+def accuracy_by_sample(data, sample_name):
+
+    rows = []
+
+    for h in [1, 4]:
+
+        results_h = data[
+            data["Horizon"] == h
+        ]
+
+        rows.append({
+            "Sample": sample_name,
+            "Model": "ARIMA(0,0,1)",
+            "Horizon": h,
+            "Observations": len(results_h),
+            "RMSE": rmse(results_h["ARIMA_Error"]),
+            "MAE": mae(results_h["ARIMA_Error"])
+        })
+
+        rows.append({
+            "Sample": sample_name,
+            "Model": "Historical Mean",
+            "Horizon": h,
+            "Observations": len(results_h),
+            "RMSE": rmse(results_h["Mean_Error"]),
+            "MAE": mae(results_h["Mean_Error"])
+        })
+
+    return pd.DataFrame(rows)
+#Calculating both sets of results
+accuracy_full = accuracy_by_sample(full_results, "Full Sample")
+accuracy_no_covid = accuracy_by_sample(no_covid_results, "Excluding 2020Q2–2021Q1")
+covid_comparison = pd.concat([accuracy_full, accuracy_no_covid], ignore_index=True)
+print(covid_comparison.round(3))
