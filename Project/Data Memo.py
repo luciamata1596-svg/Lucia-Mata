@@ -2,6 +2,7 @@
 # Data documentation, summary statistics, and visualization
 
 # %%
+from numpy.lib.scimath import power
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -962,3 +963,46 @@ accuracy_full = accuracy_by_sample(full_results, "Full Sample")
 accuracy_no_covid = accuracy_by_sample(no_covid_results, "Excluding 2020Q2–2021Q1")
 covid_comparison = pd.concat([accuracy_full, accuracy_no_covid], ignore_index=True)
 print(covid_comparison.round(3))
+# %%
+# =============================================================================
+# 16. Diebold-Mariano tests with HLN small-sample correction
+# =============================================================================
+def dm_test_nw_h1n(e1,e2, h, power=2):
+# DM test using the Newey-West procedure plus the HLN small-sample correction.
+    e1=np.asarray(e1)
+    e2=np.asarray(e2)
+#Loss differential 
+    d= np.abs(e1)**power - np.abs(e2)**power
+    d_c= d- d.mean()
+    n= len(d)
+    bw= max(h,1)
+# Newey-West long-run variance
+    gamma0= np.mean(d_c**2)
+    lrv= gamma0
+    for k in range(1, btw +1):
+        weight = 1 -k/(bw + 1)
+        gamma_k = np.mean(d_c[k:]* d_c[:k])
+        lrv += 2 * weight * gamma_k
+# Original DM statistic
+    dm_stat = dm.mean()/ np.sqrt(lrv/n)
+# HLN small-sample correction   
+    hln_factor = np.sqrt((n+1 - 2*h + h*(h-1)/n)/n)
+    dm_hln = dm_stat * hln_factor
+    return dm_hln, p_value, d
+
+# DM-HLN test: ARIMA versus historical mean
+samples_dm = {"Full sample": forecast_results, "Exluding 2020Q2–2021Q1": no_covid_results}
+dm_rows = []
+for sample_name, data in samples_dm.items(): 
+    for h in [1,4]: 
+        results_h = data[data["Horizon"]== h].dropna(subset=["ARIMA_Error", "Mean_Error"])
+        dm_stat, p_value, _ = dm_test_nw_hln(results_h["ARIMA_Error"], results_h["Mean_Error"], h=h, power=2)
+        dm_rows.append({
+            "Sample": sample_name,
+            "Horizon": h,
+            "Observations": len(results_h), 
+            "DM-HLN Statistic": dm_stat, 
+            "p-value": p_value,
+            "Decision (5%)": ("Reject H0" if p_value < 0.05 else "Fail to reject H0")})
+dm_table= pd.DataFrame(dm_rows)            
+print(dm_table.round(3))
