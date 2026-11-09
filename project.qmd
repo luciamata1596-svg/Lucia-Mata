@@ -3,3 +3,8 @@ title: "Project"
 
 format: html
 ---
+::: {.text-center}
+## Forecasting Mexico’s Quarterly Real GDP Growth
+:::
+## Abstract 
+This study evaluates whether an ARIMA model forecasts Mexico’s quarterly real GDP growth more accurately than a historical-mean benchmark at one- and four-quarter horizons. Using seasonally adjusted real GDP data from INEGI, quarterly growth was modeled with ARIMA (0,0,1), selected using BIC and residual diagnostics. Forecast accuracy was estimated over an expanding window from 2019 Q1 to 2025 Q4 using Root Mean Square Error (RMSE) and Mean Absolute Error (MAE). Because the historical-mean benchmark performed better at the one-quarter horizon and nearly identically at the four-quarter horizon, the ARIMA model’s added complexity was not justified. These results may have limitations, including structural breaks, GDP data revisions, and the model’s reliance on past GDP growth.
