@@ -14,7 +14,7 @@ from scipy.stats import t as student_t
 # =============================================================================
 
 mexico_gdp = pd.read_excel(
-    "Project/data/pibt_cte_valor.xlsx",
+    "Project/Raw Data/pibt_cte_valor.xlsx",
     sheet_name="desest-valor",
     header=None
 )
@@ -45,8 +45,6 @@ gdp_clean = pd.DataFrame({
 })
 
 gdp_clean.head()
-
-
 # %%
 # =============================================================================
 # 3. Limit the research sample to 1993 Q1–2025 Q4
@@ -69,7 +67,21 @@ analysis_data["GDP_Growth"] = (
 )
 
 analysis_data.head()
+# %%
+# =============================================================================
+# 5. Export the final clean research dataset
+# =============================================================================
 
+clean_export = analysis_data[
+    ["Quarter", "Real_GDP", "Log_Real_GDP", "GDP_Growth"]
+].copy()
+
+clean_export["Quarter"] = clean_export["Quarter"].astype(str)
+
+clean_export.to_csv(
+    "Project/Clean Data/mexico_gdp_clean.csv",
+    index=False
+)
 
 # %%
 # =============================================================================
@@ -551,6 +563,80 @@ print(
 )
 # %%
 # =============================================================================
+# Structural-break robustness: 1994–95 peso-crisis dummy
+# =============================================================================
+
+from statsmodels.tsa.arima.model import ARIMA
+import pandas as pd
+
+# Use only the pre-2019 estimation sample
+crisis_data = (
+    estimation_sample
+    .dropna(subset=["GDP_Growth"])
+    .copy()
+)
+
+# Temporary crisis dummy:
+# 1 during 1994 Q4–1995 Q4 and 0 otherwise
+crisis_data["Peso_Crisis_Dummy"] = (
+    (crisis_data["Quarter"] >= pd.Period("1994Q4", freq="Q"))
+    &
+    (crisis_data["Quarter"] <= pd.Period("1995Q4", freq="Q"))
+).astype(int)
+
+y_crisis = crisis_data["GDP_Growth"]
+x_crisis = crisis_data[["Peso_Crisis_Dummy"]]
+
+# Baseline selected model
+model_without_dummy = ARIMA(
+    y_crisis,
+    order=(0, 0, 1),
+    trend="c"
+).fit()
+
+# Same model with the crisis dummy
+model_with_dummy = ARIMA(
+    y_crisis,
+    exog=x_crisis,
+    order=(0, 0, 1),
+    trend="c"
+).fit()
+
+# Compare specifications
+dummy_comparison = pd.DataFrame({
+    "Specification": [
+        "ARIMA(0,0,1)",
+        "ARIMA(0,0,1) + Peso-crisis dummy"
+    ],
+    "AIC": [
+        model_without_dummy.aic,
+        model_with_dummy.aic
+    ],
+    "BIC": [
+        model_without_dummy.bic,
+        model_with_dummy.bic
+    ]
+})
+
+print(dummy_comparison.round(3))
+
+print("\nPeso-crisis dummy coefficient:")
+print(
+    round(
+        model_with_dummy.params["Peso_Crisis_Dummy"],
+        4
+    )
+)
+
+print("Peso-crisis dummy p-value:")
+print(
+    round(
+        model_with_dummy.pvalues["Peso_Crisis_Dummy"],
+        4
+    )
+)
+# %%
+# =============================================================================
 # 10.ADF and KPSS tests
 # =============================================================================
 from statsmodels.tsa.stattools import adfuller, kpss
@@ -749,7 +835,7 @@ y = (
     .dropna()
 )
 
-# Position of 2018Q4 in the growth series
+# Position of 2018 Q4 in the growth series
 initial_end = y.index.get_loc(
     pd.Period("2018Q4", freq="Q")
 )
@@ -768,6 +854,7 @@ for h in horizons:
         target_date = y.index[origin + h]
         actual = y.iloc[origin + h]
 
+        # ARIMA(0,0,1) forecast
         try:
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore")
@@ -788,14 +875,41 @@ for h in horizons:
 
         except Exception as error:
             print(
-                f"Forecast failed at {forecast_origin}, "
+                f"ARIMA forecast failed at {forecast_origin}, "
                 f"h={h}: {error}"
             )
-
             arima_forecast = np.nan
+
+        # AR(1) benchmark
+        try:
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore")
+
+                fitted_ar1 = ARIMA(
+                    train,
+                    order=(1, 0, 0),
+                    trend="c",
+                    enforce_stationarity=True
+                ).fit()
+
+            ar1_forecast = (
+                fitted_ar1
+                .forecast(steps=h)
+                .iloc[-1]
+            )
+
+        except Exception as error:
+            print(
+                f"AR(1) forecast failed at {forecast_origin}, "
+                f"h={h}: {error}"
+            )
+            ar1_forecast = np.nan
 
         # Historical-mean benchmark
         mean_forecast = train.mean()
+
+        # Random-walk benchmark: last observed GDP growth
+        rw_forecast = train.iloc[-1]
 
         # Store one row for every forecast
         forecast_results.append({
@@ -803,17 +917,26 @@ for h in horizons:
             "Origin": forecast_origin,
             "Target": target_date,
             "Actual": actual,
+
             "ARIMA_Forecast": arima_forecast,
             "Mean_Forecast": mean_forecast,
+            "RW_Forecast": rw_forecast,
+            "AR1_Forecast": ar1_forecast,
+
             "ARIMA_Error": actual - arima_forecast,
-            "Mean_Error": actual - mean_forecast
+            "Mean_Error": actual - mean_forecast,
+            "RW_Error": actual - rw_forecast,
+            "AR1_Error": actual - ar1_forecast
         })
 
-forecast_results = pd.DataFrame(
-    forecast_results
-).dropna()
+forecast_results = (
+    pd.DataFrame(forecast_results)
+    .dropna()
+)
 
 print(forecast_results.head())
+
+
 # %%
 # Check the evaluation sample
 for h in horizons:
@@ -832,18 +955,13 @@ for h in horizons:
 # =============================================================================
 
 def rmse(errors):
-    return np.sqrt(
-        np.mean(np.asarray(errors) ** 2)
-    )
+    return np.sqrt(np.mean(np.asarray(errors) ** 2))
 
 
 def mae(errors):
-    return np.mean(
-        np.abs(np.asarray(errors))
-    )
+    return np.mean(np.abs(np.asarray(errors)))
 
 
-# Accuracy table
 accuracy_rows = []
 
 for h in horizons:
@@ -866,62 +984,46 @@ for h in horizons:
         "MAE": mae(results_h["Mean_Error"])
     })
 
+    accuracy_rows.append({
+        "Model": "Random Walk",
+        "Horizon": h,
+        "RMSE": rmse(results_h["RW_Error"]),
+        "MAE": mae(results_h["RW_Error"])
+    })
+
+    accuracy_rows.append({
+        "Model": "AR(1)",
+        "Horizon": h,
+        "RMSE": rmse(results_h["AR1_Error"]),
+        "MAE": mae(results_h["AR1_Error"])
+    })
+
+
 accuracy_table = pd.DataFrame(accuracy_rows)
 
 print("Forecast accuracy:")
 print(accuracy_table.round(3))
-
-
-# Accuracy-ratio table
-ratio_rows = []
-
-for h in horizons:
-
-    results_h = forecast_results[
-        forecast_results["Horizon"] == h
-    ]
-
-    ratio_rows.append({
-        "Horizon": f"h={h}",
-
-        "RMSE Ratio": (
-            rmse(results_h["ARIMA_Error"])
-            / rmse(results_h["Mean_Error"])
-        ),
-
-        "MAE Ratio": (
-            mae(results_h["ARIMA_Error"])
-            / mae(results_h["Mean_Error"])
-        )
-    })
-
-ratio_table = pd.DataFrame(ratio_rows)
-
-print("\nAccuracy ratios: ARIMA / Historical Mean")
-print(ratio_table.round(3))
-print(
-    forecast_results
-    .groupby("Horizon")
-    .agg(
-        Observations=("Target", "count"),
-        First_Target=("Target", "min"),
-        Last_Target=("Target", "max")
-    )
-)
 # %%
 # =============================================================================
 # Forecast accuracy with and without the COVID-19 period
 # =============================================================================
-# Ensure Target is stared as a quaterly period 
+
+# Ensure Target is stored as a quarterly period
 forecast_results["Target"] = pd.PeriodIndex(
     forecast_results["Target"].astype(str),
     freq="Q"
 )
-# COVID-19 evaluation quarters 2020 Q2–2021 Q1
+
+# COVID-19 evaluation quarters: 2020 Q2–2021 Q1
 covid19_start = pd.Period("2020Q2", freq="Q")
-covid19_end= pd.Period("2021Q1", freq="Q")
-covid_mask= ((forecast_results["Target"]>=covid19_start) & (forecast_results["Target"]<= covid19_end))
-#Two Evaluation samples
+covid19_end = pd.Period("2021Q1", freq="Q")
+
+covid_mask = (
+    (forecast_results["Target"] >= covid19_start)
+    & (forecast_results["Target"] <= covid19_end)
+)
+
+# Two evaluation samples
 full_results = forecast_results.copy()
 
 no_covid_results = forecast_results[
@@ -957,11 +1059,43 @@ def accuracy_by_sample(data, sample_name):
             "MAE": mae(results_h["Mean_Error"])
         })
 
+        rows.append({
+            "Sample": sample_name,
+            "Model": "Random Walk",
+            "Horizon": h,
+            "Observations": len(results_h),
+            "RMSE": rmse(results_h["RW_Error"]),
+            "MAE": mae(results_h["RW_Error"])
+        })
+
+        rows.append({
+            "Sample": sample_name,
+            "Model": "AR(1)",
+            "Horizon": h,
+            "Observations": len(results_h),
+            "RMSE": rmse(results_h["AR1_Error"]),
+            "MAE": mae(results_h["AR1_Error"])
+        })
+
     return pd.DataFrame(rows)
-#Calculating both sets of results
-accuracy_full = accuracy_by_sample(full_results, "Full Sample")
-accuracy_no_covid = accuracy_by_sample(no_covid_results, "Excluding 2020Q2–2021Q1")
-covid_comparison = pd.concat([accuracy_full, accuracy_no_covid], ignore_index=True)
+
+
+# Calculate both sets of results
+accuracy_full = accuracy_by_sample(
+    full_results,
+    "Full Sample"
+)
+
+accuracy_no_covid = accuracy_by_sample(
+    no_covid_results,
+    "Excluding 2020Q2–2021Q1"
+)
+
+covid_comparison = pd.concat(
+    [accuracy_full, accuracy_no_covid],
+    ignore_index=True
+)
+
 print(covid_comparison.round(3))
 # %%
 # =============================================================================
@@ -996,21 +1130,55 @@ def dm_test_nw_hln(e1,e2, h, power=2):
 
     return dm_hln, p_value, d
 
-# DM-HLN test: ARIMA versus historical mean
-samples_dm = {"Full sample": forecast_results, "Excluding 2020Q2–2021Q1": no_covid_results}
+# DM-HLN tests: ARIMA versus all benchmarks
+samples_dm = {
+    "Full Sample": forecast_results,
+    "Excluding 2020Q2–2021Q1": no_covid_results
+}
+
+benchmarks_dm = {
+    "Historical Mean": "Mean_Error",
+    "Random Walk": "RW_Error",
+    "AR(1)": "AR1_Error"
+}
+
 dm_rows = []
-for sample_name, data in samples_dm.items(): 
-    for h in [1,4]: 
-        results_h = data[data["Horizon"]== h].dropna(subset=["ARIMA_Error", "Mean_Error"])
-        dm_stat, p_value, _ = dm_test_nw_hln(results_h["ARIMA_Error"],results_h["Mean_Error"], h=h, power=2)
-        dm_rows.append({
-            "Sample": sample_name,
-            "Horizon": h,
-            "Observations": len(results_h), 
-            "DM-HLN Statistic": dm_stat, 
-            "p-value": p_value,
-            "Decision (5%)": ("Reject H0" if p_value < 0.05 else "Fail to reject H0")})
-dm_table= pd.DataFrame(dm_rows)            
+
+for sample_name, data in samples_dm.items():
+
+    for benchmark_name, benchmark_error in benchmarks_dm.items():
+
+        for h in [1, 4]:
+
+            results_h = data[
+                data["Horizon"] == h
+            ].dropna(
+                subset=["ARIMA_Error", benchmark_error]
+            )
+
+            dm_stat, p_value, _ = dm_test_nw_hln(
+                results_h["ARIMA_Error"],
+                results_h[benchmark_error],
+                h=h,
+                power=2
+            )
+
+            dm_rows.append({
+                "Sample": sample_name,
+                "Comparison": f"ARIMA vs. {benchmark_name}",
+                "Horizon": h,
+                "Observations": len(results_h),
+                "DM-HLN Statistic": dm_stat,
+                "p-value": p_value,
+                "Decision (10%)": (
+                    "Reject H0"
+                    if p_value < 0.10
+                    else "Fail to reject H0"
+                )
+            })
+
+dm_table = pd.DataFrame(dm_rows)
+
 print(dm_table.round(3))
 
 
