@@ -124,36 +124,26 @@ Markdown(tabulate(adf_table, showindex=False, headers=adf_table.columns))
 ### Column {width=100%}
 
 ```{python}
-#| icon: list-ol
-#| color: secondary
 #| title: "ARIMA Model Comparison and Residual Diagnostics"
 
 from IPython.display import HTML, display
 
 results = [
-    [
-        "ARIMA(3,0,1)",
-        "AR1: −0.439 (<.001)<br>AR2: 0.137 (.056)<br>AR3: −0.185 (.221)<br>MA1: 1.000 (.960)",
-        "347.112", "362.920", ".489", ".636"
-    ],
-    [
-        "ARIMA(0,0,1)",
-        "MA1: 0.508 (<.001)",
-        "347.836", "355.740", ".474", ".647"
-    ],
+    ["ARIMA(3,0,1)",
+     "AR1: −0.439 (<.001)<br>AR2: 0.137 (.056)<br>AR3: −0.185 (.221)<br>MA1: 1.000 (.960)",
+     "347.112", "362.920", ".489", ".636"],
+    ["ARIMA(0,0,1)", "MA1: 0.508 (<.001)",
+     "347.836", "355.740", ".474", ".647"],
 ]
 
 table = pd.DataFrame(
     results,
     columns=[
-        "Model",
-        "Dynamic coefficients (estimate; p-value)",
+        "Model", "Dynamic coefficients (estimate; p-value)",
         "AIC", "BIC", "LB p, lag 8", "LB p, lag 12"
     ]
 )
 
-```{python}
-# ARIMA table code
 display(HTML(table.to_html(index=False, escape=False)))
 ```
 ```{python}
