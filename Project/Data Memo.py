@@ -1120,6 +1120,26 @@ with pd.ExcelWriter(output_file) as writer:
 print(f"Tables exported successfully to: {output_file}")
 print("Exported sheets:", list(tables_found.keys()))
 
+# %%
+# =============================================================================
+# Out-of-sample forecast comparison graph
+# =============================================================================
 
+from pathlib import Path
+
+plot_data = forecast_results.copy()
+
+# Convert quarterly targets into dates for the x-axis
+plot_data["Target_Date"] = pd.PeriodIndex(
+    plot_data["Target"].astype(str),
+    freq="Q"
+).to_timestamp()
+
+fig, axes = plt.subplots(
+    2, 1,
+    figsize=(11, 8),
+    sharex=True,
+    sharey=True
+)
 
 
