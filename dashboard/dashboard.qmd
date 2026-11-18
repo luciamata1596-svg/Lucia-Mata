@@ -150,7 +150,7 @@ display(HTML(table.to_html(index=False, escape=False)))
 #| include: false
 import pandas as pd
 from IPython.display import HTML, display
-```
+
 forecast_results = pd.DataFrame([
     ["Full Sample", "ARIMA (0,0,1)", 1, 28, 6.327, 2.410],
     ["Full Sample", "Historical Mean", 1, 28, 4.963, 1.960],
@@ -160,7 +160,6 @@ forecast_results = pd.DataFrame([
     ["Full Sample", "Historical Mean", 4, 25, 5.228, 2.118],
     ["Full Sample", "Random Walk", 4, 25, 7.481, 3.801],
     ["Full Sample", "AR (1)", 4, 25, 5.250, 2.199],
-
     ["Excluding 2020 Q2–2021 Q1", "ARIMA (0,0,1)", 1, 24, 0.699, 0.580],
     ["Excluding 2020 Q2–2021 Q1", "Historical Mean", 1, 24, 0.763, 0.633],
     ["Excluding 2020 Q2–2021 Q1", "Random Walk", 1, 24, 0.891, 0.674],
@@ -170,8 +169,11 @@ forecast_results = pd.DataFrame([
     ["Excluding 2020 Q2–2021 Q1", "Random Walk", 4, 21, 5.917, 2.523],
     ["Excluding 2020 Q2–2021 Q1", "AR (1)", 4, 21, 0.952, 0.739],
 ], columns=[
-    "Evaluation Sample", "Model", "Horizon", "Observations", "RMSE", "MAE"
+    "Evaluation Sample", "Model", "Horizon",
+    "Observations", "RMSE", "MAE"
 ])
+```
+
 # Forecast Results
 
 ## Row {.tabset}
@@ -183,7 +185,8 @@ forecast_results = pd.DataFrame([
 
 columns = ["Model", "Horizon", "Observations", "RMSE", "MAE"]
 full = forecast_results.loc[
-    forecast_results["Evaluation Sample"] == "Full Sample", columns
+    forecast_results["Evaluation Sample"] == "Full Sample",
+    columns
 ]
 display(HTML(full.to_html(
     index=False,
@@ -206,10 +209,68 @@ display(HTML(ex_covid.to_html(
     formatters={"RMSE": "{:.3f}".format, "MAE": "{:.3f}".format}
 )))
 ```
-```{python}
 #| include: false
+import pandas as pd
+from IPython.display import HTML, display
+
+forecast_results = pd.DataFrame([
+    ["Full Sample", "ARIMA (0,0,1)", 1, 28, 6.327, 2.410],
+    ["Full Sample", "Historical Mean", 1, 28, 4.963, 1.960],
+    ["Full Sample", "Random Walk", 1, 28, 7.977, 3.038],
+    ["Full Sample", "AR (1)", 1, 28, 6.439, 2.451],
+    ["Full Sample", "ARIMA (0,0,1)", 4, 25, 5.227, 2.122],
+    ["Full Sample", "Historical Mean", 4, 25, 5.228, 2.118],
+    ["Full Sample", "Random Walk", 4, 25, 7.481, 3.801],
+    ["Full Sample", "AR (1)", 4, 25, 5.250, 2.199],
+    ["Excluding 2020 Q2–2021 Q1", "ARIMA (0,0,1)", 1, 24, 0.699, 0.580],
+    ["Excluding 2020 Q2–2021 Q1", "Historical Mean", 1, 24, 0.763, 0.633],
+    ["Excluding 2020 Q2–2021 Q1", "Random Walk", 1, 24, 0.891, 0.674],
+    ["Excluding 2020 Q2–2021 Q1", "AR (1)", 1, 24, 0.684, 0.570],
+    ["Excluding 2020 Q2–2021 Q1", "ARIMA (0,0,1)", 4, 21, 0.788, 0.649],
+    ["Excluding 2020 Q2–2021 Q1", "Historical Mean", 4, 21, 0.786, 0.645],
+    ["Excluding 2020 Q2–2021 Q1", "Random Walk", 4, 21, 5.917, 2.523],
+    ["Excluding 2020 Q2–2021 Q1", "AR (1)", 4, 21, 0.952, 0.739],
+], columns=[
+    "Evaluation Sample", "Model", "Horizon",
+    "Observations", "RMSE", "MAE"
+])
 ```
-dm_results = pd.DataFrame([
+
+# Forecast Results
+
+## Row {.tabset}
+
+### Full Sample
+
+```{python}
+#| title: "Forecast Accuracy — Full Sample"
+
+columns = ["Model", "Horizon", "Observations", "RMSE", "MAE"]
+full = forecast_results.loc[
+    forecast_results["Evaluation Sample"] == "Full Sample",
+    columns
+]
+display(HTML(full.to_html(
+    index=False,
+    formatters={"RMSE": "{:.3f}".format, "MAE": "{:.3f}".format}
+)))
+```
+
+### Excluding COVID-19
+
+```{python}
+#| title: "Forecast Accuracy — Excluding 2020 Q2–2021 Q1"
+
+columns = ["Model", "Horizon", "Observations", "RMSE", "MAE"]
+ex_covid = forecast_results.loc[
+    forecast_results["Evaluation Sample"] == "Excluding 2020 Q2–2021 Q1",
+    columns
+]
+display(HTML(ex_covid.to_html(
+    index=False,
+    formatters={"RMSE": "{:.3f}".format, "MAE": "{:.3f}".format}
+)))
+```dm_results = pd.DataFrame([
     ["Full Sample", "ARIMA vs. Historical Mean", 1, 28,  1.014, 0.320, "Fail to reject H₀"],
     ["Full Sample", "ARIMA vs. Historical Mean", 4, 25, -0.236, 0.815, "Fail to reject H₀"],
     ["Full Sample", "ARIMA vs. Random Walk",     1, 28, -1.058, 0.299, "Fail to reject H₀"],
@@ -226,6 +287,32 @@ dm_results = pd.DataFrame([
     "Evaluation Sample", "Comparison", "Horizon", "Observations",
     "DM-HLN Statistic", "p-value", "Conclusion"
 ])
-dm = dm_results.loc[
+```{python}
+#| title: "DM-HLN Tests — Full Sample"
+
+dm_full = dm_results.loc[
+    dm_results["Evaluation Sample"] == "Full Sample"
+].drop(columns="Evaluation Sample")
+
+display(HTML(dm_full.to_html(
+    index=False,
+    formatters={
+        "DM-HLN Statistic": "{:.3f}".format,
+        "p-value": "{:.3f}".format
+    }
+)))
+``````{python}
+#| title: "DM-HLN Tests — Excluding COVID-19"
+
+dm_ex_covid = dm_results.loc[
     dm_results["Evaluation Sample"] == "Excluding 2020 Q2–2021 Q1"
 ].drop(columns="Evaluation Sample")
+
+display(HTML(dm_ex_covid.to_html(
+    index=False,
+    formatters={
+        "DM-HLN Statistic": "{:.3f}".format,
+        "p-value": "{:.3f}".format
+    }
+)))
+```
