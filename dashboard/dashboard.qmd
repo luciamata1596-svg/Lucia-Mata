@@ -8,8 +8,7 @@ format:
 ---
 
 # Overview
-
-## Row {height=20%}
+# Row {height=20%}
 
 ```{python}
 #| content: valuebox
@@ -82,9 +81,7 @@ plt.show()
 ```
 
 ## Row {height=20%}
-
-### Column {width=25%}
-
+### Column {width=100%}
 ```{python}
 #| title: "Stationarity (ADF Test)"
 from statsmodels.tsa.stattools import adfuller
