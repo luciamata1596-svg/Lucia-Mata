@@ -1,0 +1,54 @@
+/*-- scss:defaults --*/
+
+// UTEP brand colors (see c4fe-brand skill for full specification)
+$utep-orange: #FF8200;
+$utep-blue:   #041E42;
+$utep-silver: #B1B3B3;
+
+// Fonts: Crimson Pro (headings/titles) and Inter (body text) --
+// UTEP's current brand fonts, both freely available via Google Fonts.
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Inter:wght@400;600;700&display=swap');
+
+$font-family-sans-serif: "Inter", Arial, sans-serif;
+$headings-font-family: "Crimson Pro", Georgia, serif;
+$headings-font-weight: 700;
+
+// Bootstrap theme colors -- driving buttons, links, and (per Quarto's
+// dashboard docs) the value box "color:" options like primary/secondary
+$primary:   $utep-blue;
+$secondary: $utep-silver;
+
+$body-color: $utep-blue;
+$link-color: $utep-orange;
+
+// Navbar: UTEP Blue background, white text -- matches the brand
+// guide's "UTEP Blue background, white text, orange accents" scheme
+$navbar-bg: $utep-blue;
+$navbar-fg: #FFFFFF;
+
+/*-- scss:rules --*/
+
+// Headings inherit the heading font/weight set above; this adds the
+// UTEP Orange accent the brand guide calls for on section headings.
+h1, h2, h3 {
+  color: $utep-blue;
+}
+
+// Card headers (the small title bar Quarto puts above each card) get
+// a subtle UTEP Silver treatment, echoing the "Silver for secondary
+// elements, borders" guidance.
+.card-header {
+  background-color: rgba($utep-silver, 0.15);
+  border-bottom: 2px solid $utep-orange;
+  font-family: $headings-font-family;
+  font-weight: 600;
+}
+
+// Active tab in a tabset: orange underline instead of Bootstrap's
+// default blue, so the accent color shows up in this frequently-used
+// interactive element too.
+.nav-tabs .nav-link.active {
+  border-bottom: 3px solid $utep-orange;
+  color: $utep-blue;
+  font-weight: 600;
+}

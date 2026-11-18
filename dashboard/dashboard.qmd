@@ -1,0 +1,159 @@
+---
+title: "ECON-5371 Project Dashboard"
+subtitle: "Forecasting Mexico’s Quarterly Real GDP Growth"
+author: "Lucia Mata"
+format:
+  dashboard:
+    theme: [cosmo, dashboard-theme.scss]
+---
+
+# Overview
+
+## Row {height=15%}
+
+```{python}
+#| content: valuebox
+#| title: "Observations"
+#| icon: calendar3
+#| color: primary
+import pandas as pd
+
+# Data lives in its own data/ subfolder, separate from code -- a habit
+# worth keeping as this repo grows. Use forward slashes in the path,
+# even on Windows: Python/pandas accept them on every OS, so the same
+# code runs unchanged whether you're on Windows, Mac, or Linux. A
+# single backslash (data\file.csv) is NOT safe here -- Python reads
+# backslashes as escape characters inside a string, which can silently
+# produce the wrong path.
+df = pd.read_csv("../Project/data/data/Clean Data/mexico_gdp_clean.csv")
+n_growth = df["GDP_Growth"].dropna().shape[0]
+dict(value=f"{n_growth:,}")
+```
+
+```{python}
+#| content: valuebox
+#| title: "GDP Growth Period"
+#| icon: clock-history
+#| color: secondary
+
+growth_df = df.dropna(subset=["GDP_Growth"])
+start_q = growth_df["Quarter"].iloc[0]
+end_q = growth_df["Quarter"].iloc[-1]
+dict(value=f"{start_q}–{end_q}")
+```
+
+```{python}
+#| content: valuebox
+#| title: "Variables"
+#| icon: bar-chart-line
+#| color: "#FF8200"
+variables = ["output_gap", "inflation", "policy_rate"]
+dict(value=len(variables))
+```
+
+## Row {height=55%}
+
+```{python}
+#| title: "Output Gap, Inflation, and Policy Rate"
+import matplotlib.pyplot as plt
+
+plt.rcParams['figure.figsize'] = (11, 4)
+
+tab10 = plt.get_cmap("tab10")
+colors = {"output_gap": tab10(0), "inflation": tab10(1), "policy_rate": tab10(2)}
+
+fig, ax = plt.subplots()
+for var in variables:
+    ax.plot(df["date"], df[var], label=var, color=colors[var], linewidth=1.2)
+ax.legend(loc="upper left", frameon=False)
+ax.set_xlim(df["date"].min(), df["date"].max())
+plt.show()
+```
+
+## Row {height=30%}
+
+### Column {width=60%}
+
+```{python}
+#| title: "Stationarity (ADF Test)"
+from statsmodels.tsa.stattools import adfuller
+from tabulate import tabulate
+from IPython.display import Markdown
+
+rows = []
+for var in variables:
+    result = adfuller(df[var], autolag="AIC")
+    verdict = "Stationary" if result[1] < 0.05 else "Unit root"
+    rows.append([var, f"{result[0]:.3f}", f"{result[1]:.4f}", verdict])
+
+adf_table = pd.DataFrame(rows, columns=["Variable", "ADF Stat", "p-value", "Result"])
+Markdown(tabulate(adf_table, showindex=False, headers=adf_table.columns))
+```
+
+### Column {width=40%}
+
+```{python}
+#| content: valuebox
+#| title: "Chosen Lag Order"
+#| icon: list-ol
+#| color: secondary
+dict(value=2)
+```
+
+```{python}
+#| content: valuebox
+#| title: "Max Eigenvalue Modulus"
+#| icon: shield-check
+#| color: "#FF8200"
+dict(value="0.881")
+```
+
+# Model Results
+
+## Row {.tabset height=100%}
+
+### Granger Causality
+
+```{python}
+from statsmodels.tsa.api import VAR
+from statsmodels.stats.diagnostic import acorr_ljungbox
+
+model = VAR(df.set_index("date")[variables])
+fit = model.fit(2)
+
+rows = []
+for cause in variables:
+    for effect in variables:
+        if cause == effect:
+            continue
+        test = fit.test_causality(effect, [cause], kind="f")
+        verdict = "Causes" if test.pvalue < 0.05 else "No evidence"
+        rows.append([cause, effect, f"{test.test_statistic:.2f}", f"{test.pvalue:.4f}", verdict])
+
+granger_table = pd.DataFrame(rows, columns=["Cause", "Effect", "F-stat", "p-value", "Result"])
+Markdown(tabulate(granger_table, showindex=False, headers=granger_table.columns))
+```
+
+### Impulse Responses
+
+```{ojs}
+viewof shock_choice = Inputs.select(
+  ["output_gap", "inflation", "policy_rate"],
+  {label: "Shock to:", value: "output_gap"}
+)
+```
+
+```{ojs}
+html`<img src="images/irf_${shock_choice}.png" style="width: 100%;">`
+```
+
+### Variance Decomposition
+
+```{python}
+plt.rcParams['figure.figsize'] = (11, 9)
+
+fevd = fit.fevd(12)
+fig = fevd.plot()
+plt.tight_layout()
+plt.show()
+```

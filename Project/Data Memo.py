@@ -2,12 +2,17 @@
 # Data documentation, summary statistics, and visualization
 
 # %%
-from numpy.lib.scimath import power
+# =============================================================================
+# Import Required packages
+# =============================================================================
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import t as student_t
-
+from statsmodels.api import OLS, add_constant
+from scipy import stats
+import warnings
+from statsmodels.tsa.arima.model import ARIMA
 # %%
 # =============================================================================
 # 1.Import the Excel File
@@ -20,8 +25,6 @@ mexico_gdp = pd.read_excel(
 )
 
 mexico_gdp.head()
-
-
 # %%
 # =============================================================================
 # 2. Clean the data
@@ -85,7 +88,7 @@ clean_export.to_csv(
 
 # %%
 # =============================================================================
-# 5. Summary statistics
+# 6. Summary statistics
 # =============================================================================
 
 table = analysis_data[
@@ -100,7 +103,7 @@ table.to_excel(
 
 # %%
 # =============================================================================
-# 6. Plot Mexico's seasonally adjusted quarterly real GDP
+# 7. Plot Mexico's seasonally adjusted quarterly real GDP
 # =============================================================================
 
 analysis_data["Date"] = (
@@ -133,7 +136,7 @@ fig.savefig(
 plt.show()
 # %%
 # =============================================================================
-# 7. Plot log real GDP and quarterly real GDP growth
+# 8. Plot log real GDP and quarterly real GDP growth
 # =============================================================================
 
 EO_COPPER = "#B87333"
@@ -196,7 +199,7 @@ fig.tight_layout()
 plt.show()
 # %%
 # =============================================================================
-# 8. Divide the data into estimation and evaluation samples
+# 9. Divide the data into estimation and evaluation samples
 # =============================================================================
 
 estimation_sample = analysis_data[
@@ -222,7 +225,7 @@ print(
 )
 # %%
 # =============================================================================
-# 9. ACF and PACF
+# 10. ACF and PACF
 # =============================================================================
 
 from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
@@ -281,10 +284,9 @@ for ax in axes:
 
 fig.tight_layout()
 plt.show()
-
 # %%
 # =============================================================================
-# Chow tests for the 2008–2009 Global Financial Crisis
+# 11. Chow tests for the 2008–2009 Global Financial Crisis
 # =============================================================================
 
 import numpy as np
@@ -365,7 +367,6 @@ def chow_test_ar2(data, break_period):
         )
     }
 
-
 # Test two possible crisis dates
 break_dates = [
     pd.Period("2008Q4", freq="Q"),
@@ -384,14 +385,9 @@ print(
     })
 )
 # %%
-# Structural-break test: Chow test at 2020 Q2
 # =============================================================================
-
-from statsmodels.api import OLS, add_constant
-from scipy import stats
-import pandas as pd
-import numpy as np
-
+# 12. Structural-break test: Chow test at 2020 Q2
+# =============================================================================
 # Prepare Mexico's quarterly GDP-growth series
 df = analysis_data[["Quarter", "GDP_Growth"]].copy()
 
@@ -439,8 +435,7 @@ F_chow = (
     ((RSS_restricted - RSS_unrestricted) / k)
     / (RSS_unrestricted / (T - 2 * k))
 )
-
-p_value = 1 - stats.f.cdf(
+p_value = stats.f.sf(
     F_chow,
     k,
     T - 2 * k
@@ -460,115 +455,11 @@ else:
     print(
         "Fail to reject H0 at the 10% level: "
         "insufficient evidence of a structural break."
-    )# %%
-# =============================================================================
-# Chow tests for the 2008–2009 Global Financial Crisis
-# =============================================================================
-
-import numpy as np
-import pandas as pd
-from scipy import stats
-from statsmodels.api import OLS
-
-# Prepare Mexico's quarterly GDP-growth data
-df = analysis_data[
-    ["Quarter", "GDP_Growth"]
-].copy()
-
-# Create AR(2) lags
-df["GDP_Growth_lag1"] = (
-    df["GDP_Growth"].shift(1)
-)
-
-df["GDP_Growth_lag2"] = (
-    df["GDP_Growth"].shift(2)
-)
-
-df = df.dropna().reset_index(drop=True)
-
-
-def chow_test_ar2(data, break_period):
-
-    # Dependent variable
-    y = data["GDP_Growth"].to_numpy()
-
-    # Constant and two growth lags
-    X = np.column_stack([
-        np.ones(len(data)),
-        data["GDP_Growth_lag1"].to_numpy(),
-        data["GDP_Growth_lag2"].to_numpy()
-    ])
-
-    # Break dummy
-    D = (
-        data["Quarter"] >= break_period
-    ).astype(float).to_numpy()
-
-    # Allow every coefficient to change after the break
-    X_unrestricted = np.column_stack([
-        X,
-        D[:, None] * X
-    ])
-
-    # Estimate restricted and unrestricted models
-    restricted = OLS(y, X).fit()
-    unrestricted = OLS(y, X_unrestricted).fit()
-
-    RSS_restricted = restricted.ssr
-    RSS_unrestricted = unrestricted.ssr
-
-    T = len(y)
-    k = X.shape[1]  # Constant plus two lags
-
-    # Chow F-statistic
-    F_statistic = (
-        ((RSS_restricted - RSS_unrestricted) / k)
-        / (RSS_unrestricted / (T - 2 * k))
     )
-
-    p_value = stats.f.sf(
-        F_statistic,
-        k,
-        T - 2 * k
-    )
-
-    return {
-        "Break": str(break_period),
-        "F-statistic": F_statistic,
-        "p-value": p_value,
-        "Conclusion": (
-            "Structural break"
-            if p_value < 0.10
-            else "No significant break"
-        )
-    }
-
-
-# Test two possible crisis dates
-break_dates = [
-    pd.Period("2008Q4", freq="Q"),
-    pd.Period("2009Q1", freq="Q")
-]
-
-chow_results = pd.DataFrame([
-    chow_test_ar2(df, break_date)
-    for break_date in break_dates
-])
-
-print(
-    chow_results.round({
-        "F-statistic": 3,
-        "p-value": 4
-    })
-)
 # %%
 # =============================================================================
-# Structural-break robustness: 1994–95 peso-crisis dummy
+# 13. Structural-break robustness: 1994–95 peso-crisis dummy
 # =============================================================================
-
-from statsmodels.tsa.arima.model import ARIMA
-import pandas as pd
-
 # Use only the pre-2019 estimation sample
 crisis_data = (
     estimation_sample
@@ -637,7 +528,7 @@ print(
 )
 # %%
 # =============================================================================
-# 10.ADF and KPSS tests
+# 14. ADF and KPSS tests
 # =============================================================================
 from statsmodels.tsa.stattools import adfuller, kpss
 def _run_adf(series, regression):
@@ -695,12 +586,8 @@ print_side_by_side(
 
 # %%
 # =============================================================================
-# 11. ARIMA model selection using AIC and BIC
+# 15. ARIMA model selection using AIC and BIC
 # =============================================================================
-from statsmodels.tsa.arima.model import ARIMA
-import pandas as pd
-import warnings
-
 growth = estimation_sample["GDP_Growth"].dropna()
 
 model_results = []
@@ -769,7 +656,7 @@ print("\nModel selected by BIC:")
 print(best_bic)
 # %%
 # =============================================================================
-# 12. Residual diagnostics for the AIC-selected ARIMA(3,0,1) 
+# 16. Residual diagnostics for the AIC-selected ARIMA(3,0,1) 
 # and BIC-selected ARIMA(0,0,1)
 # =============================================================================
 #AIC selected model
@@ -820,14 +707,8 @@ print(
 )
 # %%
 # =============================================================================
-# 13. Expanding-window out-of-sample forecasts
+# 17. Expanding-window out-of-sample forecasts
 # =============================================================================
-
-import warnings
-import numpy as np
-import pandas as pd
-from statsmodels.tsa.arima.model import ARIMA
-
 # Quarterly GDP growth with Quarter as the index
 y = (
     analysis_data
@@ -935,10 +816,10 @@ forecast_results = (
 )
 
 print(forecast_results.head())
-
-
 # %%
-# Check the evaluation sample
+# =============================================================================
+# 18.  Check the evaluation sample
+# =============================================================================
 for h in horizons:
 
     results_h = forecast_results[
@@ -951,7 +832,7 @@ for h in horizons:
     print("Last target:", results_h["Target"].max())
 # %%
 # =============================================================================
-# 14. Forecast accuracy: RMSE and MAE
+# 19. Forecast accuracy: RMSE and MAE
 # =============================================================================
 
 def rmse(errors):
@@ -1005,7 +886,7 @@ print("Forecast accuracy:")
 print(accuracy_table.round(3))
 # %%
 # =============================================================================
-# Forecast accuracy with and without the COVID-19 period
+# 20. Forecast accuracy with and without the COVID-19 period
 # =============================================================================
 
 # Ensure Target is stored as a quarterly period
@@ -1099,7 +980,7 @@ covid_comparison = pd.concat(
 print(covid_comparison.round(3))
 # %%
 # =============================================================================
-# 16. Diebold-Mariano tests with HLN small-sample correction
+# 21. Diebold-Mariano tests with HLN small-sample correction
 # =============================================================================
 def dm_test_nw_hln(e1,e2, h, power=2):
 # DM test using the Newey-West procedure plus the HLN small-sample correction.
@@ -1180,5 +1061,65 @@ for sample_name, data in samples_dm.items():
 dm_table = pd.DataFrame(dm_rows)
 
 print(dm_table.round(3))
+# %%
+# =============================================================================
+# Export available tables to one Excel workbook
+# =============================================================================
+
+from pathlib import Path
+
+output_dir = Path("Project/Output")
+output_dir.mkdir(parents=True, exist_ok=True)
+
+# Works with either your old or new variable names
+table_candidates = {
+    "Summary Statistics": ["summary_statistics", "table"],
+    "Chow GFC": ["chow_gfc_table", "chow_results"],
+    "Chow COVID": ["chow_covid_table"],
+    "Peso Crisis Dummy": ["peso_crisis_table", "dummy_comparison"],
+    "Stationarity Tests": ["stationarity_table"],
+    "ARIMA Selection": ["arima_selection_table", "ic_table"],
+    "Ljung Box": ["ljung_box_table"],
+    "Evaluation Sample": ["evaluation_check"],
+    "Forecast Accuracy": [
+        "forecast_accuracy_table",
+        "accuracy_table"
+    ],
+    "COVID Comparison": [
+        "covid_accuracy_table",
+        "covid_comparison"
+    ],
+    "DM-HLN Tests": ["dm_hln_table", "dm_table"]
+}
+
+tables_found = {}
+
+for sheet_name, possible_names in table_candidates.items():
+    for variable_name in possible_names:
+        obj = globals().get(variable_name)
+
+        if isinstance(obj, pd.DataFrame):
+            tables_found[sheet_name] = obj
+            break
+
+output_file = output_dir / "project_tables.xlsx"
+
+with pd.ExcelWriter(output_file) as writer:
+
+    for sheet_name, dataframe in tables_found.items():
+
+        # Preserve count, mean, std., etc. in the summary table
+        keep_index = sheet_name == "Summary Statistics"
+
+        dataframe.to_excel(
+            writer,
+            sheet_name=sheet_name,
+            index=keep_index
+        )
+
+print(f"Tables exported successfully to: {output_file}")
+print("Exported sheets:", list(tables_found.keys()))
+
+
 
 
