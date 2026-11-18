@@ -44,11 +44,15 @@ dict(value=f"{start_q}–{end_q}")
 
 ```{python}
 #| content: valuebox
-#| title: "Forecast Variables"
+#| title: "Forecasting Models"
 #| icon: bar-chart-line
 #| color: "#FF8200"
-variables = ["GDP_Growth"]
-dict(value=len(variables))
+from IPython.display import Markdown, display
+
+display(Markdown("""
+Models Compared: 4” for ARIMA (0,0,1), Historical Mean, Random Walk, and AR(1)
+"""))
+```
 ```
 
 ## Row {height=55%}
