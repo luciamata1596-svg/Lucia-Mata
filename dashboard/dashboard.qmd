@@ -63,58 +63,21 @@ EO_SAGE = "#8A9A5B"
 EO_TERRACOTTA = "#E2725B"
 EO_CHARCOAL = "#36454F"
 
-fig, axes = plt.subplots(2, 1, figsize=(7, 9))
+df["QuarterDate"] = pd.PeriodIndex(df["Quarter"], freq="Q").to_timestamp()
 
-# Log real GDP
-axes[0].plot(
-    analysis_data["Date"],
-    analysis_data["Log_Real_GDP"],
-    color=EO_COPPER,
-    linewidth=1.2
-)
+fig, axes = plt.subplots(2, 1, figsize=(11, 6), sharex=True)
 
-axes[0].set_title("Mexico’s Log Real GDP — Level")
-axes[0].set_ylabel("Log millions of pesos at 2018 prices")
-axes[0].set_xlabel("Year")
+axes[0].plot(df["QuarterDate"], df["Real_GDP"], color="#4472C4")
+axes[0].set_title("Real GDP")
+axes[0].set_ylabel("Millions of 2018 pesos")
 
-# Quarterly GDP growth
-growth_plot = analysis_data.dropna(
-    subset=["GDP_Growth"]
-)
-
-axes[1].fill_between(
-    growth_plot["Date"],
-    growth_plot["GDP_Growth"],
-    0,
-    where=growth_plot["GDP_Growth"] >= 0,
-    color=EO_SAGE,
-    alpha=0.7,
-    label="Positive"
-)
-
-axes[1].fill_between(
-    growth_plot["Date"],
-    growth_plot["GDP_Growth"],
-    0,
-    where=growth_plot["GDP_Growth"] < 0,
-    color=EO_TERRACOTTA,
-    alpha=0.7,
-    label="Negative"
-)
-
-axes[1].axhline(
-    0,
-    color=EO_CHARCOAL,
-    linewidth=0.6,
-    linestyle="--"
-)
-
-axes[1].set_title("Mexico’s Real GDP — Quarterly Growth Rate")
-axes[1].set_xlabel("Year")
+axes[1].plot(df["QuarterDate"], df["GDP_Growth"], color="#E2725B")
+axes[1].axhline(0, color="gray", linewidth=0.8)
+axes[1].set_title("Quarterly GDP Growth")
 axes[1].set_ylabel("Percent")
-axes[1].legend(fontsize=8)
+axes[1].set_xlabel("Quarter")
 
-fig.tight_layout()
+plt.tight_layout()
 plt.show()
 ```
 
@@ -124,12 +87,6 @@ plt.show()
 
 ```{python}
 #| title: "Stationarity (ADF Test)"
-from statsmodels.tsa.stattools import adfuller
-from tabulate import tabulate
-from IPython.display import Markdown
-
-#| title: "ADF Unit-Root Tests"
-
 from statsmodels.tsa.stattools import adfuller
 from tabulate import tabulate
 from IPython.display import Markdown
@@ -162,15 +119,40 @@ adf_table = pd.DataFrame(
 Markdown(tabulate(adf_table, showindex=False, headers=adf_table.columns))
 ```
 
-### Column {width=40%}
+## Row {height=45%}
+
+### Column {width=100%}
 
 ```{python}
-#| content: valuebox
-#| title: "Chosen Lag Order"
 #| icon: list-ol
 #| color: secondary
-dict(value=2)
-```
+#| title: "ARIMA Model Comparison and Residual Diagnostics"
+
+from IPython.display import HTML, display
+
+results = [
+    [
+        "ARIMA(3,0,1)",
+        "AR1: −0.439 (<.001)<br>AR2: 0.137 (.056)<br>AR3: −0.185 (.221)<br>MA1: 1.000 (.960)",
+        "347.112", "362.920", ".489", ".636"
+    ],
+    [
+        "ARIMA(0,0,1)",
+        "MA1: 0.508 (<.001)",
+        "347.836", "355.740", ".474", ".647"
+    ],
+]
+
+table = pd.DataFrame(
+    results,
+    columns=[
+        "Model",
+        "Dynamic coefficients (estimate; p-value)",
+        "AIC", "BIC", "LB p, lag 8", "LB p, lag 12"
+    ]
+)
+
+display(HTML(table.to_html(index=False, escape=False)))
 
 ```{python}
 #| content: valuebox
@@ -180,52 +162,90 @@ dict(value=2)
 dict(value="0.881")
 ```
 
-# Model Results
+```{python}
+#| include: false
+import pandas as pd
+from IPython.display import HTML, display
 
-## Row {.tabset height=100%}
+forecast_results = pd.DataFrame([
+    # your rows go here
+])
+```
+forecast_results = pd.DataFrame([
+    ["Full Sample", "ARIMA (0,0,1)", 1, 28, 6.327, 2.410],
+    ["Full Sample", "Historical Mean", 1, 28, 4.963, 1.960],
+    ["Full Sample", "Random Walk", 1, 28, 7.977, 3.038],
+    ["Full Sample", "AR (1)", 1, 28, 6.439, 2.451],
+    ["Full Sample", "ARIMA (0,0,1)", 4, 25, 5.227, 2.122],
+    ["Full Sample", "Historical Mean", 4, 25, 5.228, 2.118],
+    ["Full Sample", "Random Walk", 4, 25, 7.481, 3.801],
+    ["Full Sample", "AR (1)", 4, 25, 5.250, 2.199],
 
-### Granger Causality
+    ["Excluding 2020 Q2–2021 Q1", "ARIMA (0,0,1)", 1, 24, 0.699, 0.580],
+    ["Excluding 2020 Q2–2021 Q1", "Historical Mean", 1, 24, 0.763, 0.633],
+    ["Excluding 2020 Q2–2021 Q1", "Random Walk", 1, 24, 0.891, 0.674],
+    ["Excluding 2020 Q2–2021 Q1", "AR (1)", 1, 24, 0.684, 0.570],
+    ["Excluding 2020 Q2–2021 Q1", "ARIMA (0,0,1)", 4, 21, 0.788, 0.649],
+    ["Excluding 2020 Q2–2021 Q1", "Historical Mean", 4, 21, 0.786, 0.645],
+    ["Excluding 2020 Q2–2021 Q1", "Random Walk", 4, 21, 5.917, 2.523],
+    ["Excluding 2020 Q2–2021 Q1", "AR (1)", 4, 21, 0.952, 0.739],
+], columns=[
+    "Evaluation Sample", "Model", "Horizon", "Observations", "RMSE", "MAE"
+])
+# Forecast Results
+
+## Row {.tabset}
+
+### Full Sample
 
 ```{python}
-from statsmodels.tsa.api import VAR
-from statsmodels.stats.diagnostic import acorr_ljungbox
+#| title: "Forecast Accuracy — Full Sample"
 
-model = VAR(df.set_index("date")[variables])
-fit = model.fit(2)
-
-rows = []
-for cause in variables:
-    for effect in variables:
-        if cause == effect:
-            continue
-        test = fit.test_causality(effect, [cause], kind="f")
-        verdict = "Causes" if test.pvalue < 0.05 else "No evidence"
-        rows.append([cause, effect, f"{test.test_statistic:.2f}", f"{test.pvalue:.4f}", verdict])
-
-granger_table = pd.DataFrame(rows, columns=["Cause", "Effect", "F-stat", "p-value", "Result"])
-Markdown(tabulate(granger_table, showindex=False, headers=granger_table.columns))
+columns = ["Model", "Horizon", "Observations", "RMSE", "MAE"]
+full = forecast_results.loc[
+    forecast_results["Evaluation Sample"] == "Full Sample", columns
+]
+display(HTML(full.to_html(
+    index=False,
+    formatters={"RMSE": "{:.3f}".format, "MAE": "{:.3f}".format}
+)))
 ```
 
-### Impulse Responses
-
-```{ojs}
-viewof shock_choice = Inputs.select(
-  ["output_gap", "inflation", "policy_rate"],
-  {label: "Shock to:", value: "output_gap"}
-)
-```
-
-```{ojs}
-html`<img src="images/irf_${shock_choice}.png" style="width: 100%;">`
-```
-
-### Variance Decomposition
+### Excluding COVID-19
 
 ```{python}
-plt.rcParams['figure.figsize'] = (11, 9)
+#| title: "Forecast Accuracy — Excluding 2020 Q2–2021 Q1"
 
-fevd = fit.fevd(12)
-fig = fevd.plot()
-plt.tight_layout()
-plt.show()
+columns = ["Model", "Horizon", "Observations", "RMSE", "MAE"]
+ex_covid = forecast_results.loc[
+    forecast_results["Evaluation Sample"] == "Excluding 2020 Q2–2021 Q1",
+    columns
+]
+display(HTML(ex_covid.to_html(
+    index=False,
+    formatters={"RMSE": "{:.3f}".format, "MAE": "{:.3f}".format}
+)))
 ```
+```{python}
+#| include: false
+```
+dm_results = pd.DataFrame([
+    ["Full Sample", "ARIMA vs. Historical Mean", 1, 28,  1.014, 0.320, "Fail to reject H₀"],
+    ["Full Sample", "ARIMA vs. Historical Mean", 4, 25, -0.236, 0.815, "Fail to reject H₀"],
+    ["Full Sample", "ARIMA vs. Random Walk",     1, 28, -1.058, 0.299, "Fail to reject H₀"],
+    ["Full Sample", "ARIMA vs. Random Walk",     4, 25, -1.010, 0.322, "Fail to reject H₀"],
+    ["Full Sample", "ARIMA vs. AR(1)",           1, 28, -1.057, 0.300, "Fail to reject H₀"],
+    ["Full Sample", "ARIMA vs. AR(1)",           4, 25, -0.912, 0.371, "Fail to reject H₀"],
+    ["Excluding 2020 Q2–2021 Q1", "ARIMA vs. Historical Mean", 1, 24, -1.219, 0.235, "Fail to reject H₀"],
+    ["Excluding 2020 Q2–2021 Q1", "ARIMA vs. Historical Mean", 4, 21,  0.751, 0.461, "Fail to reject H₀"],
+    ["Excluding 2020 Q2–2021 Q1", "ARIMA vs. Random Walk",     1, 24, -1.108, 0.279, "Fail to reject H₀"],
+    ["Excluding 2020 Q2–2021 Q1", "ARIMA vs. Random Walk",     4, 21, -1.008, 0.326, "Fail to reject H₀"],
+    ["Excluding 2020 Q2–2021 Q1", "ARIMA vs. AR(1)",           1, 24,  1.354, 0.189, "Fail to reject H₀"],
+    ["Excluding 2020 Q2–2021 Q1", "ARIMA vs. AR(1)",           4, 21, -0.940, 0.358, "Fail to reject H₀"],
+], columns=[
+    "Evaluation Sample", "Comparison", "Horizon", "Observations",
+    "DM-HLN Statistic", "p-value", "Conclusion"
+])
+dm = dm_results.loc[
+    dm_results["Evaluation Sample"] == "Excluding 2020 Q2–2021 Q1"
+].drop(columns="Evaluation Sample")
