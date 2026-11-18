@@ -54,19 +54,67 @@ dict(value=len(variables))
 ## Row {height=55%}
 
 ```{python}
-#| title: "Output Gap, Inflation, and Policy Rate"
+#| title: "Mexico Real GDP and Quarterly Growth"
+
 import matplotlib.pyplot as plt
 
-plt.rcParams['figure.figsize'] = (11, 4)
+EO_COPPER = "#B87333"
+EO_SAGE = "#8A9A5B"
+EO_TERRACOTTA = "#E2725B"
+EO_CHARCOAL = "#36454F"
 
-tab10 = plt.get_cmap("tab10")
-colors = {"output_gap": tab10(0), "inflation": tab10(1), "policy_rate": tab10(2)}
+fig, axes = plt.subplots(2, 1, figsize=(7, 9))
 
-fig, ax = plt.subplots()
-for var in variables:
-    ax.plot(df["date"], df[var], label=var, color=colors[var], linewidth=1.2)
-ax.legend(loc="upper left", frameon=False)
-ax.set_xlim(df["date"].min(), df["date"].max())
+# Log real GDP
+axes[0].plot(
+    analysis_data["Date"],
+    analysis_data["Log_Real_GDP"],
+    color=EO_COPPER,
+    linewidth=1.2
+)
+
+axes[0].set_title("Mexico’s Log Real GDP — Level")
+axes[0].set_ylabel("Log millions of pesos at 2018 prices")
+axes[0].set_xlabel("Year")
+
+# Quarterly GDP growth
+growth_plot = analysis_data.dropna(
+    subset=["GDP_Growth"]
+)
+
+axes[1].fill_between(
+    growth_plot["Date"],
+    growth_plot["GDP_Growth"],
+    0,
+    where=growth_plot["GDP_Growth"] >= 0,
+    color=EO_SAGE,
+    alpha=0.7,
+    label="Positive"
+)
+
+axes[1].fill_between(
+    growth_plot["Date"],
+    growth_plot["GDP_Growth"],
+    0,
+    where=growth_plot["GDP_Growth"] < 0,
+    color=EO_TERRACOTTA,
+    alpha=0.7,
+    label="Negative"
+)
+
+axes[1].axhline(
+    0,
+    color=EO_CHARCOAL,
+    linewidth=0.6,
+    linestyle="--"
+)
+
+axes[1].set_title("Mexico’s Real GDP — Quarterly Growth Rate")
+axes[1].set_xlabel("Year")
+axes[1].set_ylabel("Percent")
+axes[1].legend(fontsize=8)
+
+fig.tight_layout()
 plt.show()
 ```
 
@@ -80,13 +128,37 @@ from statsmodels.tsa.stattools import adfuller
 from tabulate import tabulate
 from IPython.display import Markdown
 
-rows = []
-for var in variables:
-    result = adfuller(df[var], autolag="AIC")
-    verdict = "Stationary" if result[1] < 0.05 else "Unit root"
-    rows.append([var, f"{result[0]:.3f}", f"{result[1]:.4f}", verdict])
+#| title: "ADF Unit-Root Tests"
 
-adf_table = pd.DataFrame(rows, columns=["Variable", "ADF Stat", "p-value", "Result"])
+from statsmodels.tsa.stattools import adfuller
+from tabulate import tabulate
+from IPython.display import Markdown
+
+tests = [
+    ("Log Real GDP", df["Log_Real_GDP"].dropna(), "ct"),
+    ("GDP Growth (%)", df["GDP_Growth"].dropna(), "c"),
+]
+
+rows = []
+for name, series, regression in tests:
+    result = adfuller(series, regression=regression, autolag="AIC")
+    conclusion = (
+        "Stationary"
+        if result[1] < 0.05
+        else "Do not reject unit root"
+    )
+    rows.append([
+        name,
+        f"{result[0]:.3f}",
+        f"{result[1]:.4f}",
+        result[2],
+        conclusion,
+    ])
+
+adf_table = pd.DataFrame(
+    rows,
+    columns=["Series", "ADF statistic", "p-value", "Lags", "Conclusion"]
+)
 Markdown(tabulate(adf_table, showindex=False, headers=adf_table.columns))
 ```
 
