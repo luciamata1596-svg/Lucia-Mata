@@ -150,9 +150,6 @@ display(HTML(table.to_html(index=False, escape=False)))
 #| include: false
 import pandas as pd
 from IPython.display import HTML, display
-
-forecast_results = pd.DataFrame([
-])
 ```
 forecast_results = pd.DataFrame([
     ["Full Sample", "ARIMA (0,0,1)", 1, 28, 6.327, 2.410],
