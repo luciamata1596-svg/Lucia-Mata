@@ -270,7 +270,8 @@ display(HTML(ex_covid.to_html(
     index=False,
     formatters={"RMSE": "{:.3f}".format, "MAE": "{:.3f}".format}
 )))
-```dm_results = pd.DataFrame([
+```
+dm_results = pd.DataFrame([
     ["Full Sample", "ARIMA vs. Historical Mean", 1, 28,  1.014, 0.320, "Fail to reject H₀"],
     ["Full Sample", "ARIMA vs. Historical Mean", 4, 25, -0.236, 0.815, "Fail to reject H₀"],
     ["Full Sample", "ARIMA vs. Random Walk",     1, 28, -1.058, 0.299, "Fail to reject H₀"],
