@@ -51,7 +51,7 @@ variables = ["GDP_Growth"]
 dict(value=len(variables))
 ```
 
-## Row {height=50%}
+## Row {height=35%}
 
 ```{python}
 #| title: "Mexico Real GDP and Quarterly Growth"
@@ -81,9 +81,9 @@ plt.tight_layout()
 plt.show()
 ```
 
-## Row {height=30%}
+## Row {height=20%}
 
-### Column {width=60%}
+### Column {width=25%}
 
 ```{python}
 #| title: "Stationarity (ADF Test)"
