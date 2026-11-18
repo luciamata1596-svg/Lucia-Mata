@@ -152,23 +152,16 @@ table = pd.DataFrame(
     ]
 )
 
-display(HTML(table.to_html(index=False, escape=False)))
-
 ```{python}
-#| content: valuebox
-#| title: "Max Eigenvalue Modulus"
-#| icon: shield-check
-#| color: "#FF8200"
-dict(value="0.881")
+# ARIMA table code
+display(HTML(table.to_html(index=False, escape=False)))
 ```
-
 ```{python}
 #| include: false
 import pandas as pd
 from IPython.display import HTML, display
 
 forecast_results = pd.DataFrame([
-    # your rows go here
 ])
 ```
 forecast_results = pd.DataFrame([
