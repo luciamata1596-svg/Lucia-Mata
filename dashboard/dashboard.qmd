@@ -42,17 +42,14 @@ end_q = growth_df["Quarter"].iloc[-1]
 dict(value=f"{start_q}–{end_q}")
 ```
 
+
 ```{python}
 #| content: valuebox
 #| title: "Forecasting Models"
 #| icon: bar-chart-line
 #| color: "#FF8200"
-from IPython.display import Markdown, display
 
-display(Markdown("""
-Models Compared: 4” for ARIMA (0,0,1), Historical Mean, Random Walk, and AR(1)
-"""))
-```
+dict(value="ARIMA (0,0,1), Historical Mean, Random Walk, and AR(1)")
 ```
 
 ## Row {height=55%}

@@ -86,8 +86,8 @@ ul.task-list li input[type="checkbox"] {
 
 <div class="bslib-grid-item html-fill-item tab-content bslib-grid" data-layout="flow" style="display: grid; grid-template-rows: minmax(3em, 1fr); grid-auto-columns: minmax(0, 1fr);">
 <div id="overview" class="dashboard-page tab-pane show active html-fill-item html-fill-container" data-orientation="rows" aria-labelledby="tab-overview">
-<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, 20fr); grid-auto-columns: minmax(0, 1fr);">
-<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr) minmax(3em, 1fr) minmax(3em, 1fr) minmax(3em, 1fr);
+<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, 20fr) minmax(3em, max-content) minmax(3em, 55fr) minmax(3em, 30fr) minmax(3em, 45fr); grid-auto-columns: minmax(0, 1fr);">
+<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr) minmax(3em, 1fr) minmax(3em, 1fr);
 grid-auto-rows: minmax(0, 1fr);">
 <div class="card valuebox cell html-fill-item html-fill-container bslib-card bslib-value-box bg-primary showcase-left-center" data-bslib-card-init="" data-require-bs-caller="card()">
 <div class="card-body html-fill-item html-fill-container">
@@ -132,80 +132,146 @@ GDP Growth Period
 Forecasting Models
 </p>
 <p class="value-box-value">
-<div class="cell-output cell-output-display cell-output-markdown html-fill-item html-fill-container">
-<p>Models Compared: 4” for ARIMA (0,0,1), Historical Mean, Random Walk, and AR(1)</p>
-</div>
+4
 </p>
 </div>
 </div>
 </div>
-<script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div><div class="card html-fill-item html-fill-container bslib-card" data-fill="false" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
+<script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
+</div>
+<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr);
+grid-auto-rows: minmax(0, 1fr);">
+<div class="card cell html-fill-item html-fill-container bslib-card" data-title="Models Compared" data-fill="false" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
+<div class="card-header"><div class="card-title"><span style="display: inline">
+Models Compared
+</span></div></div>
 <div class="card-body html-fill-item html-fill-container">
-<pre><code>
-## Row {height=55%}
-
-::: {#396bfad5 .cell title='Mexico Real GDP and Quarterly Growth' execution_count=4}
-
-::: {.cell-output .cell-output-display}
-![](dashboard_files/figure-html/cell-5-output-1.png){width=1048 height=566}
-:::
-:::
-
-
-## Row {height=30%}
-
-### Column {width=60%}
-
-::: {#843029cd .cell title='Stationarity (ADF Test)' execution_count=5}
-
-::: {.cell-output .cell-output-display .cell-output-markdown execution_count=124}
-Series            ADF statistic    p-value    Lags  Conclusion
---------------  ---------------  ---------  ------  -----------------------
-Log Real GDP             -3.299     0.0665       0  Do not reject unit root
-GDP Growth (%)           -9.616     0            1  Stationary
-:::
-:::
-
-
-## Row {height=45%}
-
-### Column {width=100%}
-
-::: {#e10a97a7 .cell title='ARIMA Model Comparison and Residual Diagnostics' execution_count=6}
-
-::: {.cell-output .cell-output-display}
-```{=html}
-&lt;table border="1" class="dataframe"&gt;
-  &lt;thead&gt;
-    &lt;tr style="text-align: right;"&gt;
-      &lt;th&gt;Model&lt;/th&gt;
-      &lt;th&gt;Dynamic coefficients (estimate; p-value)&lt;/th&gt;
-      &lt;th&gt;AIC&lt;/th&gt;
-      &lt;th&gt;BIC&lt;/th&gt;
-      &lt;th&gt;LB p, lag 8&lt;/th&gt;
-      &lt;th&gt;LB p, lag 12&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;ARIMA(3,0,1)&lt;/td&gt;
-      &lt;td&gt;AR1: −0.439 (&lt;.001)&lt;br&gt;AR2: 0.137 (.056)&lt;br&gt;AR3: −0.185 (.221)&lt;br&gt;MA1: 1.000 (.960)&lt;/td&gt;
-      &lt;td&gt;347.112&lt;/td&gt;
-      &lt;td&gt;362.920&lt;/td&gt;
-      &lt;td&gt;.489&lt;/td&gt;
-      &lt;td&gt;.636&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;ARIMA(0,0,1)&lt;/td&gt;
-      &lt;td&gt;MA1: 0.508 (&lt;.001)&lt;/td&gt;
-      &lt;td&gt;347.836&lt;/td&gt;
-      &lt;td&gt;355.740&lt;/td&gt;
-      &lt;td&gt;.474&lt;/td&gt;
-      &lt;td&gt;.647&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;</code></pre>
-<p>::: :::</p>
+<div class="cell-output cell-output-display cell-output-markdown html-fill-item html-fill-container">
+<p>ARIMA (0,0,1), Historical Mean, Random Walk, and AR(1).</p>
+</div>
+</div>
+<bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
+    <template>Expand</template>
+    <span class="bslib-full-screen-enter badge rounded-pill">
+        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="height:1em;width:1em;" aria-hidden="true" role="img"><path d="M20 5C20 4.4 19.6 4 19 4H13C12.4 4 12 3.6 12 3C12 2.4 12.4 2 13 2H21C21.6 2 22 2.4 22 3V11C22 11.6 21.6 12 21 12C20.4 12 20 11.6 20 11V5ZM4 19C4 19.6 4.4 20 5 20H11C11.6 20 12 20.4 12 21C12 21.6 11.6 22 11 22H3C2.4 22 2 21.6 2 21V13C2 12.4 2.4 12 3 12C3.6 12 4 12.4 4 13V19Z"></path></svg>
+    </span>
+</bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
+</div>
+<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr);
+grid-auto-rows: minmax(0, 1fr);">
+<div class="card cell html-fill-item html-fill-container bslib-card" data-title="Mexico Real GDP and Quarterly Growth" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
+<div class="card-header"><div class="card-title"><span style="display: inline">
+Mexico Real GDP and Quarterly Growth
+</span></div></div>
+<div class="card-body html-fill-item html-fill-container">
+<div class="cell-output cell-output-display html-fill-item html-fill-container">
+<img src="dashboard_files/figure-html/cell-6-output-1.png" class="quarto-dashboard-img-contain">
+</div>
+</div>
+<bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
+    <template>Expand</template>
+    <span class="bslib-full-screen-enter badge rounded-pill">
+        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="height:1em;width:1em;" aria-hidden="true" role="img"><path d="M20 5C20 4.4 19.6 4 19 4H13C12.4 4 12 3.6 12 3C12 2.4 12.4 2 13 2H21C21.6 2 22 2.4 22 3V11C22 11.6 21.6 12 21 12C20.4 12 20 11.6 20 11V5ZM4 19C4 19.6 4.4 20 5 20H11C11.6 20 12 20.4 12 21C12 21.6 11.6 22 11 22H3C2.4 22 2 21.6 2 21V13C2 12.4 2.4 12 3 12C3.6 12 4 12.4 4 13V19Z"></path></svg>
+    </span>
+</bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
+</div>
+<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 60fr);
+grid-auto-rows: minmax(0, 1fr);">
+<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, max-content); grid-auto-columns: minmax(0, 1fr);">
+<div class="card cell html-fill-item html-fill-container bslib-card" data-title="Stationarity (ADF Test)" data-fill="false" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
+<div class="card-header"><div class="card-title"><span style="display: inline">
+Stationarity (ADF Test)
+</span></div></div>
+<div class="card-body html-fill-item html-fill-container">
+<div class="cell-output cell-output-display cell-output-markdown html-fill-item html-fill-container" data-execution_count="37">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Series</th>
+<th style="text-align: right;">ADF statistic</th>
+<th style="text-align: right;">p-value</th>
+<th style="text-align: right;">Lags</th>
+<th style="text-align: left;">Conclusion</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Log Real GDP</td>
+<td style="text-align: right;">-3.299</td>
+<td style="text-align: right;">0.0665</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">Do not reject unit root</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">GDP Growth (%)</td>
+<td style="text-align: right;">-9.616</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Stationary</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
+    <template>Expand</template>
+    <span class="bslib-full-screen-enter badge rounded-pill">
+        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="height:1em;width:1em;" aria-hidden="true" role="img"><path d="M20 5C20 4.4 19.6 4 19 4H13C12.4 4 12 3.6 12 3C12 2.4 12.4 2 13 2H21C21.6 2 22 2.4 22 3V11C22 11.6 21.6 12 21 12C20.4 12 20 11.6 20 11V5ZM4 19C4 19.6 4.4 20 5 20H11C11.6 20 12 20.4 12 21C12 21.6 11.6 22 11 22H3C2.4 22 2 21.6 2 21V13C2 12.4 2.4 12 3 12C3.6 12 4 12.4 4 13V19Z"></path></svg>
+    </span>
+</bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
+</div>
+</div>
+<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 100fr);
+grid-auto-rows: minmax(0, 1fr);">
+<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, 1fr); grid-auto-columns: minmax(0, 1fr);">
+<div class="card cell html-fill-item html-fill-container bslib-card" data-title="ARIMA Model Comparison and Residual Diagnostics" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
+<div class="card-header"><div class="card-title"><span style="display: inline">
+ARIMA Model Comparison and Residual Diagnostics
+</span></div></div>
+<div class="card-body html-fill-item html-fill-container">
+<div class="cell-output cell-output-display html-fill-item html-fill-container">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">Model</th>
+<th data-quarto-table-cell-role="th">Dynamic coefficients (estimate; p-value)</th>
+<th data-quarto-table-cell-role="th">AIC</th>
+<th data-quarto-table-cell-role="th">BIC</th>
+<th data-quarto-table-cell-role="th">LB p, lag 8</th>
+<th data-quarto-table-cell-role="th">LB p, lag 12</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ARIMA(3,0,1)</td>
+<td>AR1: −0.439 (&lt;.001)<br>
+AR2: 0.137 (.056)<br>
+AR3: −0.185 (.221)<br>
+MA1: 1.000 (.960)</td>
+<td>347.112</td>
+<td>362.920</td>
+<td>.489</td>
+<td>.636</td>
+</tr>
+<tr class="even">
+<td>ARIMA(0,0,1)</td>
+<td>MA1: 0.508 (&lt;.001)</td>
+<td>347.836</td>
+<td>355.740</td>
+<td>.474</td>
+<td>.647</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 <bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
     <template>Expand</template>
@@ -216,15 +282,16 @@ GDP Growth (%)           -9.616     0            1  Stationary
 </div>
 </div>
 </div>
+</div>
 <div id="forecast-results" class="dashboard-page tab-pane grid-skip html-fill-item html-fill-container" data-orientation="rows" aria-labelledby="tab-forecast-results">
 <div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, 1fr); grid-auto-columns: minmax(0, 1fr);">
 <div class="card tabset html-fill-item html-fill-container bslib-card" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
 <div class="card-header dashboard-card-no-title bslib-navs-card-title">
 
-<ul class="nav nav-tabs card-header-tabs" role="tablist" data-tabsetid="card-tabset-5"><li class="nav-item" role="presentation"><a href="#card-tabset-5-1" role="tab" data-toggle="tab" data-bs-toggle="tab" data-value="Full Sample" aria-selected="true" class="nav-link active">Full Sample</a></li><li class="nav-item" role="presentation"><a href="#card-tabset-5-2" role="tab" data-toggle="tab" data-bs-toggle="tab" data-value="Excluding COVID-19" aria-selected="false" class="nav-link">Excluding COVID-19</a></li></ul></div>
+<ul class="nav nav-tabs card-header-tabs" role="tablist" data-tabsetid="card-tabset-8"><li class="nav-item" role="presentation"><a href="#card-tabset-8-1" role="tab" data-toggle="tab" data-bs-toggle="tab" data-value="Full Sample" aria-selected="true" class="nav-link active">Full Sample</a></li><li class="nav-item" role="presentation"><a href="#card-tabset-8-2" role="tab" data-toggle="tab" data-bs-toggle="tab" data-value="Excluding COVID-19" aria-selected="false" class="nav-link">Excluding COVID-19</a></li></ul></div>
 
 
-<div class="tab-content html-fill-item html-fill-container" data-tabset-id="card-tabset-5"><div class="tab-pane active show html-fill-item html-fill-container" role="tabpanel" id="card-tabset-5-1"><div class="card-body html-fill-item html-fill-container" data-title="Full Sample">
+<div class="tab-content html-fill-item html-fill-container" data-tabset-id="card-tabset-8"><div class="tab-pane active show html-fill-item html-fill-container" role="tabpanel" id="card-tabset-8-1"><div class="card-body html-fill-item html-fill-container" data-title="Full Sample">
 <div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr);
 grid-auto-rows: minmax(0, 1fr);">
 <div class="card cell html-fill-item html-fill-container bslib-card" data-title="Forecast Accuracy — Full Sample" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
@@ -311,7 +378,7 @@ Forecast Accuracy — Full Sample
     </span>
 </bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
 </div>
-</div></div><div class="tab-pane html-fill-item html-fill-container" role="tabpanel" id="card-tabset-5-2"><div class="card-body html-fill-item html-fill-container" data-title="Excluding COVID-19">
+</div></div><div class="tab-pane html-fill-item html-fill-container" role="tabpanel" id="card-tabset-8-2"><div class="card-body html-fill-item html-fill-container" data-title="Excluding COVID-19">
 <div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr);
 grid-auto-rows: minmax(0, 1fr);">
 <div class="card cell html-fill-item html-fill-container bslib-card" data-title="Forecast Accuracy — Excluding 2020 Q2–2021 Q1" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
@@ -411,10 +478,10 @@ Forecast Accuracy — Excluding 2020 Q2–2021 Q1
 <div class="card tabset html-fill-item html-fill-container bslib-card" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
 <div class="card-header dashboard-card-no-title bslib-navs-card-title">
 
-<ul class="nav nav-tabs card-header-tabs" role="tablist" data-tabsetid="card-tabset-8"><li class="nav-item" role="presentation"><a href="#card-tabset-8-1" role="tab" data-toggle="tab" data-bs-toggle="tab" data-value="Full Sample" aria-selected="true" class="nav-link active">Full Sample</a></li><li class="nav-item" role="presentation"><a href="#card-tabset-8-2" role="tab" data-toggle="tab" data-bs-toggle="tab" data-value="Excluding COVID-19" aria-selected="false" class="nav-link">Excluding COVID-19</a></li></ul></div>
+<ul class="nav nav-tabs card-header-tabs" role="tablist" data-tabsetid="card-tabset-11"><li class="nav-item" role="presentation"><a href="#card-tabset-11-1" role="tab" data-toggle="tab" data-bs-toggle="tab" data-value="Full Sample" aria-selected="true" class="nav-link active">Full Sample</a></li><li class="nav-item" role="presentation"><a href="#card-tabset-11-2" role="tab" data-toggle="tab" data-bs-toggle="tab" data-value="Excluding COVID-19" aria-selected="false" class="nav-link">Excluding COVID-19</a></li></ul></div>
 
 
-<div class="tab-content html-fill-item html-fill-container" data-tabset-id="card-tabset-8"><div class="tab-pane active show html-fill-item html-fill-container" role="tabpanel" id="card-tabset-8-1"><div class="card-body html-fill-item html-fill-container" data-title="Full Sample">
+<div class="tab-content html-fill-item html-fill-container" data-tabset-id="card-tabset-11"><div class="tab-pane active show html-fill-item html-fill-container" role="tabpanel" id="card-tabset-11-1"><div class="card-body html-fill-item html-fill-container" data-title="Full Sample">
 <div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr);
 grid-auto-rows: minmax(0, 1fr);">
 <div class="card cell html-fill-item html-fill-container bslib-card" data-title="DM-HLN Tests — Full Sample" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
@@ -494,7 +561,7 @@ DM-HLN Tests — Full Sample
     </span>
 </bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
 </div>
-</div></div><div class="tab-pane html-fill-item html-fill-container" role="tabpanel" id="card-tabset-8-2"><div class="card-body html-fill-item html-fill-container" data-title="Excluding COVID-19">
+</div></div><div class="tab-pane html-fill-item html-fill-container" role="tabpanel" id="card-tabset-11-2"><div class="card-body html-fill-item html-fill-container" data-title="Excluding COVID-19">
 <div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr);
 grid-auto-rows: minmax(0, 1fr);">
 <div class="card cell html-fill-item html-fill-container bslib-card" data-title="DM-HLN Tests — Excluding COVID-19" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
