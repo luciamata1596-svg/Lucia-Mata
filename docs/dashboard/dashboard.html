@@ -160,12 +160,12 @@ Mexico Real GDP and Quarterly Growth
 <div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 60fr);
 grid-auto-rows: minmax(0, 1fr);">
 <div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, max-content); grid-auto-columns: minmax(0, 1fr);">
-<div class="card cell html-fill-item html-fill-container bslib-card" data-fill="false" data-title="Stationarity (ADF Test)" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
+<div class="card cell html-fill-item html-fill-container bslib-card" data-title="Stationarity (ADF Test)" data-fill="false" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
 <div class="card-header"><div class="card-title"><span style="display: inline">
 Stationarity (ADF Test)
 </span></div></div>
 <div class="card-body html-fill-item html-fill-container">
-<div class="cell-output cell-output-display cell-output-markdown html-fill-item html-fill-container" data-execution_count="5">
+<div class="cell-output cell-output-display cell-output-markdown html-fill-item html-fill-container" data-execution_count="17">
 <table class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
@@ -270,8 +270,7 @@ MA1: 1.000 (.960)</td>
 <div class="card tabset html-fill-item html-fill-container bslib-card" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
 <div class="card-header dashboard-card-no-title bslib-navs-card-title">
 
-<ul class="nav nav-tabs card-header-tabs" role="tablist" data-tabsetid="card-tabset-7"><li class="nav-item" role="presentation"><a href="#card-tabset-7-1" role="tab" data-toggle="tab" data-bs-toggle="tab" data-value="Full Sample" aria-selected="true" class="nav-link active">Full Sample</a></li><li class="nav-item" role="presentation"><a href="#card-tabset-7-2" role="tab" data-toggle="tab" data-bs-toggle="tab" data-value="Excluding COVID-19" aria-selected="false" class="nav-link">Excluding COVID-19</a></li><li class="nav-item" role="presentation"><a href="#card-tabset-7-3" role="tab" data-toggle="tab" data-bs-toggle="tab" data-value="Excluding COVID-19" aria-selected="false" class="nav-link">Excluding COVID-19</a></li></ul></div>
-
+<ul class="nav nav-tabs card-header-tabs" role="tablist" data-tabsetid="card-tabset-7"><li class="nav-item" role="presentation"><a href="#card-tabset-7-1" role="tab" data-toggle="tab" data-bs-toggle="tab" data-value="Full Sample" aria-selected="true" class="nav-link active">Full Sample</a></li><li class="nav-item" role="presentation"><a href="#card-tabset-7-2" role="tab" data-toggle="tab" data-bs-toggle="tab" data-value="Excluding COVID-19" aria-selected="false" class="nav-link">Excluding COVID-19</a></li></ul></div>
 
 
 <div class="tab-content html-fill-item html-fill-container" data-tabset-id="card-tabset-7"><div class="tab-pane active show html-fill-item html-fill-container" role="tabpanel" id="card-tabset-7-1"><div class="card-body html-fill-item html-fill-container" data-title="Full Sample">
@@ -362,184 +361,6 @@ Forecast Accuracy — Full Sample
 </bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
 </div>
 </div></div><div class="tab-pane html-fill-item html-fill-container" role="tabpanel" id="card-tabset-7-2"><div class="card-body html-fill-item html-fill-container" data-title="Excluding COVID-19">
-<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr) minmax(3em, 1fr);
-grid-auto-rows: minmax(0, 1fr);">
-<div class="card cell html-fill-item html-fill-container bslib-card" data-title="Forecast Accuracy — Excluding 2020 Q2–2021 Q1" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
-<div class="card-header"><div class="card-title"><span style="display: inline">
-Forecast Accuracy — Excluding 2020 Q2–2021 Q1
-</span></div></div>
-<div class="card-body html-fill-item html-fill-container">
-<div class="cell-output cell-output-display html-fill-item html-fill-container">
-<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th">Model</th>
-<th data-quarto-table-cell-role="th">Horizon</th>
-<th data-quarto-table-cell-role="th">Observations</th>
-<th data-quarto-table-cell-role="th">RMSE</th>
-<th data-quarto-table-cell-role="th">MAE</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>ARIMA (0,0,1)</td>
-<td>1</td>
-<td>24</td>
-<td>0.699</td>
-<td>0.580</td>
-</tr>
-<tr class="even">
-<td>Historical Mean</td>
-<td>1</td>
-<td>24</td>
-<td>0.763</td>
-<td>0.633</td>
-</tr>
-<tr class="odd">
-<td>Random Walk</td>
-<td>1</td>
-<td>24</td>
-<td>0.891</td>
-<td>0.674</td>
-</tr>
-<tr class="even">
-<td>AR (1)</td>
-<td>1</td>
-<td>24</td>
-<td>0.684</td>
-<td>0.570</td>
-</tr>
-<tr class="odd">
-<td>ARIMA (0,0,1)</td>
-<td>4</td>
-<td>21</td>
-<td>0.788</td>
-<td>0.649</td>
-</tr>
-<tr class="even">
-<td>Historical Mean</td>
-<td>4</td>
-<td>21</td>
-<td>0.786</td>
-<td>0.645</td>
-</tr>
-<tr class="odd">
-<td>Random Walk</td>
-<td>4</td>
-<td>21</td>
-<td>5.917</td>
-<td>2.523</td>
-</tr>
-<tr class="even">
-<td>AR (1)</td>
-<td>4</td>
-<td>21</td>
-<td>0.952</td>
-<td>0.739</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
-    <template>Expand</template>
-    <span class="bslib-full-screen-enter badge rounded-pill">
-        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="height:1em;width:1em;" aria-hidden="true" role="img"><path d="M20 5C20 4.4 19.6 4 19 4H13C12.4 4 12 3.6 12 3C12 2.4 12.4 2 13 2H21C21.6 2 22 2.4 22 3V11C22 11.6 21.6 12 21 12C20.4 12 20 11.6 20 11V5ZM4 19C4 19.6 4.4 20 5 20H11C11.6 20 12 20.4 12 21C12 21.6 11.6 22 11 22H3C2.4 22 2 21.6 2 21V13C2 12.4 2.4 12 3 12C3.6 12 4 12.4 4 13V19Z"></path></svg>
-    </span>
-</bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div><div class="card html-fill-item html-fill-container bslib-card" data-fill="false" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
-<div class="card-body html-fill-item html-fill-container">
-<p>import pandas as pd from IPython.display import HTML, display</p>
-<p>forecast_results = pd.DataFrame([ [“Full Sample”, “ARIMA (0,0,1)”, 1, 28, 6.327, 2.410], [“Full Sample”, “Historical Mean”, 1, 28, 4.963, 1.960], [“Full Sample”, “Random Walk”, 1, 28, 7.977, 3.038], [“Full Sample”, “AR (1)”, 1, 28, 6.439, 2.451], [“Full Sample”, “ARIMA (0,0,1)”, 4, 25, 5.227, 2.122], [“Full Sample”, “Historical Mean”, 4, 25, 5.228, 2.118], [“Full Sample”, “Random Walk”, 4, 25, 7.481, 3.801], [“Full Sample”, “AR (1)”, 4, 25, 5.250, 2.199], [“Excluding 2020 Q2–2021 Q1”, “ARIMA (0,0,1)”, 1, 24, 0.699, 0.580], [“Excluding 2020 Q2–2021 Q1”, “Historical Mean”, 1, 24, 0.763, 0.633], [“Excluding 2020 Q2–2021 Q1”, “Random Walk”, 1, 24, 0.891, 0.674], [“Excluding 2020 Q2–2021 Q1”, “AR (1)”, 1, 24, 0.684, 0.570], [“Excluding 2020 Q2–2021 Q1”, “ARIMA (0,0,1)”, 4, 21, 0.788, 0.649], [“Excluding 2020 Q2–2021 Q1”, “Historical Mean”, 4, 21, 0.786, 0.645], [“Excluding 2020 Q2–2021 Q1”, “Random Walk”, 4, 21, 5.917, 2.523], [“Excluding 2020 Q2–2021 Q1”, “AR (1)”, 4, 21, 0.952, 0.739],], columns=[ “Evaluation Sample”, “Model”, “Horizon”, “Observations”, “RMSE”, “MAE”])</p>
-<pre><code>
-# Forecast Results
-
-## Row {.tabset}
-
-### Full Sample
-
-::: {#7ce12401 .cell title='Forecast Accuracy — Full Sample' execution_count=10}
-
-::: {.cell-output .cell-output-display}
-```{=html}
-&lt;table border="1" class="dataframe"&gt;
-  &lt;thead&gt;
-    &lt;tr style="text-align: right;"&gt;
-      &lt;th&gt;Model&lt;/th&gt;
-      &lt;th&gt;Horizon&lt;/th&gt;
-      &lt;th&gt;Observations&lt;/th&gt;
-      &lt;th&gt;RMSE&lt;/th&gt;
-      &lt;th&gt;MAE&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;ARIMA (0,0,1)&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;28&lt;/td&gt;
-      &lt;td&gt;6.327&lt;/td&gt;
-      &lt;td&gt;2.410&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Historical Mean&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;28&lt;/td&gt;
-      &lt;td&gt;4.963&lt;/td&gt;
-      &lt;td&gt;1.960&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Random Walk&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;28&lt;/td&gt;
-      &lt;td&gt;7.977&lt;/td&gt;
-      &lt;td&gt;3.038&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;AR (1)&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;28&lt;/td&gt;
-      &lt;td&gt;6.439&lt;/td&gt;
-      &lt;td&gt;2.451&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;ARIMA (0,0,1)&lt;/td&gt;
-      &lt;td&gt;4&lt;/td&gt;
-      &lt;td&gt;25&lt;/td&gt;
-      &lt;td&gt;5.227&lt;/td&gt;
-      &lt;td&gt;2.122&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Historical Mean&lt;/td&gt;
-      &lt;td&gt;4&lt;/td&gt;
-      &lt;td&gt;25&lt;/td&gt;
-      &lt;td&gt;5.228&lt;/td&gt;
-      &lt;td&gt;2.118&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Random Walk&lt;/td&gt;
-      &lt;td&gt;4&lt;/td&gt;
-      &lt;td&gt;25&lt;/td&gt;
-      &lt;td&gt;7.481&lt;/td&gt;
-      &lt;td&gt;3.801&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;AR (1)&lt;/td&gt;
-      &lt;td&gt;4&lt;/td&gt;
-      &lt;td&gt;25&lt;/td&gt;
-      &lt;td&gt;5.250&lt;/td&gt;
-      &lt;td&gt;2.199&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;</code></pre>
-<p>::: :::</p>
-</div>
-<bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
-    <template>Expand</template>
-    <span class="bslib-full-screen-enter badge rounded-pill">
-        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="height:1em;width:1em;" aria-hidden="true" role="img"><path d="M20 5C20 4.4 19.6 4 19 4H13C12.4 4 12 3.6 12 3C12 2.4 12.4 2 13 2H21C21.6 2 22 2.4 22 3V11C22 11.6 21.6 12 21 12C20.4 12 20 11.6 20 11V5ZM4 19C4 19.6 4.4 20 5 20H11C11.6 20 12 20.4 12 21C12 21.6 11.6 22 11 22H3C2.4 22 2 21.6 2 21V13C2 12.4 2.4 12 3 12C3.6 12 4 12.4 4 13V19Z"></path></svg>
-    </span>
-</bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
-</div>
-</div></div><div class="tab-pane html-fill-item html-fill-container" role="tabpanel" id="card-tabset-7-3"><div class="card-body html-fill-item html-fill-container" data-title="Excluding COVID-19">
 <div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr);
 grid-auto-rows: minmax(0, 1fr);">
 <div class="card cell html-fill-item html-fill-container bslib-card" data-title="Forecast Accuracy — Excluding 2020 Q2–2021 Q1" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
@@ -639,10 +460,10 @@ Forecast Accuracy — Excluding 2020 Q2–2021 Q1
 <div class="card tabset html-fill-item html-fill-container bslib-card" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
 <div class="card-header dashboard-card-no-title bslib-navs-card-title">
 
-<ul class="nav nav-tabs card-header-tabs" role="tablist" data-tabsetid="card-tabset-12"><li class="nav-item" role="presentation"><a href="#card-tabset-12-1" role="tab" data-toggle="tab" data-bs-toggle="tab" data-value="Full Sample" aria-selected="true" class="nav-link active">Full Sample</a></li><li class="nav-item" role="presentation"><a href="#card-tabset-12-2" role="tab" data-toggle="tab" data-bs-toggle="tab" data-value="Excluding COVID-19" aria-selected="false" class="nav-link">Excluding COVID-19</a></li></ul></div>
+<ul class="nav nav-tabs card-header-tabs" role="tablist" data-tabsetid="card-tabset-10"><li class="nav-item" role="presentation"><a href="#card-tabset-10-1" role="tab" data-toggle="tab" data-bs-toggle="tab" data-value="Full Sample" aria-selected="true" class="nav-link active">Full Sample</a></li><li class="nav-item" role="presentation"><a href="#card-tabset-10-2" role="tab" data-toggle="tab" data-bs-toggle="tab" data-value="Excluding COVID-19" aria-selected="false" class="nav-link">Excluding COVID-19</a></li></ul></div>
 
 
-<div class="tab-content html-fill-item html-fill-container" data-tabset-id="card-tabset-12"><div class="tab-pane active show html-fill-item html-fill-container" role="tabpanel" id="card-tabset-12-1"><div class="card-body html-fill-item html-fill-container" data-title="Full Sample">
+<div class="tab-content html-fill-item html-fill-container" data-tabset-id="card-tabset-10"><div class="tab-pane active show html-fill-item html-fill-container" role="tabpanel" id="card-tabset-10-1"><div class="card-body html-fill-item html-fill-container" data-title="Full Sample">
 <div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr);
 grid-auto-rows: minmax(0, 1fr);">
 <div class="card cell html-fill-item html-fill-container bslib-card" data-title="DM-HLN Tests — Full Sample" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
@@ -722,7 +543,7 @@ DM-HLN Tests — Full Sample
     </span>
 </bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
 </div>
-</div></div><div class="tab-pane html-fill-item html-fill-container" role="tabpanel" id="card-tabset-12-2"><div class="card-body html-fill-item html-fill-container" data-title="Excluding COVID-19">
+</div></div><div class="tab-pane html-fill-item html-fill-container" role="tabpanel" id="card-tabset-10-2"><div class="card-body html-fill-item html-fill-container" data-title="Excluding COVID-19">
 <div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr);
 grid-auto-rows: minmax(0, 1fr);">
 <div class="card cell html-fill-item html-fill-container bslib-card" data-title="DM-HLN Tests — Excluding COVID-19" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">

@@ -9,7 +9,7 @@ format:
 
 # Overview
 
-## Row {height=15%}
+## Row {height=20%}
 
 ```{python}
 #| content: valuebox
@@ -51,7 +51,7 @@ variables = ["GDP_Growth"]
 dict(value=len(variables))
 ```
 
-## Row {height=55%}
+## Row {height=50%}
 
 ```{python}
 #| title: "Mexico Real GDP and Quarterly Growth"
