@@ -8,7 +8,8 @@ format:
 ---
 
 # Overview
-# Row {height=20%}
+
+## Row {height=20%}
 
 ```{python}
 #| content: valuebox
@@ -50,7 +51,7 @@ variables = ["GDP_Growth"]
 dict(value=len(variables))
 ```
 
-## Row {height=35%}
+## Row {height=55%}
 
 ```{python}
 #| title: "Mexico Real GDP and Quarterly Growth"
@@ -80,8 +81,10 @@ plt.tight_layout()
 plt.show()
 ```
 
-## Row {height=20%}
-### Column {width=100%}
+## Row {height=30%}
+
+### Column {width=60%}
+
 ```{python}
 #| title: "Stationarity (ADF Test)"
 from statsmodels.tsa.stattools import adfuller
@@ -122,9 +125,7 @@ Markdown(tabulate(adf_table, showindex=False, headers=adf_table.columns))
 
 ```{python}
 #| title: "ARIMA Model Comparison and Residual Diagnostics"
-#| fig-width: 12
-#| fig-height: 6
-#| out-width: 100%
+
 from IPython.display import HTML, display
 
 results = [
