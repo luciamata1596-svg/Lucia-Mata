@@ -44,10 +44,10 @@ dict(value=f"{start_q}–{end_q}")
 
 ```{python}
 #| content: valuebox
-#| title: "Variables"
+#| title: "Forecast Variables"
 #| icon: bar-chart-line
 #| color: "#FF8200"
-variables = ["output_gap", "inflation", "policy_rate"]
+variables = ["GDP_Growth"]
 dict(value=len(variables))
 ```
 
