@@ -125,7 +125,9 @@ Markdown(tabulate(adf_table, showindex=False, headers=adf_table.columns))
 
 ```{python}
 #| title: "ARIMA Model Comparison and Residual Diagnostics"
-
+#| fig-width: 12
+#| fig-height: 6
+#| out-width: 100%
 from IPython.display import HTML, display
 
 results = [
