@@ -271,23 +271,10 @@ display(HTML(ex_covid.to_html(
     formatters={"RMSE": "{:.3f}".format, "MAE": "{:.3f}".format}
 )))
 ```
-dm_results = pd.DataFrame([
-    ["Full Sample", "ARIMA vs. Historical Mean", 1, 28,  1.014, 0.320, "Fail to reject H₀"],
-    ["Full Sample", "ARIMA vs. Historical Mean", 4, 25, -0.236, 0.815, "Fail to reject H₀"],
-    ["Full Sample", "ARIMA vs. Random Walk",     1, 28, -1.058, 0.299, "Fail to reject H₀"],
-    ["Full Sample", "ARIMA vs. Random Walk",     4, 25, -1.010, 0.322, "Fail to reject H₀"],
-    ["Full Sample", "ARIMA vs. AR(1)",           1, 28, -1.057, 0.300, "Fail to reject H₀"],
-    ["Full Sample", "ARIMA vs. AR(1)",           4, 25, -0.912, 0.371, "Fail to reject H₀"],
-    ["Excluding 2020 Q2–2021 Q1", "ARIMA vs. Historical Mean", 1, 24, -1.219, 0.235, "Fail to reject H₀"],
-    ["Excluding 2020 Q2–2021 Q1", "ARIMA vs. Historical Mean", 4, 21,  0.751, 0.461, "Fail to reject H₀"],
-    ["Excluding 2020 Q2–2021 Q1", "ARIMA vs. Random Walk",     1, 24, -1.108, 0.279, "Fail to reject H₀"],
-    ["Excluding 2020 Q2–2021 Q1", "ARIMA vs. Random Walk",     4, 21, -1.008, 0.326, "Fail to reject H₀"],
-    ["Excluding 2020 Q2–2021 Q1", "ARIMA vs. AR(1)",           1, 24,  1.354, 0.189, "Fail to reject H₀"],
-    ["Excluding 2020 Q2–2021 Q1", "ARIMA vs. AR(1)",           4, 21, -0.940, 0.358, "Fail to reject H₀"],
-], columns=[
-    "Evaluation Sample", "Comparison", "Horizon", "Observations",
-    "DM-HLN Statistic", "p-value", "Conclusion"
-])
+## Diebold–Mariano Tests
+
+### Full Sample
+
 ```{python}
 #| title: "DM-HLN Tests — Full Sample"
 
@@ -302,7 +289,6 @@ display(HTML(dm_full.to_html(
         "p-value": "{:.3f}".format
     }
 )))
-``````{python}
 #| title: "DM-HLN Tests — Excluding COVID-19"
 
 dm_ex_covid = dm_results.loc[
@@ -316,4 +302,3 @@ display(HTML(dm_ex_covid.to_html(
         "p-value": "{:.3f}".format
     }
 )))
-```
