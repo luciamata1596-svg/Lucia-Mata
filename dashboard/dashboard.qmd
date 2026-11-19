@@ -210,6 +210,50 @@ display(HTML(ex_covid.to_html(
     formatters={"RMSE": "{:.3f}".format, "MAE": "{:.3f}".format}
 )))
 ```
+# Row
+
+```{python}
+#| title: "Actual and Forecasted Quarterly GDP Growth"
+
+plot_data = pd.read_csv("../Project/Output/forecast_results.csv")
+
+plot_data["Target_Date"] = pd.PeriodIndex(
+    plot_data["Target"].astype(str), freq="Q"
+).to_timestamp()
+
+fig, axes = plt.subplots(2, 1, figsize=(12, 7), sharex=True, sharey=True)
+
+forecast_series = [
+    ("ARIMA_Forecast", "ARIMA(0,0,1)", "#B87333", "-"),
+    ("Mean_Forecast", "Historical Mean", "#008080", "--"),
+    ("AR1_Forecast", "AR(1)", "royalblue", "-."),
+    ("RW_Forecast", "Random Walk", "gray", ":"),
+]
+
+for ax, horizon in zip(axes, [1, 4]):
+    data_h = plot_data.loc[plot_data["Horizon"] == horizon].sort_values("Target_Date")
+
+    ax.plot(data_h["Target_Date"], data_h["Actual"],
+            color="black", linewidth=2, label="Actual")
+
+    for column, label, color, style in forecast_series:
+        ax.plot(data_h["Target_Date"], data_h[column],
+                color=color, linestyle=style, linewidth=1.4, label=label)
+
+    ax.axvspan(
+        pd.Period("2020Q2", freq="Q").start_time,
+        pd.Period("2021Q1", freq="Q").end_time,
+        color="lightgray", alpha=0.35, label="COVID-19 target quarters"
+    )
+    ax.axhline(0, color="black", linewidth=0.6)
+    ax.set_title(f"Forecast Horizon: {horizon} quarter(s)")
+    ax.set_ylabel("GDP Growth (%)")
+    ax.legend(fontsize=8, ncol=3, loc="lower right")
+
+axes[1].set_xlabel("Target Quarter")
+fig.tight_layout()
+plt.show()
+```
 ```{python}
 #| include: false
 
@@ -271,47 +315,3 @@ display(HTML(dm_ex_covid.to_html(
 )))
 ```
 ## Row {height=55%}
-
-## Row
-```{python}
-#| title: "Actual and Forecasted Quarterly GDP Growth"
-
-plot_data = pd.read_csv("../Project/Output/forecast_results.csv")
-
-plot_data["Target_Date"] = pd.PeriodIndex(
-    plot_data["Target"].astype(str), freq="Q"
-).to_timestamp()
-
-fig, axes = plt.subplots(2, 1, figsize=(12, 7), sharex=True, sharey=True)
-
-forecast_series = [
-    ("ARIMA_Forecast", "ARIMA(0,0,1)", "#B87333", "-"),
-    ("Mean_Forecast", "Historical Mean", "#008080", "--"),
-    ("AR1_Forecast", "AR(1)", "royalblue", "-."),
-    ("RW_Forecast", "Random Walk", "gray", ":"),
-]
-
-for ax, horizon in zip(axes, [1, 4]):
-    data_h = plot_data.loc[plot_data["Horizon"] == horizon].sort_values("Target_Date")
-
-    ax.plot(data_h["Target_Date"], data_h["Actual"],
-            color="black", linewidth=2, label="Actual")
-
-    for column, label, color, style in forecast_series:
-        ax.plot(data_h["Target_Date"], data_h[column],
-                color=color, linestyle=style, linewidth=1.4, label=label)
-
-    ax.axvspan(
-        pd.Period("2020Q2", freq="Q").start_time,
-        pd.Period("2021Q1", freq="Q").end_time,
-        color="lightgray", alpha=0.35, label="COVID-19 target quarters"
-    )
-    ax.axhline(0, color="black", linewidth=0.6)
-    ax.set_title(f"Forecast Horizon: {horizon} quarter(s)")
-    ax.set_ylabel("GDP Growth (%)")
-    ax.legend(fontsize=8, ncol=3, loc="lower right")
-
-axes[1].set_xlabel("Target Quarter")
-fig.tight_layout()
-plt.show()
-```

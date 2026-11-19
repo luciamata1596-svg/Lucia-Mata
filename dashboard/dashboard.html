@@ -79,7 +79,7 @@ ul.task-list li input[type="checkbox"] {
         <div class="navbar-author">Lucia Mata</div>
       </div>
     </div>
-<div id="dashboard-collapse" class="navbar-collapse collapse"><ul class="navbar-nav navbar-nav-scroll me-auto" role="tablist"><li class="nav-item" role="presentation"><a id="tab-overview" class="nav-link active" data-bs-toggle="tab" role="tab" data-bs-target="#overview" data-scrolling="true" href="#overview" aria-controls="overview" aria-selected="true"><span class="nav-link-text">Overview</span></a></li><li class="nav-item" role="presentation"><a id="tab-forecast-results" class="nav-link" data-bs-toggle="tab" role="tab" data-bs-target="#forecast-results" data-scrolling="true" href="#forecast-results" aria-controls="forecast-results" aria-selected="false"><span class="nav-link-text">Forecast Results</span></a></li><li class="nav-item" role="presentation"><a id="tab-dm-hln-tests" class="nav-link" data-bs-toggle="tab" role="tab" data-bs-target="#dm-hln-tests" data-scrolling="true" href="#dm-hln-tests" aria-controls="dm-hln-tests" aria-selected="false"><span class="nav-link-text">DM-HLN Tests</span></a></li><li class="nav-item" role="presentation"><a id="tab-convert-quarterly-targets-into-dates-for-the-x-axis" class="nav-link" data-bs-toggle="tab" role="tab" data-bs-target="#convert-quarterly-targets-into-dates-for-the-x-axis" data-scrolling="true" href="#convert-quarterly-targets-into-dates-for-the-x-axis" aria-controls="convert-quarterly-targets-into-dates-for-the-x-axis" aria-selected="false"><span class="nav-link-text">Convert quarterly targets into dates for the x-axis</span></a></li></ul></div></div>
+<div id="dashboard-collapse" class="navbar-collapse collapse"><ul class="navbar-nav navbar-nav-scroll me-auto" role="tablist"><li class="nav-item" role="presentation"><a id="tab-overview" class="nav-link active" data-bs-toggle="tab" role="tab" data-bs-target="#overview" data-scrolling="true" href="#overview" aria-controls="overview" aria-selected="true"><span class="nav-link-text">Overview</span></a></li><li class="nav-item" role="presentation"><a id="tab-forecast-results" class="nav-link" data-bs-toggle="tab" role="tab" data-bs-target="#forecast-results" data-scrolling="true" href="#forecast-results" aria-controls="forecast-results" aria-selected="false"><span class="nav-link-text">Forecast Results</span></a></li><li class="nav-item" role="presentation"><a id="tab-row-5" class="nav-link" data-bs-toggle="tab" role="tab" data-bs-target="#row-5" data-scrolling="true" href="#row-5" aria-controls="row-5" aria-selected="false"><span class="nav-link-text">Row</span></a></li><li class="nav-item" role="presentation"><a id="tab-dm-hln-tests" class="nav-link" data-bs-toggle="tab" role="tab" data-bs-target="#dm-hln-tests" data-scrolling="true" href="#dm-hln-tests" aria-controls="dm-hln-tests" aria-selected="false"><span class="nav-link-text">DM-HLN Tests</span></a></li></ul></div></div>
 </nav>
 </header>
 <div class="page-layout-custom quarto-dashboard-content bslib-gap-spacing html-fill-container dashboard-scrolling quarto-dashboard-pages">  
@@ -160,12 +160,12 @@ Mexico Real GDP and Quarterly Growth
 <div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 60fr);
 grid-auto-rows: minmax(0, 1fr);">
 <div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, max-content); grid-auto-columns: minmax(0, 1fr);">
-<div class="card cell html-fill-item html-fill-container bslib-card" data-title="Stationarity (ADF Test)" data-fill="false" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
+<div class="card cell html-fill-item html-fill-container bslib-card" data-fill="false" data-title="Stationarity (ADF Test)" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
 <div class="card-header"><div class="card-title"><span style="display: inline">
 Stationarity (ADF Test)
 </span></div></div>
 <div class="card-body html-fill-item html-fill-container">
-<div class="cell-output cell-output-display cell-output-markdown html-fill-item html-fill-container" data-execution_count="5">
+<div class="cell-output cell-output-display cell-output-markdown html-fill-item html-fill-container" data-execution_count="27">
 <table class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
@@ -455,15 +455,34 @@ Forecast Accuracy — Excluding 2020 Q2–2021 Q1
 </bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
 </div>
 </div>
+<div id="row-5" class="dashboard-page tab-pane grid-skip html-fill-item html-fill-container" data-orientation="rows" aria-labelledby="tab-row-5">
+<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, 1fr); grid-auto-columns: minmax(0, 1fr);">
+<div class="card cell html-fill-item html-fill-container bslib-card" data-title="Actual and Forecasted Quarterly GDP Growth" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
+<div class="card-header"><div class="card-title"><span style="display: inline">
+Actual and Forecasted Quarterly GDP Growth
+</span></div></div>
+<div class="card-body html-fill-item html-fill-container">
+<div class="cell-output cell-output-display html-fill-item html-fill-container">
+<img src="dashboard_files/figure-html/cell-11-output-1.png" class="quarto-dashboard-img-contain">
+</div>
+</div>
+<bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
+    <template>Expand</template>
+    <span class="bslib-full-screen-enter badge rounded-pill">
+        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="height:1em;width:1em;" aria-hidden="true" role="img"><path d="M20 5C20 4.4 19.6 4 19 4H13C12.4 4 12 3.6 12 3C12 2.4 12.4 2 13 2H21C21.6 2 22 2.4 22 3V11C22 11.6 21.6 12 21 12C20.4 12 20 11.6 20 11V5ZM4 19C4 19.6 4.4 20 5 20H11C11.6 20 12 20.4 12 21C12 21.6 11.6 22 11 22H3C2.4 22 2 21.6 2 21V13C2 12.4 2.4 12 3 12C3.6 12 4 12.4 4 13V19Z"></path></svg>
+    </span>
+</bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
+</div>
+</div>
 <div id="dm-hln-tests" class="dashboard-page tab-pane grid-skip html-fill-item html-fill-container" data-orientation="rows" aria-labelledby="tab-dm-hln-tests">
 <div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, 45fr) minmax(3em, 55fr); grid-auto-columns: minmax(0, 1fr);">
 <div class="card tabset html-fill-item html-fill-container bslib-card" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
 <div class="card-header dashboard-card-no-title bslib-navs-card-title">
 
-<ul class="nav nav-tabs card-header-tabs" role="tablist" data-tabsetid="card-tabset-10"><li class="nav-item" role="presentation"><a href="#card-tabset-10-1" role="tab" data-toggle="tab" data-bs-toggle="tab" data-value="Full Sample" aria-selected="true" class="nav-link active">Full Sample</a></li><li class="nav-item" role="presentation"><a href="#card-tabset-10-2" role="tab" data-toggle="tab" data-bs-toggle="tab" data-value="Excluding COVID-19" aria-selected="false" class="nav-link">Excluding COVID-19</a></li></ul></div>
+<ul class="nav nav-tabs card-header-tabs" role="tablist" data-tabsetid="card-tabset-11"><li class="nav-item" role="presentation"><a href="#card-tabset-11-1" role="tab" data-toggle="tab" data-bs-toggle="tab" data-value="Full Sample" aria-selected="true" class="nav-link active">Full Sample</a></li><li class="nav-item" role="presentation"><a href="#card-tabset-11-2" role="tab" data-toggle="tab" data-bs-toggle="tab" data-value="Excluding COVID-19" aria-selected="false" class="nav-link">Excluding COVID-19</a></li></ul></div>
 
 
-<div class="tab-content html-fill-item html-fill-container" data-tabset-id="card-tabset-10"><div class="tab-pane active show html-fill-item html-fill-container" role="tabpanel" id="card-tabset-10-1"><div class="card-body html-fill-item html-fill-container" data-title="Full Sample">
+<div class="tab-content html-fill-item html-fill-container" data-tabset-id="card-tabset-11"><div class="tab-pane active show html-fill-item html-fill-container" role="tabpanel" id="card-tabset-11-1"><div class="card-body html-fill-item html-fill-container" data-title="Full Sample">
 <div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr);
 grid-auto-rows: minmax(0, 1fr);">
 <div class="card cell html-fill-item html-fill-container bslib-card" data-title="DM-HLN Tests — Full Sample" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
@@ -543,7 +562,7 @@ DM-HLN Tests — Full Sample
     </span>
 </bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
 </div>
-</div></div><div class="tab-pane html-fill-item html-fill-container" role="tabpanel" id="card-tabset-10-2"><div class="card-body html-fill-item html-fill-container" data-title="Excluding COVID-19">
+</div></div><div class="tab-pane html-fill-item html-fill-container" role="tabpanel" id="card-tabset-11-2"><div class="card-body html-fill-item html-fill-container" data-title="Excluding COVID-19">
 <div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr);
 grid-auto-rows: minmax(0, 1fr);">
 <div class="card cell html-fill-item html-fill-container bslib-card" data-title="DM-HLN Tests — Excluding COVID-19" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
@@ -629,118 +648,10 @@ DM-HLN Tests — Excluding COVID-19
         <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="height:1em;width:1em;" aria-hidden="true" role="img"><path d="M20 5C20 4.4 19.6 4 19 4H13C12.4 4 12 3.6 12 3C12 2.4 12.4 2 13 2H21C21.6 2 22 2.4 22 3V11C22 11.6 21.6 12 21 12C20.4 12 20 11.6 20 11V5ZM4 19C4 19.6 4.4 20 5 20H11C11.6 20 12 20.4 12 21C12 21.6 11.6 22 11 22H3C2.4 22 2 21.6 2 21V13C2 12.4 2.4 12 3 12C3.6 12 4 12.4 4 13V19Z"></path></svg>
     </span>
 </bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
-<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, max-content); grid-auto-columns: minmax(0, 1fr);">
-<div class="card html-fill-item html-fill-container bslib-card" data-fill="false" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
-<div class="card-body html-fill-item html-fill-container">
-<p>#| title: “Actual and Forecasted Quaterly Real GDP Growth”</p>
-<p>from pathlib import Path</p>
-<p>plot_data = forecast_results.copy()</p>
-</div>
-<bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
-    <template>Expand</template>
-    <span class="bslib-full-screen-enter badge rounded-pill">
-        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="height:1em;width:1em;" aria-hidden="true" role="img"><path d="M20 5C20 4.4 19.6 4 19 4H13C12.4 4 12 3.6 12 3C12 2.4 12.4 2 13 2H21C21.6 2 22 2.4 22 3V11C22 11.6 21.6 12 21 12C20.4 12 20 11.6 20 11V5ZM4 19C4 19.6 4.4 20 5 20H11C11.6 20 12 20.4 12 21C12 21.6 11.6 22 11 22H3C2.4 22 2 21.6 2 21V13C2 12.4 2.4 12 3 12C3.6 12 4 12.4 4 13V19Z"></path></svg>
-    </span>
-</bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
-</div>
-</div>
-</div>
-<div id="convert-quarterly-targets-into-dates-for-the-x-axis" class="dashboard-page tab-pane grid-skip html-fill-item html-fill-container" data-orientation="rows" aria-labelledby="tab-convert-quarterly-targets-into-dates-for-the-x-axis">
-<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, max-content); grid-auto-columns: minmax(0, 1fr);">
-<div class="card html-fill-item html-fill-container bslib-card" data-fill="false" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
-<div class="card-body html-fill-item html-fill-container">
-<p>plot_data[“Target_Date”] = pd.PeriodIndex( plot_data[“Target”].astype(str), freq=“Q” ).to_timestamp()</p>
-<p>fig, axes = plt.subplots( 2, 1, figsize=(11, 8), sharex=True, sharey=True )</p>
-<p>for ax, h in zip(axes, [1, 4]):</p>
-<pre><code>data_h = plot_data[
-    plot_data["Horizon"] == h
-].sort_values("Target_Date")
-
-# Actual GDP growth
-ax.plot(
-    data_h["Target_Date"],
-    data_h["Actual"],
-    color="black",
-    linewidth=2.2,
-    label="Actual"
-)
-
-# Forecasts
-ax.plot(
-    data_h["Target_Date"],
-    data_h["ARIMA_Forecast"],
-    color="#B87333",
-    linewidth=1.5,
-    label="ARIMA(0,0,1)"
-)
-
-ax.plot(
-    data_h["Target_Date"],
-    data_h["Mean_Forecast"],
-    color="#008080",
-    linestyle="--",
-    linewidth=1.4,
-    label="Historical Mean"
-)
-
-ax.plot(
-    data_h["Target_Date"],
-    data_h["AR1_Forecast"],
-    color="royalblue",
-    linestyle="-.",
-    linewidth=1.4,
-    label="AR(1)"
-)
-
-ax.plot(
-    data_h["Target_Date"],
-    data_h["RW_Forecast"],
-    color="gray",
-    linestyle=":",
-    linewidth=1.4,
-    label="Random Walk"
-)
-
-# Shade the COVID-19 target quarters
-ax.axvspan(
-    pd.Period("2020Q2", freq="Q").start_time,
-    pd.Period("2021Q1", freq="Q").end_time,
-    color="lightgray",
-    alpha=0.35,
-    label="COVID-19 period"
-)
-
-ax.axhline(
-    0,
-    color="black",
-    linewidth=0.6
-)
-
-ax.set_title(
-    f"Out-of-Sample Forecasts — h = {h}"
-)
-
-ax.set_ylabel("GDP Growth (%)")
-ax.legend(
-    fontsize=8,
-    ncol=3,
-    loc="lower right"
-)</code></pre>
-<p>axes[1].set_xlabel(“Target Quarter”)</p>
-<p>fig.suptitle( “Actual and Forecasted Quarterly Real GDP Growth”, fontsize=14, fontweight=“bold” )</p>
-fig.tight_layout()
-<p>output_dir = Path(“Project/Output”) output_dir.mkdir(parents=True, exist_ok=True)</p>
-<p>fig.savefig( output_dir / “out_of_sample_forecasts.png”, dpi=300, bbox_inches=“tight” )</p>
-plt.show()
-</div>
-<bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
-    <template>Expand</template>
-    <span class="bslib-full-screen-enter badge rounded-pill">
-        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="height:1em;width:1em;" aria-hidden="true" role="img"><path d="M20 5C20 4.4 19.6 4 19 4H13C12.4 4 12 3.6 12 3C12 2.4 12.4 2 13 2H21C21.6 2 22 2.4 22 3V11C22 11.6 21.6 12 21 12C20.4 12 20 11.6 20 11V5ZM4 19C4 19.6 4.4 20 5 20H11C11.6 20 12 20.4 12 21C12 21.6 11.6 22 11 22H3C2.4 22 2 21.6 2 21V13C2 12.4 2.4 12 3 12C3.6 12 4 12.4 4 13V19Z"></path></svg>
-    </span>
-</bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
+<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: ; grid-auto-columns: minmax(0, 1fr);">
 <div id="3ade8a4a-fb1d-4a6c-8409-ac45482d5fc9" class="hidden html-fill-item html-fill-container">
 
+</div>
 </div>
 </div>
 </div>
