@@ -1,0 +1,480 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "---\n",
+        "title: \"ECON-5371 Project Dashboard\"\n",
+        "subtitle: \"Forecasting Mexico’s Quarterly Real GDP Growth\"\n",
+        "author: \"Lucia Mata\"\n",
+        "format:\n",
+        "  dashboard:\n",
+        "    theme: [cosmo, dashboard-theme.scss]\n",
+        "---\n",
+        "\n",
+        "# Overview\n",
+        "\n",
+        "## Row {height=20%}"
+      ],
+      "id": "8dc9e559"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "content": "valuebox",
+        "title": "Observations",
+        "icon": "calendar3",
+        "color": "primary"
+      },
+      "source": [
+        "import pandas as pd\n",
+        "\n",
+        "# Data lives in its own data/ subfolder, separate from code -- a habit\n",
+        "# worth keeping as this repo grows. Use forward slashes in the path,\n",
+        "# even on Windows: Python/pandas accept them on every OS, so the same\n",
+        "# code runs unchanged whether you're on Windows, Mac, or Linux. A\n",
+        "# single backslash (data\\file.csv) is NOT safe here -- Python reads\n",
+        "# backslashes as escape characters inside a string, which can silently\n",
+        "# produce the wrong path.\n",
+        "df = pd.read_csv(\"../Project/data/data/Clean Data/mexico_gdp_clean.csv\")\n",
+        "n_growth = df[\"GDP_Growth\"].dropna().shape[0]\n",
+        "dict(value=f\"{n_growth:,}\")"
+      ],
+      "id": "6c2a8807",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "content": "valuebox",
+        "title": "GDP Growth Period",
+        "icon": "clock-history",
+        "color": "secondary"
+      },
+      "source": [
+        "#| classes:\n",
+        "#|   - forecasting-models\n",
+        "\n",
+        "\n",
+        "growth_df = df.dropna(subset=[\"GDP_Growth\"])\n",
+        "start_q = growth_df[\"Quarter\"].iloc[0]\n",
+        "end_q = growth_df[\"Quarter\"].iloc[-1]\n",
+        "dict(value=f\"{start_q}–{end_q}\")"
+      ],
+      "id": "67efece7",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "content": "valuebox",
+        "title": "Forecasting Models",
+        "icon": "bar-chart-line",
+        "color": "#FF8200"
+      },
+      "source": [
+        "dict(value=\"ARIMA (0,0,1), Historical Mean, Random Walk, and AR(1)\")"
+      ],
+      "id": "bd44e26f",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## Row {height=55%}"
+      ],
+      "id": "2654b949"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "title": "Mexico Real GDP and Quarterly Growth"
+      },
+      "source": [
+        "import matplotlib.pyplot as plt\n",
+        "\n",
+        "EO_COPPER = \"#B87333\"\n",
+        "EO_SAGE = \"#8A9A5B\"\n",
+        "EO_TERRACOTTA = \"#E2725B\"\n",
+        "EO_CHARCOAL = \"#36454F\"\n",
+        "\n",
+        "df[\"QuarterDate\"] = pd.PeriodIndex(df[\"Quarter\"], freq=\"Q\").to_timestamp()\n",
+        "\n",
+        "fig, axes = plt.subplots(2, 1, figsize=(11, 6), sharex=True)\n",
+        "\n",
+        "axes[0].plot(df[\"QuarterDate\"], df[\"Real_GDP\"], color=\"#4472C4\")\n",
+        "axes[0].set_title(\"Real GDP\")\n",
+        "axes[0].set_ylabel(\"Millions of 2018 pesos\")\n",
+        "\n",
+        "axes[1].plot(df[\"QuarterDate\"], df[\"GDP_Growth\"], color=\"#E2725B\")\n",
+        "axes[1].axhline(0, color=\"gray\", linewidth=0.8)\n",
+        "axes[1].set_title(\"Quarterly GDP Growth\")\n",
+        "axes[1].set_ylabel(\"Percent\")\n",
+        "axes[1].set_xlabel(\"Quarter\")\n",
+        "\n",
+        "plt.tight_layout()\n",
+        "plt.show()"
+      ],
+      "id": "01dd23fd",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## Row {height=30%}\n",
+        "\n",
+        "### Column {width=60%}"
+      ],
+      "id": "9d05888a"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "title": "Stationarity (ADF Test)"
+      },
+      "source": [
+        "from statsmodels.tsa.stattools import adfuller\n",
+        "from tabulate import tabulate\n",
+        "from IPython.display import Markdown\n",
+        "\n",
+        "tests = [\n",
+        "    (\"Log Real GDP\", df[\"Log_Real_GDP\"].dropna(), \"ct\"),\n",
+        "    (\"GDP Growth (%)\", df[\"GDP_Growth\"].dropna(), \"c\"),\n",
+        "]\n",
+        "\n",
+        "rows = []\n",
+        "for name, series, regression in tests:\n",
+        "    result = adfuller(series, regression=regression, autolag=\"AIC\")\n",
+        "    conclusion = (\n",
+        "        \"Stationary\"\n",
+        "        if result[1] < 0.05\n",
+        "        else \"Do not reject unit root\"\n",
+        "    )\n",
+        "    rows.append([\n",
+        "        name,\n",
+        "        f\"{result[0]:.3f}\",\n",
+        "        f\"{result[1]:.4f}\",\n",
+        "        result[2],\n",
+        "        conclusion,\n",
+        "    ])\n",
+        "\n",
+        "adf_table = pd.DataFrame(\n",
+        "    rows,\n",
+        "    columns=[\"Series\", \"ADF statistic\", \"p-value\", \"Lags\", \"Conclusion\"]\n",
+        ")\n",
+        "Markdown(tabulate(adf_table, showindex=False, headers=adf_table.columns))"
+      ],
+      "id": "819b0ccc",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## Row {height=45%}\n",
+        "\n",
+        "### Column {width=100%}"
+      ],
+      "id": "d0fabc6b"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "title": "ARIMA Model Comparison and Residual Diagnostics"
+      },
+      "source": [
+        "from IPython.display import HTML, display\n",
+        "\n",
+        "results = [\n",
+        "    [\"ARIMA(3,0,1)\",\n",
+        "     \"AR1: −0.439 (<.001)<br>AR2: 0.137 (.056)<br>AR3: −0.185 (.221)<br>MA1: 1.000 (.960)\",\n",
+        "     \"347.112\", \"362.920\", \".489\", \".636\"],\n",
+        "    [\"ARIMA(0,0,1)\", \"MA1: 0.508 (<.001)\",\n",
+        "     \"347.836\", \"355.740\", \".474\", \".647\"],\n",
+        "]\n",
+        "\n",
+        "table = pd.DataFrame(\n",
+        "    results,\n",
+        "    columns=[\n",
+        "        \"Model\", \"Dynamic coefficients (estimate; p-value)\",\n",
+        "        \"AIC\", \"BIC\", \"LB p, lag 8\", \"LB p, lag 12\"\n",
+        "    ]\n",
+        ")\n",
+        "\n",
+        "display(HTML(table.to_html(index=False, escape=False)))"
+      ],
+      "id": "cf66040a",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| include: false\n",
+        "import pandas as pd\n",
+        "from IPython.display import HTML, display\n",
+        "\n",
+        "forecast_results = pd.DataFrame([\n",
+        "    [\"Full Sample\", \"ARIMA (0,0,1)\", 1, 28, 6.327, 2.410],\n",
+        "    [\"Full Sample\", \"Historical Mean\", 1, 28, 4.963, 1.960],\n",
+        "    [\"Full Sample\", \"Random Walk\", 1, 28, 7.977, 3.038],\n",
+        "    [\"Full Sample\", \"AR (1)\", 1, 28, 6.439, 2.451],\n",
+        "    [\"Full Sample\", \"ARIMA (0,0,1)\", 4, 25, 5.227, 2.122],\n",
+        "    [\"Full Sample\", \"Historical Mean\", 4, 25, 5.228, 2.118],\n",
+        "    [\"Full Sample\", \"Random Walk\", 4, 25, 7.481, 3.801],\n",
+        "    [\"Full Sample\", \"AR (1)\", 4, 25, 5.250, 2.199],\n",
+        "    [\"Excluding 2020 Q2–2021 Q1\", \"ARIMA (0,0,1)\", 1, 24, 0.699, 0.580],\n",
+        "    [\"Excluding 2020 Q2–2021 Q1\", \"Historical Mean\", 1, 24, 0.763, 0.633],\n",
+        "    [\"Excluding 2020 Q2–2021 Q1\", \"Random Walk\", 1, 24, 0.891, 0.674],\n",
+        "    [\"Excluding 2020 Q2–2021 Q1\", \"AR (1)\", 1, 24, 0.684, 0.570],\n",
+        "    [\"Excluding 2020 Q2–2021 Q1\", \"ARIMA (0,0,1)\", 4, 21, 0.788, 0.649],\n",
+        "    [\"Excluding 2020 Q2–2021 Q1\", \"Historical Mean\", 4, 21, 0.786, 0.645],\n",
+        "    [\"Excluding 2020 Q2–2021 Q1\", \"Random Walk\", 4, 21, 5.917, 2.523],\n",
+        "    [\"Excluding 2020 Q2–2021 Q1\", \"AR (1)\", 4, 21, 0.952, 0.739],\n",
+        "], columns=[\n",
+        "    \"Evaluation Sample\", \"Model\", \"Horizon\",\n",
+        "    \"Observations\", \"RMSE\", \"MAE\"\n",
+        "])"
+      ],
+      "id": "f8e61002",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "# Forecast Results\n",
+        "\n",
+        "## Row {.tabset}\n",
+        "\n",
+        "### Full Sample"
+      ],
+      "id": "80e4dbae"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "title": "Forecast Accuracy — Full Sample"
+      },
+      "source": [
+        "columns = [\"Model\", \"Horizon\", \"Observations\", \"RMSE\", \"MAE\"]\n",
+        "full = forecast_results.loc[\n",
+        "    forecast_results[\"Evaluation Sample\"] == \"Full Sample\",\n",
+        "    columns\n",
+        "]\n",
+        "display(HTML(full.to_html(\n",
+        "    index=False,\n",
+        "    formatters={\"RMSE\": \"{:.3f}\".format, \"MAE\": \"{:.3f}\".format}\n",
+        ")))"
+      ],
+      "id": "230b5afb",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### Excluding COVID-19"
+      ],
+      "id": "3eb0c067"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "title": "Forecast Accuracy — Excluding 2020 Q2–2021 Q1"
+      },
+      "source": [
+        "columns = [\"Model\", \"Horizon\", \"Observations\", \"RMSE\", \"MAE\"]\n",
+        "ex_covid = forecast_results.loc[\n",
+        "    forecast_results[\"Evaluation Sample\"] == \"Excluding 2020 Q2–2021 Q1\",\n",
+        "    columns\n",
+        "]\n",
+        "display(HTML(ex_covid.to_html(\n",
+        "    index=False,\n",
+        "    formatters={\"RMSE\": \"{:.3f}\".format, \"MAE\": \"{:.3f}\".format}\n",
+        ")))"
+      ],
+      "id": "93574707",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "# Actual and Forecasted Quarterly GDP Growth Graph"
+      ],
+      "id": "590db29f"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "title": "Actual and Forecasted Quarterly GDP Growth"
+      },
+      "source": [
+        "plot_data = pd.read_csv(\"../Project/Output/forecast_results.csv\")\n",
+        "\n",
+        "plot_data[\"Target_Date\"] = pd.PeriodIndex(\n",
+        "    plot_data[\"Target\"].astype(str), freq=\"Q\"\n",
+        ").to_timestamp()\n",
+        "\n",
+        "fig, axes = plt.subplots(2, 1, figsize=(12, 7), sharex=True, sharey=True)\n",
+        "\n",
+        "forecast_series = [\n",
+        "    (\"ARIMA_Forecast\", \"ARIMA(0,0,1)\", \"#B87333\", \"-\"),\n",
+        "    (\"Mean_Forecast\", \"Historical Mean\", \"#008080\", \"--\"),\n",
+        "    (\"AR1_Forecast\", \"AR(1)\", \"royalblue\", \"-.\"),\n",
+        "    (\"RW_Forecast\", \"Random Walk\", \"gray\", \":\"),\n",
+        "]\n",
+        "\n",
+        "for ax, horizon in zip(axes, [1, 4]):\n",
+        "    data_h = plot_data.loc[plot_data[\"Horizon\"] == horizon].sort_values(\"Target_Date\")\n",
+        "\n",
+        "    ax.plot(data_h[\"Target_Date\"], data_h[\"Actual\"],\n",
+        "            color=\"black\", linewidth=2, label=\"Actual\")\n",
+        "\n",
+        "    for column, label, color, style in forecast_series:\n",
+        "        ax.plot(data_h[\"Target_Date\"], data_h[column],\n",
+        "                color=color, linestyle=style, linewidth=1.4, label=label)\n",
+        "\n",
+        "    ax.axvspan(\n",
+        "        pd.Period(\"2020Q2\", freq=\"Q\").start_time,\n",
+        "        pd.Period(\"2021Q1\", freq=\"Q\").end_time,\n",
+        "        color=\"lightgray\", alpha=0.35, label=\"COVID-19 target quarters\"\n",
+        "    )\n",
+        "    ax.axhline(0, color=\"black\", linewidth=0.6)\n",
+        "    ax.set_title(f\"Forecast Horizon: {horizon} quarter(s)\")\n",
+        "    ax.set_ylabel(\"GDP Growth (%)\")\n",
+        "    ax.legend(fontsize=8, ncol=3, loc=\"lower right\")\n",
+        "\n",
+        "axes[1].set_xlabel(\"Target Quarter\")\n",
+        "fig.tight_layout()\n",
+        "plt.show()"
+      ],
+      "id": "52c3b00f",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| include: false\n",
+        "\n",
+        "dm_results = pd.DataFrame([\n",
+        "    [\"Full Sample\", \"ARIMA vs. Historical Mean\", 1, 28,  1.014, 0.320, \"Fail to reject H₀\"],\n",
+        "    [\"Full Sample\", \"ARIMA vs. Historical Mean\", 4, 25, -0.236, 0.815, \"Fail to reject H₀\"],\n",
+        "    [\"Full Sample\", \"ARIMA vs. Random Walk\",     1, 28, -1.058, 0.299, \"Fail to reject H₀\"],\n",
+        "    [\"Full Sample\", \"ARIMA vs. Random Walk\",     4, 25, -1.010, 0.322, \"Fail to reject H₀\"],\n",
+        "    [\"Full Sample\", \"ARIMA vs. AR(1)\",            1, 28, -1.057, 0.300, \"Fail to reject H₀\"],\n",
+        "    [\"Full Sample\", \"ARIMA vs. AR(1)\",            4, 25, -0.912, 0.371, \"Fail to reject H₀\"],\n",
+        "    [\"Excluding 2020 Q2–2021 Q1\", \"ARIMA vs. Historical Mean\", 1, 24, -1.219, 0.235, \"Fail to reject H₀\"],\n",
+        "    [\"Excluding 2020 Q2–2021 Q1\", \"ARIMA vs. Historical Mean\", 4, 21,  0.751, 0.461, \"Fail to reject H₀\"],\n",
+        "    [\"Excluding 2020 Q2–2021 Q1\", \"ARIMA vs. Random Walk\",     1, 24, -1.108, 0.279, \"Fail to reject H₀\"],\n",
+        "    [\"Excluding 2020 Q2–2021 Q1\", \"ARIMA vs. Random Walk\",     4, 21, -1.008, 0.326, \"Fail to reject H₀\"],\n",
+        "    [\"Excluding 2020 Q2–2021 Q1\", \"ARIMA vs. AR(1)\",            1, 24,  1.354, 0.189, \"Fail to reject H₀\"],\n",
+        "    [\"Excluding 2020 Q2–2021 Q1\", \"ARIMA vs. AR(1)\",            4, 21, -0.940, 0.358, \"Fail to reject H₀\"],\n",
+        "], columns=[\n",
+        "    \"Evaluation Sample\", \"Comparison\", \"Horizon\", \"Observations\",\n",
+        "    \"DM-HLN Statistic\", \"p-value\", \"Conclusion\"\n",
+        "])"
+      ],
+      "id": "aab7ffcd",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "# DM-HLN Tests\n",
+        "\n",
+        "## Row {.tabset}\n",
+        "\n",
+        "### Full Sample"
+      ],
+      "id": "77598da9"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "title": "DM-HLN Tests — Full Sample"
+      },
+      "source": [
+        "dm_full = dm_results.loc[\n",
+        "    dm_results[\"Evaluation Sample\"] == \"Full Sample\"\n",
+        "].drop(columns=\"Evaluation Sample\")\n",
+        "\n",
+        "display(HTML(dm_full.to_html(\n",
+        "    index=False,\n",
+        "    formatters={\n",
+        "        \"DM-HLN Statistic\": \"{:.3f}\".format,\n",
+        "        \"p-value\": \"{:.3f}\".format\n",
+        "    }\n",
+        ")))"
+      ],
+      "id": "2cb238a3",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### Excluding COVID-19"
+      ],
+      "id": "d6894d47"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "title": "DM-HLN Tests — Excluding COVID-19"
+      },
+      "source": [
+        "dm_ex_covid = dm_results.loc[\n",
+        "    dm_results[\"Evaluation Sample\"] == \"Excluding 2020 Q2–2021 Q1\"\n",
+        "].drop(columns=\"Evaluation Sample\")\n",
+        "\n",
+        "display(HTML(dm_ex_covid.to_html(\n",
+        "    index=False,\n",
+        "    formatters={\n",
+        "        \"DM-HLN Statistic\": \"{:.3f}\".format,\n",
+        "        \"p-value\": \"{:.3f}\".format\n",
+        "    }\n",
+        ")))"
+      ],
+      "id": "8addbd26",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## Row {height=55%}"
+      ],
+      "id": "398c5157"
+    }
+  ],
+  "metadata": {
+    "kernelspec": {
+      "name": "python3",
+      "language": "python",
+      "display_name": "Python 3 (ipykernel)",
+      "path": "c:\\Users\\lucia\\OneDrive\\Documents\\GitHub\\-ECON-5371-lab\\.conda\\share\\jupyter\\kernels\\python3"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 5
+}
