@@ -210,7 +210,7 @@ display(HTML(ex_covid.to_html(
     formatters={"RMSE": "{:.3f}".format, "MAE": "{:.3f}".format}
 )))
 ```
-# Row
+# Actual and Forecasted Quarterly GDP Growth Graph
 
 ```{python}
 #| title: "Actual and Forecasted Quarterly GDP Growth"
