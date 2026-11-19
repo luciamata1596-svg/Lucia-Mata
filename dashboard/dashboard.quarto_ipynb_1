@@ -17,7 +17,7 @@
         "\n",
         "## Row {height=20%}"
       ],
-      "id": "8dc9e559"
+      "id": "8f05d254"
     },
     {
       "cell_type": "code",
@@ -41,7 +41,7 @@
         "n_growth = df[\"GDP_Growth\"].dropna().shape[0]\n",
         "dict(value=f\"{n_growth:,}\")"
       ],
-      "id": "6c2a8807",
+      "id": "0f62c8ec",
       "execution_count": null,
       "outputs": []
     },
@@ -54,8 +54,7 @@
         "color": "secondary"
       },
       "source": [
-        "#| classes:\n",
-        "#|   - forecasting-models\n",
+        "#| classes: forecasting-models\n",
         "\n",
         "\n",
         "growth_df = df.dropna(subset=[\"GDP_Growth\"])\n",
@@ -63,7 +62,7 @@
         "end_q = growth_df[\"Quarter\"].iloc[-1]\n",
         "dict(value=f\"{start_q}–{end_q}\")"
       ],
-      "id": "67efece7",
+      "id": "08198f29",
       "execution_count": null,
       "outputs": []
     },
@@ -78,7 +77,7 @@
       "source": [
         "dict(value=\"ARIMA (0,0,1), Historical Mean, Random Walk, and AR(1)\")"
       ],
-      "id": "bd44e26f",
+      "id": "1fdaeab0",
       "execution_count": null,
       "outputs": []
     },
@@ -88,7 +87,7 @@
       "source": [
         "## Row {height=55%}"
       ],
-      "id": "2654b949"
+      "id": "98fc3b57"
     },
     {
       "cell_type": "code",
@@ -120,7 +119,7 @@
         "plt.tight_layout()\n",
         "plt.show()"
       ],
-      "id": "01dd23fd",
+      "id": "79b7e0f1",
       "execution_count": null,
       "outputs": []
     },
@@ -132,7 +131,7 @@
         "\n",
         "### Column {width=60%}"
       ],
-      "id": "9d05888a"
+      "id": "bd74f09f"
     },
     {
       "cell_type": "code",
@@ -171,7 +170,7 @@
         ")\n",
         "Markdown(tabulate(adf_table, showindex=False, headers=adf_table.columns))"
       ],
-      "id": "819b0ccc",
+      "id": "b9e4d7c4",
       "execution_count": null,
       "outputs": []
     },
@@ -183,7 +182,7 @@
         "\n",
         "### Column {width=100%}"
       ],
-      "id": "d0fabc6b"
+      "id": "bb65e3a5"
     },
     {
       "cell_type": "code",
@@ -211,7 +210,7 @@
         "\n",
         "display(HTML(table.to_html(index=False, escape=False)))"
       ],
-      "id": "cf66040a",
+      "id": "f1afd173",
       "execution_count": null,
       "outputs": []
     },
@@ -245,7 +244,7 @@
         "    \"Observations\", \"RMSE\", \"MAE\"\n",
         "])"
       ],
-      "id": "f8e61002",
+      "id": "a2cd0951",
       "execution_count": null,
       "outputs": []
     },
@@ -259,7 +258,7 @@
         "\n",
         "### Full Sample"
       ],
-      "id": "80e4dbae"
+      "id": "c8654195"
     },
     {
       "cell_type": "code",
@@ -277,7 +276,7 @@
         "    formatters={\"RMSE\": \"{:.3f}\".format, \"MAE\": \"{:.3f}\".format}\n",
         ")))"
       ],
-      "id": "230b5afb",
+      "id": "a86b359b",
       "execution_count": null,
       "outputs": []
     },
@@ -287,7 +286,7 @@
       "source": [
         "### Excluding COVID-19"
       ],
-      "id": "3eb0c067"
+      "id": "d9c30b69"
     },
     {
       "cell_type": "code",
@@ -305,7 +304,7 @@
         "    formatters={\"RMSE\": \"{:.3f}\".format, \"MAE\": \"{:.3f}\".format}\n",
         ")))"
       ],
-      "id": "93574707",
+      "id": "dcbea365",
       "execution_count": null,
       "outputs": []
     },
@@ -315,7 +314,7 @@
       "source": [
         "# Actual and Forecasted Quarterly GDP Growth Graph"
       ],
-      "id": "590db29f"
+      "id": "65148c57"
     },
     {
       "cell_type": "code",
@@ -362,7 +361,7 @@
         "fig.tight_layout()\n",
         "plt.show()"
       ],
-      "id": "52c3b00f",
+      "id": "e873e9b5",
       "execution_count": null,
       "outputs": []
     },
@@ -390,7 +389,7 @@
         "    \"DM-HLN Statistic\", \"p-value\", \"Conclusion\"\n",
         "])"
       ],
-      "id": "aab7ffcd",
+      "id": "b6b54f21",
       "execution_count": null,
       "outputs": []
     },
@@ -404,7 +403,7 @@
         "\n",
         "### Full Sample"
       ],
-      "id": "77598da9"
+      "id": "af90a3a5"
     },
     {
       "cell_type": "code",
@@ -424,7 +423,7 @@
         "    }\n",
         ")))"
       ],
-      "id": "2cb238a3",
+      "id": "94decc3c",
       "execution_count": null,
       "outputs": []
     },
@@ -434,7 +433,7 @@
       "source": [
         "### Excluding COVID-19"
       ],
-      "id": "d6894d47"
+      "id": "9f4d10cb"
     },
     {
       "cell_type": "code",
@@ -454,7 +453,7 @@
         "    }\n",
         ")))"
       ],
-      "id": "8addbd26",
+      "id": "36ed8e66",
       "execution_count": null,
       "outputs": []
     },
@@ -464,7 +463,7 @@
       "source": [
         "## Row {height=55%}"
       ],
-      "id": "398c5157"
+      "id": "c00b81ae"
     }
   ],
   "metadata": {
