@@ -35,8 +35,6 @@ dict(value=f"{n_growth:,}")
 #| title: "GDP Growth Period"
 #| icon: clock-history
 #| color: secondary
-#| classes: forecasting-models
-
 
 growth_df = df.dropna(subset=["GDP_Growth"])
 start_q = growth_df["Quarter"].iloc[0]
@@ -50,6 +48,7 @@ dict(value=f"{start_q}–{end_q}")
 #| title: "Forecasting Models"
 #| icon: bar-chart-line
 #| color: "#FF8200"
+#| classes: forecasting-models
 
 dict(value="ARIMA (0,0,1), Historical Mean, Random Walk, and AR(1)")
 ```
