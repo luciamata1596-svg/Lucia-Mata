@@ -19,7 +19,7 @@ from statsmodels.tsa.arima.model import ARIMA
 # =============================================================================
 
 mexico_gdp = pd.read_excel(
-    "Project/Raw Data/pibt_cte_valor.xlsx",
+    "Project/data\data/Raw Data/pibt_cte_valor.xlsx",
     sheet_name="desest-valor",
     header=None
 )
@@ -82,7 +82,7 @@ clean_export = analysis_data[
 clean_export["Quarter"] = clean_export["Quarter"].astype(str)
 
 clean_export.to_csv(
-    "Project/Clean Data/mexico_gdp_clean.csv",
+    "Project/data\data/Clean Data/mexico_gdp_clean.csv",
     index=False
 )
 
@@ -1119,7 +1119,6 @@ with pd.ExcelWriter(output_file) as writer:
 
 print(f"Tables exported successfully to: {output_file}")
 print("Exported sheets:", list(tables_found.keys()))
-
 # %%
 # =============================================================================
 # Out-of-sample forecast comparison graph
@@ -1142,4 +1141,100 @@ fig, axes = plt.subplots(
     sharey=True
 )
 
+for ax, h in zip(axes, [1, 4]):
 
+    data_h = plot_data[
+        plot_data["Horizon"] == h
+    ].sort_values("Target_Date")
+
+    # Actual GDP growth
+    ax.plot(
+        data_h["Target_Date"],
+        data_h["Actual"],
+        color="black",
+        linewidth=2.2,
+        label="Actual"
+    )
+
+    # Forecasts
+    ax.plot(
+        data_h["Target_Date"],
+        data_h["ARIMA_Forecast"],
+        color="#B87333",
+        linewidth=1.5,
+        label="ARIMA(0,0,1)"
+    )
+
+    ax.plot(
+        data_h["Target_Date"],
+        data_h["Mean_Forecast"],
+        color="#008080",
+        linestyle="--",
+        linewidth=1.4,
+        label="Historical Mean"
+    )
+
+    ax.plot(
+        data_h["Target_Date"],
+        data_h["AR1_Forecast"],
+        color="royalblue",
+        linestyle="-.",
+        linewidth=1.4,
+        label="AR(1)"
+    )
+
+    ax.plot(
+        data_h["Target_Date"],
+        data_h["RW_Forecast"],
+        color="gray",
+        linestyle=":",
+        linewidth=1.4,
+        label="Random Walk"
+    )
+
+    # Shade the COVID-19 target quarters
+    ax.axvspan(
+        pd.Period("2020Q2", freq="Q").start_time,
+        pd.Period("2021Q1", freq="Q").end_time,
+        color="lightgray",
+        alpha=0.35,
+        label="COVID-19 period"
+    )
+
+    ax.axhline(
+        0,
+        color="black",
+        linewidth=0.6
+    )
+
+    ax.set_title(
+        f"Out-of-Sample Forecasts — h = {h}"
+    )
+
+    ax.set_ylabel("GDP Growth (%)")
+    ax.legend(
+        fontsize=8,
+        ncol=3,
+        loc="lower right"
+    )
+
+axes[1].set_xlabel("Target Quarter")
+
+fig.suptitle(
+    "Actual and Forecasted Quarterly Real GDP Growth",
+    fontsize=14,
+    fontweight="bold"
+)
+
+fig.tight_layout()
+
+output_dir = Path("Project/Output")
+output_dir.mkdir(parents=True, exist_ok=True)
+
+fig.savefig(
+    output_dir / "out_of_sample_forecasts.png",
+    dpi=300,
+    bbox_inches="tight"
+)
+
+plt.show()
