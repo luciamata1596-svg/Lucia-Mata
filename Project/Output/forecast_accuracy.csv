@@ -1,0 +1,9 @@
+Model,Horizon,RMSE,MAE
+"ARIMA(0,0,1)",1,6.327,2.4103
+Historical Mean,1,4.9632,1.9605
+Random Walk,1,7.9769,3.0379
+AR(1),1,6.4392,2.4506
+"ARIMA(0,0,1)",4,5.2273,2.1216
+Historical Mean,4,5.2275,2.1177
+Random Walk,4,7.4811,3.8006
+AR(1),4,5.2496,2.1993

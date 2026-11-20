@@ -90,17 +90,16 @@ clean_export.to_csv(
 # =============================================================================
 # 6. Summary statistics
 # =============================================================================
-
-table = analysis_data[
-    ["Real_GDP", "Log_Real_GDP", "GDP_Growth"]
-].describe().round(6)
-
-print(table)
-
-table.to_excel(
-    "Project/summary_statistics.xlsx"
+summary_statistics = (
+    analysis_data[
+        ["Real_GDP", "Log_Real_GDP", "GDP_Growth"]
+    ]
+    .describe()
+    .rename_axis("Statistic")
+    .reset_index()
 )
 
+print(summary_statistics.round(4))
 # %%
 # =============================================================================
 # 7. Plot Mexico's seasonally adjusted quarterly real GDP
@@ -456,6 +455,18 @@ else:
         "Fail to reject H0 at the 10% level: "
         "insufficient evidence of a structural break."
     )
+chow_covid_table = pd.DataFrame([{
+    "Break": "2020Q2",
+    "F-statistic": F_chow,
+    "p-value": p_value,
+    "Conclusion": (
+        "Structural break"
+        if p_value < 0.10
+        else "No significant break"
+    )
+}])
+
+print(chow_covid_table.round(4))
 # %%
 # =============================================================================
 # 13. Structural-break robustness: 1994–95 peso-crisis dummy
@@ -583,7 +594,95 @@ print_side_by_side(
 
     title="Mexico's Real GDP — Estimation Sample"
 )
+# Run the tests and store their results
+adf_log = _run_adf(
+    estimation_sample["Log_Real_GDP"],
+    regression="ct"
+)
 
+kpss_log = _run_kpss(
+    estimation_sample["Log_Real_GDP"],
+    regression="ct"
+)
+
+adf_growth = _run_adf(
+    estimation_sample["GDP_Growth"],
+    regression="c"
+)
+
+kpss_growth = _run_kpss(
+    estimation_sample["GDP_Growth"],
+    regression="c"
+)
+
+stationarity_table = pd.DataFrame([
+    {
+        "Series": "Log Real GDP",
+        "Test": "ADF",
+        "Specification": "Constant and trend",
+        "Statistic": adf_log["stat"],
+        "p-value": adf_log["p"],
+        "Lags/Bandwidth": adf_log["lags"],
+        "Critical Value 1%": adf_log["cv"]["1%"],
+        "Critical Value 5%": adf_log["cv"]["5%"],
+        "Critical Value 10%": adf_log["cv"]["10%"],
+        "Conclusion": (
+            "Reject unit-root null"
+            if adf_log["p"] < 0.05
+            else "Fail to reject unit-root null"
+        )
+    },
+    {
+        "Series": "Log Real GDP",
+        "Test": "KPSS",
+        "Specification": "Constant and trend",
+        "Statistic": kpss_log["stat"],
+        "p-value": kpss_log["p"],
+        "Lags/Bandwidth": kpss_log["bw"],
+        "Critical Value 1%": kpss_log["cv"]["1%"],
+        "Critical Value 5%": kpss_log["cv"]["5%"],
+        "Critical Value 10%": kpss_log["cv"]["10%"],
+        "Conclusion": (
+            "Reject stationarity null"
+            if kpss_log["p"] < 0.05
+            else "Fail to reject stationarity null"
+        )
+    },
+    {
+        "Series": "GDP Growth",
+        "Test": "ADF",
+        "Specification": "Constant",
+        "Statistic": adf_growth["stat"],
+        "p-value": adf_growth["p"],
+        "Lags/Bandwidth": adf_growth["lags"],
+        "Critical Value 1%": adf_growth["cv"]["1%"],
+        "Critical Value 5%": adf_growth["cv"]["5%"],
+        "Critical Value 10%": adf_growth["cv"]["10%"],
+        "Conclusion": (
+            "Reject unit-root null"
+            if adf_growth["p"] < 0.05
+            else "Fail to reject unit-root null"
+        )
+    },
+    {
+        "Series": "GDP Growth",
+        "Test": "KPSS",
+        "Specification": "Constant",
+        "Statistic": kpss_growth["stat"],
+        "p-value": kpss_growth["p"],
+        "Lags/Bandwidth": kpss_growth["bw"],
+        "Critical Value 1%": kpss_growth["cv"]["1%"],
+        "Critical Value 5%": kpss_growth["cv"]["5%"],
+        "Critical Value 10%": kpss_growth["cv"]["10%"],
+        "Conclusion": (
+            "Reject stationarity null"
+            if kpss_growth["p"] < 0.05
+            else "Fail to reject stationarity null"
+        )
+    }
+])
+
+print(stationarity_table.round(4))
 # %%
 # =============================================================================
 # 15. ARIMA model selection using AIC and BIC
@@ -704,6 +803,155 @@ print(
         model_df=1,
         return_df=True
     )
+)
+lb_aic = (
+    acorr_ljungbox(
+        resid_aic,
+        lags=[8, 12],
+        model_df=4,
+        return_df=True
+    )
+    .rename_axis("Lag")
+    .reset_index()
+)
+
+lb_aic.insert(0, "Model", "ARIMA(3,0,1)")
+
+lb_bic = (
+    acorr_ljungbox(
+        resid_bic,
+        lags=[4, 8, 12],
+        model_df=1,
+        return_df=True
+    )
+    .rename_axis("Lag")
+    .reset_index()
+)
+
+lb_bic.insert(0, "Model", "ARIMA(0,0,1)")
+
+ljung_box_table = pd.concat(
+    [lb_aic, lb_bic],
+    ignore_index=True
+)
+
+ljung_box_table = ljung_box_table.rename(columns={
+    "lb_stat": "Q-statistic",
+    "lb_pvalue": "p-value"
+})
+
+ljung_box_table["Conclusion (10%)"] = np.where(
+    ljung_box_table["p-value"] < 0.10,
+    "Reject no-autocorrelation null",
+    "Fail to reject no-autocorrelation null"
+)
+
+print(ljung_box_table.round(4))
+# %%
+# =============================================================================
+# ARIMA model comparison and residual-diagnostics table
+# =============================================================================
+
+def format_pvalue(p_value):
+    """Format p-values for the coefficient column."""
+    if p_value < 0.001:
+        return "<.001"
+
+    return f"{p_value:.3f}".lstrip("0")
+
+
+def format_coefficients(model_result, coefficient_names):
+    """Combine coefficient estimates and p-values in one cell."""
+
+    parameter_names = model_result.model.param_names
+
+    estimates = dict(
+        zip(parameter_names, model_result.params)
+    )
+
+    p_values = dict(
+        zip(parameter_names, model_result.pvalues)
+    )
+
+    formatted_results = []
+
+    for parameter, label in coefficient_names.items():
+        estimate = estimates[parameter]
+        p_value = p_values[parameter]
+
+        formatted_results.append(
+            f"{label}: {estimate:.3f} "
+            f"({format_pvalue(p_value)})"
+        )
+
+    return "; ".join(formatted_results)
+
+
+# Ljung–Box results for the two models
+lb_arima_301 = acorr_ljungbox(
+    resid_aic,
+    lags=[8, 12],
+    model_df=4,
+    return_df=True
+)
+
+lb_arima_001 = acorr_ljungbox(
+    resid_bic,
+    lags=[8, 12],
+    model_df=1,
+    return_df=True
+)
+
+
+# Main comparison table
+arima_comparison_table = pd.DataFrame([
+    {
+        "Model": "ARIMA(3,0,1)",
+        "Dynamic coefficients (estimate; p-value)": (
+            format_coefficients(
+                model_aic,
+                {
+                    "ar.L1": "AR1",
+                    "ar.L2": "AR2",
+                    "ar.L3": "AR3",
+                    "ma.L1": "MA1"
+                }
+            )
+        ),
+        "AIC": model_aic.aic,
+        "BIC": model_aic.bic,
+        "LB p-value, lag 8": (
+            lb_arima_301.loc[8, "lb_pvalue"]
+        ),
+        "LB p-value, lag 12": (
+            lb_arima_301.loc[12, "lb_pvalue"]
+        )
+    },
+    {
+        "Model": "ARIMA(0,0,1)",
+        "Dynamic coefficients (estimate; p-value)": (
+            format_coefficients(
+                model_bic,
+                {
+                    "ma.L1": "MA1"
+                }
+            )
+        ),
+        "AIC": model_bic.aic,
+        "BIC": model_bic.bic,
+        "LB p-value, lag 8": (
+            lb_arima_001.loc[8, "lb_pvalue"]
+        ),
+        "LB p-value, lag 12": (
+            lb_arima_001.loc[12, "lb_pvalue"]
+        )
+    }
+])
+
+print(
+    arima_comparison_table
+    .round(3)
+    .to_string(index=False)
 )
 # %%
 # =============================================================================
@@ -830,6 +1078,26 @@ for h in horizons:
     print("Number of forecasts:", len(results_h))
     print("First target:", results_h["Target"].min())
     print("Last target:", results_h["Target"].max())
+    evaluation_check = (
+    forecast_results
+    .groupby("Horizon", as_index=False)
+    .agg(
+        Observations=("Target", "size"),
+        First_Target=("Target", "min"),
+        Last_Target=("Target", "max")
+    )
+)
+
+evaluation_check["First_Target"] = (
+    evaluation_check["First_Target"].astype(str)
+)
+
+evaluation_check["Last_Target"] = (
+    evaluation_check["Last_Target"].astype(str)
+)
+
+print(evaluation_check)
+    
 # %%
 # =============================================================================
 # 19. Forecast accuracy: RMSE and MAE
@@ -1238,3 +1506,84 @@ fig.savefig(
 )
 
 plt.show()
+# %%
+# =============================================================================
+# Export all tables as separate CSV files
+# =============================================================================
+
+from pathlib import Path
+
+OUTPUT_DIR = Path("Project") / "output"
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+
+# Summary statistics
+summary_statistics.round(4).to_csv(
+    OUTPUT_DIR / "summary_statistics.csv",
+    index=False
+)
+
+# Structural-break and robustness tables
+chow_results.round(4).to_csv(
+    OUTPUT_DIR / "chow_gfc.csv",
+    index=False
+)
+
+chow_covid_table.round(4).to_csv(
+    OUTPUT_DIR / "chow_covid.csv",
+    index=False
+)
+
+dummy_comparison.round(4).to_csv(
+    OUTPUT_DIR / "peso_crisis_dummy.csv",
+    index=False
+)
+
+# Stationarity and model-selection tables
+stationarity_table.round(4).to_csv(
+    OUTPUT_DIR / "stationarity_tests.csv",
+    index=False
+)
+
+ic_table.round(4).to_csv(
+    OUTPUT_DIR / "arima_model_selection.csv",
+    index=False
+)
+
+ljung_box_table.round(4).to_csv(
+    OUTPUT_DIR / "ljung_box_tests.csv",
+    index=False
+)
+arima_comparison_table.round(3).to_csv(
+    OUTPUT_DIR / "arima_model_comparison_diagnostics.csv",
+    index=False
+)
+# Forecast evaluation tables
+evaluation_check.to_csv(
+    OUTPUT_DIR / "evaluation_sample.csv",
+    index=False
+)
+
+accuracy_table.round(4).to_csv(
+    OUTPUT_DIR / "forecast_accuracy.csv",
+    index=False
+)
+
+covid_comparison.round(4).to_csv(
+    OUTPUT_DIR / "forecast_accuracy_covid_comparison.csv",
+    index=False
+)
+
+dm_table.round(4).to_csv(
+    OUTPUT_DIR / "dm_hln_tests.csv",
+    index=False
+)
+
+# Detailed forecast results
+forecast_results.round(6).to_csv(
+    OUTPUT_DIR / "forecast_results.csv",
+    index=False
+)
+
+print("\nCSV files created:")
+for file in sorted(OUTPUT_DIR.glob("*.csv")):
+    print(file.name)
