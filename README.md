@@ -33,7 +33,7 @@ https://www.inegi.org.mx/contenidos/programas/pib/2018/tabulados/des/pibt_cte_va
 
 ## Software Requirements
 
-The analysis was developed and tested using Python 3.12.15.
+The analysis was developed and tested using Python 3.12.14.
 
 ### Required Python packages
 - pandas==[3.0.6]
