@@ -11,6 +11,8 @@ deployed via GitHub Pages.
 - `files/` — downloadable CV
 - `images/` — headshot and other images
 - `docs/` — rendered site (published output, do not edit directly)
+### Dashboard
+Dashboard link:
 ## Research Project: Forecasting Mexico’s Quarterly Real GDP Growth
 This project analyzes whether  ARIMA (0,0,1) produces more accurate one- and four-quarter-ahead forecasts of Mexico’s quarterly real GDP growth than historical-mean, random-walk, and AR(1) benchmarks. It also examines whether the results change after excluding the COVID-19 target quarters from 2020 Q2 through 2021 Q1. Forecast accuracy is determined by comparing RMSE and MAE, as well as DM-HLN tests, for the four forecasting methods. GDP forecasts help us understand future economic conditions, and a complicated model is valuable only if it outperforms a simple benchmark. Forecast accuracy results showed that the ARIMA (0,0,1) model did not consistently outperform the benchmarks, and the DM-HLN tests found no statistically significant difference; limitations include the short evaluation sample and structural breaks.
 ## Data sources
