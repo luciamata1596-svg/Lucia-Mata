@@ -1,6 +1,19 @@
 # ECON-5371 — Project Forecasting Mexico’s Quarterly Real GDP Growth Code
 # Data documentation, summary statistics, and visualization
+from pathlib import Path
 
+PROJECT_DIR = Path(__file__).resolve().parents[1]
+
+RAW_DATA_FILE = (
+    PROJECT_DIR / "data" / "data" / "Raw Data" / "pibt_cte_valor.xlsx"
+)
+
+CLEAN_DATA_FILE = (
+    PROJECT_DIR / "data" / "data" / "Clean Data" / "mexico_gdp_clean.csv"
+)
+
+OUTPUT_DIR = PROJECT_DIR / "Output"
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 # %%
 # =============================================================================
 # Import Required packages
@@ -19,12 +32,10 @@ from statsmodels.tsa.arima.model import ARIMA
 # =============================================================================
 
 mexico_gdp = pd.read_excel(
-    "Project/data\data/Raw Data/pibt_cte_valor.xlsx",
+    RAW_DATA_FILE,
     sheet_name="desest-valor",
     header=None
 )
-
-mexico_gdp.head()
 # %%
 # =============================================================================
 # 2. Clean the data
@@ -82,10 +93,9 @@ clean_export = analysis_data[
 clean_export["Quarter"] = clean_export["Quarter"].astype(str)
 
 clean_export.to_csv(
-    "Project/data\data/Clean Data/mexico_gdp_clean.csv",
+    CLEAN_DATA_FILE,
     index=False
 )
-
 # %%
 # =============================================================================
 # 6. Summary statistics
@@ -1329,64 +1339,6 @@ for sample_name, data in samples_dm.items():
 dm_table = pd.DataFrame(dm_rows)
 
 print(dm_table.round(3))
-# %%
-# =============================================================================
-# Export available tables to one Excel workbook
-# =============================================================================
-
-from pathlib import Path
-
-output_dir = Path("Project/Output")
-output_dir.mkdir(parents=True, exist_ok=True)
-
-# Works with either your old or new variable names
-table_candidates = {
-    "Summary Statistics": ["summary_statistics", "table"],
-    "Chow GFC": ["chow_gfc_table", "chow_results"],
-    "Chow COVID": ["chow_covid_table"],
-    "Peso Crisis Dummy": ["peso_crisis_table", "dummy_comparison"],
-    "Stationarity Tests": ["stationarity_table"],
-    "ARIMA Selection": ["arima_selection_table", "ic_table"],
-    "Ljung Box": ["ljung_box_table"],
-    "Evaluation Sample": ["evaluation_check"],
-    "Forecast Accuracy": [
-        "forecast_accuracy_table",
-        "accuracy_table"
-    ],
-    "COVID Comparison": [
-        "covid_accuracy_table",
-        "covid_comparison"
-    ],
-    "DM-HLN Tests": ["dm_hln_table", "dm_table"]
-}
-
-tables_found = {}
-
-for sheet_name, possible_names in table_candidates.items():
-    for variable_name in possible_names:
-        obj = globals().get(variable_name)
-
-        if isinstance(obj, pd.DataFrame):
-            tables_found[sheet_name] = obj
-            break
-
-output_file = output_dir / "project_tables.xlsx"
-
-with pd.ExcelWriter(output_file) as writer:
-
-    for sheet_name, dataframe in tables_found.items():
-
-        # Preserve count, mean, std., etc. in the summary table
-        keep_index = sheet_name == "Summary Statistics"
-
-        dataframe.to_excel(
-            writer,
-            sheet_name=sheet_name,
-            index=keep_index
-        )
-
-print(f"Tables exported successfully to: {output_file}")
-print("Exported sheets:", list(tables_found.keys()))
 # %%
 # =============================================================================
 # Out-of-sample forecast comparison graph
