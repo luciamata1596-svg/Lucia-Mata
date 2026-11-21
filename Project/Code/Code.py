@@ -1587,3 +1587,25 @@ forecast_results.round(6).to_csv(
 print("\nCSV files created:")
 for file in sorted(OUTPUT_DIR.glob("*.csv")):
     print(file.name)
+# %%
+# =============================================================================
+# Export all tables as separate CSV files
+# =============================================================================
+
+
+import sys
+from importlib.metadata import version
+
+packages = [
+    "pandas",
+    "numpy",
+    "matplotlib",
+    "scipy",
+    "statsmodels",
+    "openpyxl"
+]
+
+print("Python:", sys.version.split()[0])
+
+for package in packages:
+    print(f"{package}=={version(package)}")
