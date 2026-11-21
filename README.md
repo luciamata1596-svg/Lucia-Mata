@@ -72,7 +72,7 @@ any project results.
 Place the original, unmodified INEGI workbook at:
 
 ```text
-Project/data/raw/pibt_cte_valor.xlsx
+Project/data/data/Raw Data/pibt_cte_valor.xlsx
 ```
 
 The Excel workbook must contain the worksheet named `desest-valor`.
@@ -106,7 +106,7 @@ python Project/Code/Code.py
 The script creates:
 
 ```text
-Project/data/clean/mexico_gdp_clean.csv
+Project/data/data/Clean Data/mexico_gdp_clean.csv
 ```
 
 This file contains:
