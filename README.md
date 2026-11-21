@@ -189,7 +189,7 @@ The required order is therefore:
 
 ```text
 1. Install requirements.txt
-2. Place the raw Excel file in data/raw/
+2. Place the raw Excel file in Project/data/data/Raw Data/
 3. Run Project/Code/Code.py
 4. Verify the clean data, CSV tables, figures, and forecast counts
 5. Render the Quarto dashboard
