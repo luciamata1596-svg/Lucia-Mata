@@ -1,4 +1,4 @@
-# ECON-5371 — Data Memo
+# ECON-5371 — Project Forecasting Mexico’s Quarterly Real GDP Growth Code
 # Data documentation, summary statistics, and visualization
 
 # %%
