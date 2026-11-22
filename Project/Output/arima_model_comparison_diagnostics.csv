@@ -1,0 +1,3 @@
+Model,Dynamic coefficients (estimate; p-value),AIC,BIC,"LB p-value, lag 8","LB p-value, lag 12"
+"ARIMA(3,0,1)",AR1: -0.439 (<.001); AR2: 0.137 (.056); AR3: -0.185 (.221); MA1: 1.000 (.960),347.112,362.92,0.489,0.636
+"ARIMA(0,0,1)",MA1: 0.508 (<.001),347.836,355.74,0.474,0.647
