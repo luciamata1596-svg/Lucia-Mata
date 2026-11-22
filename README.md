@@ -153,8 +153,8 @@ The following figures are created in `Project/Output/`:
 Figure 1 Mexico’s seasonally adjusted quarterly real GDP.png
 Figure 2 Mexico’s log real GDP and Mexico’s quarterly real GDP growth rate.png
 Figure 3 ACF and PACF graphs.png
-Figure 4. Actual and out-of-sample forecasts of Mexico’s quarterly real GDP growth.png
-Figure A1. Residual diagnostics for the ARIMA(0,0,1) model.png
+Figure 4 Actual and out-of-sample forecasts of Mexico’s quarterly real GDP growth.png
+Figure A1 Residual diagnostics for the ARIMA(0,0,1) model.png
 ```
 
 ### Step 7: Verify the forecast sample
