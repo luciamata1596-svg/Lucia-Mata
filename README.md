@@ -150,11 +150,11 @@ forecast errors for each model, origin, target quarter, and horizon.
 The following figures are created in `Project/Output/`:
 
 ```text
-figure_1_mexico_real_gdp.png
-figure_2_log_gdp_and_growth.png
-figure_3_acf_pacf.png
-figure_A1_residual_diagnostics.png
-out_of_sample_forecasts.png
+Figure 1 Mexico’s seasonally adjusted quarterly real GDP.png
+Figure 2 Mexico’s log real GDP and Mexico’s quarterly real GDP growth rate.png
+Figure 3 ACF and PACF graphs.png
+Figure 4. Actual and out-of-sample forecasts of Mexico’s quarterly real GDP growth.png
+Figure A1. Residual diagnostics for the ARIMA(0,0,1) model.png
 ```
 
 ### Step 7: Verify the forecast sample
