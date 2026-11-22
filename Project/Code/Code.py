@@ -196,7 +196,7 @@ axes[1].legend(fontsize=8)
 fig.tight_layout()
 plt.show()
 fig.savefig(
-    OUTPUT_DIR / "Figure 2 Figure 2 Mexico’s log real GDP and Mexico’s quarterly real GDP growth rate.png",
+    OUTPUT_DIR / "Figure 2 Mexico’s log real GDP and Mexico’s quarterly real GDP growth rate.png",
     dpi=300,
     bbox_inches="tight"
 )
@@ -1450,19 +1450,9 @@ fig.suptitle(
 )
 
 fig.tight_layout()
-
-output_dir = Path("Project/Output")
-output_dir.mkdir(parents=True, exist_ok=True)
-
-fig.savefig(
-    output_dir / "out_of_sample_forecasts.png",
-    dpi=300,
-    bbox_inches="tight"
-)
-
 plt.show()
 fig.savefig(
-    OUTPUT_DIR / "Figure 4 Actual and out-of-sample forecasts of Mexico’s quarterly real GDP growth.",
+    OUTPUT_DIR / "Figure 4 Actual and out-of-sample forecasts of Mexico’s quarterly real GDP growth.png",
     dpi=300,
     bbox_inches="tight"
 )
