@@ -3,15 +3,6 @@
 from pathlib import Path
 
 PROJECT_DIR = Path(__file__).resolve().parents[1]
-
-RAW_DATA_FILE = (
-    PROJECT_DIR / "data" / "data" / "Raw Data" / "pibt_cte_valor.xlsx"
-)
-
-CLEAN_DATA_FILE = (
-    PROJECT_DIR / "data" / "data" / "Clean Data" / "mexico_gdp_clean.csv"
-)
-
 OUTPUT_DIR = PROJECT_DIR / "Output"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 # %%
@@ -135,14 +126,12 @@ ax.set_xlabel("Year")
 ax.set_ylabel("Millions of pesos at 2018 prices")
 
 fig.tight_layout()
-
+plt.show()
 fig.savefig(
-    "Project/mexico_real_gdp.png",
+    OUTPUT_DIR / "Figure 1 Mexico’s seasonally adjusted quarterly real GDP.png",
     dpi=300,
     bbox_inches="tight"
 )
-
-plt.show()
 # %%
 # =============================================================================
 # 8. Plot log real GDP and quarterly real GDP growth
@@ -206,6 +195,11 @@ axes[1].legend(fontsize=8)
 
 fig.tight_layout()
 plt.show()
+fig.savefig(
+    OUTPUT_DIR / "Figure 2 Figure 2 Mexico’s log real GDP and Mexico’s quarterly real GDP growth rate.png",
+    dpi=300,
+    bbox_inches="tight"
+)
 # %%
 # =============================================================================
 # 9. Divide the data into estimation and evaluation samples
@@ -293,6 +287,11 @@ for ax in axes:
 
 fig.tight_layout()
 plt.show()
+fig.savefig(
+    OUTPUT_DIR / "Figure 3 ACF and PACF graphs.png",
+    dpi=300,
+    bbox_inches="tight"
+)
 # %%
 # =============================================================================
 # 11. Chow tests for the 2008–2009 Global Financial Crisis
@@ -793,7 +792,11 @@ axes[1, 0].set_title("ARIMA(0,0,1) Residuals")
 plot_acf(resid_bic, lags=20, ax=axes[1,1], zero=False, alpha=0.05, title="ACF-ARIMA(0,0,1) Residuals")
 fig.tight_layout()
 plt.show()
-
+fig.savefig(
+    OUTPUT_DIR / "Figure A1 Residual diagnostics for the ARIMA(0,0,1) model.png",
+    dpi=300,
+    bbox_inches="tight"
+)
 #Ljung–Box tests
 print("ARIMA(3,0,1):")
 print(
@@ -1458,6 +1461,11 @@ fig.savefig(
 )
 
 plt.show()
+fig.savefig(
+    OUTPUT_DIR / "Figure 4 Actual and out-of-sample forecasts of Mexico’s quarterly real GDP growth.",
+    dpi=300,
+    bbox_inches="tight"
+)
 # %%
 # =============================================================================
 # Export all tables as separate CSV files

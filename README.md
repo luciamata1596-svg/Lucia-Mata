@@ -122,7 +122,7 @@ observations because calculating growth removes the first observation.
 
 ### Step 5: Check the table outputs
 
-The following files are created in `Project/output/`:
+The following files are created in `Project/Output/`:
 
 ```text
 summary_statistics.csv
@@ -147,7 +147,7 @@ forecast errors for each model, origin, target quarter, and horizon.
 
 ### Step 6: Check the figure outputs
 
-The following figures are created in `Project/output/`:
+The following figures are created in `Project/Output/`:
 
 ```text
 figure_1_mexico_real_gdp.png
