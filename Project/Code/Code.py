@@ -825,7 +825,7 @@ axes[1, 0].set_title("ARIMA(0,0,1) Residuals")
 plot_acf(resid_bic, lags=20, ax=axes[1,1], zero=False, alpha=0.05, title="ACF-ARIMA(0,0,1) Residuals")
 fig.tight_layout()
 fig.savefig(
-    OUTPUT_DIR / "Figure A1 Residual diagnostics for the ARIMA(0,0,1) model.png",
+    OUTPUT_DIR / "Figure A1 Residual diagnostics for the ARIMA models.png",
     dpi=300,
     bbox_inches="tight"
 )
@@ -1485,6 +1485,122 @@ fig.savefig(
     dpi=300,
     bbox_inches="tight"
 )
+plt.show()
+plt.close(fig)
+# %%
+# =============================================================================
+# Out-of-sample forecast graph excluding COVID-19 target quarters
+# =============================================================================
+
+plot_data = forecast_results.copy()
+
+# Ensure Target is a quarterly PeriodIndex
+plot_data["Target"] = pd.PeriodIndex(
+    plot_data["Target"].astype(str),
+    freq="Q"
+)
+
+# Identify the excluded COVID-19 target quarters
+covid_mask_plot = (
+    (plot_data["Target"] >= pd.Period("2020Q2", freq="Q"))
+    & (plot_data["Target"] <= pd.Period("2021Q1", freq="Q"))
+)
+
+# Replace COVID-period values with NaN to leave a gap
+plot_columns = [
+    "Actual",
+    "ARIMA_Forecast",
+    "Mean_Forecast",
+    "AR1_Forecast",
+    "RW_Forecast"
+]
+
+plot_data.loc[covid_mask_plot, plot_columns] = np.nan
+
+plot_data["Target_Date"] = (
+    plot_data["Target"].dt.to_timestamp()
+)
+
+fig, axes = plt.subplots(
+    2, 1,
+    figsize=(11, 8),
+    sharex=True,
+    sharey=True
+)
+
+for ax, h in zip(axes, [1, 4]):
+
+    data_h = (
+        plot_data[plot_data["Horizon"] == h]
+        .sort_values("Target_Date")
+    )
+
+    ax.plot(
+        data_h["Target_Date"],
+        data_h["Actual"],
+        color="black",
+        linewidth=2.2,
+        label="Actual"
+    )
+
+    ax.plot(
+        data_h["Target_Date"],
+        data_h["ARIMA_Forecast"],
+        color="#B87333",
+        linewidth=1.5,
+        label="ARIMA(0,0,1)"
+    )
+
+    ax.plot(
+        data_h["Target_Date"],
+        data_h["Mean_Forecast"],
+        color="#008080",
+        linestyle="--",
+        linewidth=1.4,
+        label="Historical Mean"
+    )
+
+    ax.plot(
+        data_h["Target_Date"],
+        data_h["AR1_Forecast"],
+        color="royalblue",
+        linestyle="-.",
+        linewidth=1.4,
+        label="AR(1)"
+    )
+
+    ax.plot(
+        data_h["Target_Date"],
+        data_h["RW_Forecast"],
+        color="gray",
+        linestyle=":",
+        linewidth=1.4,
+        label="Random Walk"
+    )
+
+    ax.axhline(0, color="black", linewidth=0.6)
+    ax.set_title(f"Out-of-Sample Forecasts — h = {h}")
+    ax.set_ylabel("GDP Growth (%)")
+    ax.legend(fontsize=8, ncol=3, loc="lower right")
+
+axes[1].set_xlabel("Target Quarter")
+
+fig.suptitle(
+    "Actual and Forecasted Quarterly Real GDP Growth\n"
+    "Excluding 2020Q2–2021Q1 Target Quarters",
+    fontsize=14,
+    fontweight="bold"
+)
+
+fig.tight_layout()
+
+fig.savefig(
+    OUTPUT_DIR
+    / "Figure 5 Forecasts excluding COVID-19 target quarters.png",
+    dpi=300,
+    bbox_inches="tight"
+)
+
 plt.show()
 plt.close(fig)
 # %%
