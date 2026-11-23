@@ -1,17 +1,26 @@
 # ECON-5371 — Project Forecasting Mexico’s Quarterly Real GDP Growth Code
 # Data documentation, summary statistics, and visualization
+# %%
+# =============================================================================
+# Define project folders
+# =============================================================================
+
 from pathlib import Path
 
 PROJECT_DIR = Path(__file__).resolve().parents[1]
-OUTPUT_DIR = PROJECT_DIR / "Output"
-OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+
 RAW_DATA_FILE = (
-    PROJECT_DIR / "data" / "data" / "Raw Data" / "pibt_cte_valor.xlsx"
+    PROJECT_DIR / "data" / "raw" / "pibt_cte_valor.xlsx"
 )
+
 CLEAN_DATA_FILE = (
-    PROJECT_DIR / "data" / "data" / "Clean Data" / "mexico_gdp_clean.csv"
+    PROJECT_DIR / "data" / "clean" / "mexico_gdp_clean.csv"
 )
+
+OUTPUT_DIR = PROJECT_DIR / "output"
+
 CLEAN_DATA_FILE.parent.mkdir(parents=True, exist_ok=True)
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 # %%
 # =============================================================================
 # Import Required packages
@@ -139,6 +148,7 @@ fig.savefig(
     bbox_inches="tight"
 )
 plt.show()
+plt.close(fig)
 # %%
 # =============================================================================
 # 8. Plot log real GDP and quarterly real GDP growth
@@ -207,6 +217,7 @@ fig.savefig(
     bbox_inches="tight"
 )
 plt.show()
+plt.close(fig)
 # %%
 # =============================================================================
 # 9. Divide the data into estimation and evaluation samples
@@ -461,16 +472,10 @@ print("Break date: 2020 Q2")
 print(f"F-statistic: {F_chow:.3f}")
 print(f"p-value: {p_value:.4f}")
 
-if p_value < 0.10:
-    print(
-        "Reject H0 at the 10% level: "
-        "evidence of a structural break."
-    )
+if p_value < 0.01:
+    conclusion = "Structural break at the 1% level"
 else:
-    print(
-        "Fail to reject H0 at the 10% level: "
-        "insufficient evidence of a structural break."
-    )
+    conclusion = "No significant break at the 1% level"
 chow_covid_table = pd.DataFrame([{
     "Break": "2020Q2",
     "F-statistic": F_chow,
@@ -553,6 +558,27 @@ print(
         4
     )
 )
+# Peso Crisis CSV Table Results
+dummy_comparison = pd.DataFrame([
+    {
+        "Specification": "ARIMA(0,0,1)",
+        "AIC": model_without_dummy.aic,
+        "BIC": model_without_dummy.bic,
+        "Dummy coefficient": np.nan,
+        "Dummy p-value": np.nan
+    },
+    {
+        "Specification": "ARIMA(0,0,1) + Peso-crisis dummy",
+        "AIC": model_with_dummy.aic,
+        "BIC": model_with_dummy.bic,
+        "Dummy coefficient": model_with_dummy.params[
+            "Peso_Crisis_Dummy"
+        ],
+        "Dummy p-value": model_with_dummy.pvalues[
+            "Peso_Crisis_Dummy"
+        ]
+    }
+])
 # %%
 # =============================================================================
 # 14. ADF and KPSS tests
@@ -1089,7 +1115,6 @@ print(forecast_results.head())
 # 18.  Check the evaluation sample
 # =============================================================================
 for h in horizons:
-
     results_h = forecast_results[
         forecast_results["Horizon"] == h
     ]
@@ -1098,7 +1123,9 @@ for h in horizons:
     print("Number of forecasts:", len(results_h))
     print("First target:", results_h["Target"].min())
     print("Last target:", results_h["Target"].max())
-    evaluation_check = (
+
+# Evaluation check
+evaluation_check = (
     forecast_results
     .groupby("Horizon", as_index=False)
     .agg(
@@ -1111,13 +1138,9 @@ for h in horizons:
 evaluation_check["First_Target"] = (
     evaluation_check["First_Target"].astype(str)
 )
-
 evaluation_check["Last_Target"] = (
     evaluation_check["Last_Target"].astype(str)
 )
-
-print(evaluation_check)
-    
 # %%
 # =============================================================================
 # 19. Forecast accuracy: RMSE and MAE
@@ -1463,6 +1486,7 @@ fig.savefig(
     bbox_inches="tight"
 )
 plt.show()
+plt.close(fig)
 # %%
 # =============================================================================
 # Export all tables as separate CSV files
@@ -1543,8 +1567,6 @@ for file in sorted(OUTPUT_DIR.glob("*.csv")):
 # =============================================================================
 # Export all tables as separate CSV files
 # =============================================================================
-
-
 import sys
 from importlib.metadata import version
 
