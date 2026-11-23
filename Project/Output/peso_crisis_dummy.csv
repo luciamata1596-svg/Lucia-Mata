@@ -1,3 +1,3 @@
-Specification,AIC,BIC
-"ARIMA(0,0,1)",347.8356,355.7397
-"ARIMA(0,0,1) + Peso-crisis dummy",347.2162,357.7551
+Specification,AIC,BIC,Dummy coefficient,Dummy p-value
+"ARIMA(0,0,1)",347.7829,355.687,,
+"ARIMA(0,0,1) + Peso-crisis dummy",347.1671,357.706,-1.2458,0.0016

@@ -1,6 +1,6 @@
 Model,Lag,Q-statistic,p-value,Conclusion (10%)
-"ARIMA(3,0,1)",8,3.4284,0.4888,Fail to reject no-autocorrelation null
-"ARIMA(3,0,1)",12,6.0985,0.6362,Fail to reject no-autocorrelation null
-"ARIMA(0,0,1)",4,2.1013,0.5516,Fail to reject no-autocorrelation null
-"ARIMA(0,0,1)",8,6.5825,0.4736,Fail to reject no-autocorrelation null
-"ARIMA(0,0,1)",12,8.7226,0.6475,Fail to reject no-autocorrelation null
+"ARIMA(3,0,1)",8,3.4113,0.4915,Fail to reject no-autocorrelation null
+"ARIMA(3,0,1)",12,6.0876,0.6374,Fail to reject no-autocorrelation null
+"ARIMA(0,0,1)",4,2.0968,0.5526,Fail to reject no-autocorrelation null
+"ARIMA(0,0,1)",8,6.5617,0.4759,Fail to reject no-autocorrelation null
+"ARIMA(0,0,1)",12,8.7055,0.6491,Fail to reject no-autocorrelation null

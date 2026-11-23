@@ -1,17 +1,17 @@
 Sample,Model,Horizon,Observations,RMSE,MAE
-Full Sample,"ARIMA(0,0,1)",1,28,6.327,2.4103
-Full Sample,Historical Mean,1,28,4.9632,1.9605
-Full Sample,Random Walk,1,28,7.9769,3.0379
-Full Sample,AR(1),1,28,6.4392,2.4506
-Full Sample,"ARIMA(0,0,1)",4,25,5.2273,2.1216
-Full Sample,Historical Mean,4,25,5.2275,2.1177
-Full Sample,Random Walk,4,25,7.4811,3.8006
-Full Sample,AR(1),4,25,5.2496,2.1993
-Excluding 2020Q2–2021Q1,"ARIMA(0,0,1)",1,24,0.6988,0.5796
-Excluding 2020Q2–2021Q1,Historical Mean,1,24,0.7627,0.6332
-Excluding 2020Q2–2021Q1,Random Walk,1,24,0.8908,0.6736
-Excluding 2020Q2–2021Q1,AR(1),1,24,0.6841,0.57
-Excluding 2020Q2–2021Q1,"ARIMA(0,0,1)",4,21,0.7876,0.6494
-Excluding 2020Q2–2021Q1,Historical Mean,4,21,0.7856,0.6454
-Excluding 2020Q2–2021Q1,Random Walk,4,21,5.9173,2.5229
-Excluding 2020Q2–2021Q1,AR(1),4,21,0.9523,0.739
+Full Sample,"ARIMA(0,0,1)",1,28,6.3272,2.396
+Full Sample,Historical Mean,1,28,4.9617,1.9499
+Full Sample,Random Walk,1,28,7.975,3.0332
+Full Sample,AR(1),1,28,6.4379,2.4371
+Full Sample,"ARIMA(0,0,1)",4,25,5.2256,2.1095
+Full Sample,Historical Mean,4,25,5.2259,2.1056
+Full Sample,Random Walk,4,25,7.4774,3.7711
+Full Sample,AR(1),4,25,5.2479,2.1872
+Excluding 2020Q2–2021Q1,"ARIMA(0,0,1)",1,24,0.683,0.5623
+Excluding 2020Q2–2021Q1,Historical Mean,1,24,0.7498,0.6206
+Excluding 2020Q2–2021Q1,Random Walk,1,24,0.8699,0.6682
+Excluding 2020Q2–2021Q1,AR(1),1,24,0.6694,0.5541
+Excluding 2020Q2–2021Q1,"ARIMA(0,0,1)",4,21,0.7729,0.6349
+Excluding 2020Q2–2021Q1,Historical Mean,4,21,0.7709,0.6309
+Excluding 2020Q2–2021Q1,Random Walk,4,21,5.9116,2.4879
+Excluding 2020Q2–2021Q1,AR(1),4,21,0.9396,0.7245

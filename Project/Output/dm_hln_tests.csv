@@ -1,13 +1,13 @@
 Sample,Comparison,Horizon,Observations,DM-HLN Statistic,p-value,Decision (10%)
-Full Sample,ARIMA vs. Historical Mean,1,28,1.0135,0.3198,Fail to reject H0
-Full Sample,ARIMA vs. Historical Mean,4,25,-0.2362,0.8153,Fail to reject H0
-Full Sample,ARIMA vs. Random Walk,1,28,-1.0584,0.2992,Fail to reject H0
-Full Sample,ARIMA vs. Random Walk,4,25,-1.0103,0.3224,Fail to reject H0
-Full Sample,ARIMA vs. AR(1),1,28,-1.0568,0.2999,Fail to reject H0
-Full Sample,ARIMA vs. AR(1),4,25,-0.9122,0.3707,Fail to reject H0
-Excluding 2020Q2–2021Q1,ARIMA vs. Historical Mean,1,24,-1.2194,0.235,Fail to reject H0
-Excluding 2020Q2–2021Q1,ARIMA vs. Historical Mean,4,21,0.7513,0.4612,Fail to reject H0
-Excluding 2020Q2–2021Q1,ARIMA vs. Random Walk,1,24,-1.108,0.2793,Fail to reject H0
-Excluding 2020Q2–2021Q1,ARIMA vs. Random Walk,4,21,-1.0077,0.3256,Fail to reject H0
-Excluding 2020Q2–2021Q1,ARIMA vs. AR(1),1,24,1.3544,0.1888,Fail to reject H0
-Excluding 2020Q2–2021Q1,ARIMA vs. AR(1),4,21,-0.94,0.3584,Fail to reject H0
+Full Sample,ARIMA vs. Historical Mean,1,28,1.0134,0.3199,Fail to reject H0
+Full Sample,ARIMA vs. Historical Mean,4,25,-0.2413,0.8114,Fail to reject H0
+Full Sample,ARIMA vs. Random Walk,1,28,-1.0578,0.2995,Fail to reject H0
+Full Sample,ARIMA vs. Random Walk,4,25,-1.0092,0.323,Fail to reject H0
+Full Sample,ARIMA vs. AR(1),1,28,-1.0567,0.3,Fail to reject H0
+Full Sample,ARIMA vs. AR(1),4,25,-0.912,0.3708,Fail to reject H0
+Excluding 2020Q2–2021Q1,ARIMA vs. Historical Mean,1,24,-1.2564,0.2216,Fail to reject H0
+Excluding 2020Q2–2021Q1,ARIMA vs. Historical Mean,4,21,0.7454,0.4647,Fail to reject H0
+Excluding 2020Q2–2021Q1,ARIMA vs. Random Walk,1,24,-1.1102,0.2784,Fail to reject H0
+Excluding 2020Q2–2021Q1,ARIMA vs. Random Walk,4,21,-1.0066,0.3261,Fail to reject H0
+Excluding 2020Q2–2021Q1,ARIMA vs. AR(1),1,24,1.22,0.2348,Fail to reject H0
+Excluding 2020Q2–2021Q1,ARIMA vs. AR(1),4,21,-0.9401,0.3584,Fail to reject H0
